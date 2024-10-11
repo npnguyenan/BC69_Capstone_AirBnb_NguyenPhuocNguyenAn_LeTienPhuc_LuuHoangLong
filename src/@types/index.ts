@@ -1,1 +1,1 @@
-export * from "./Phim"
+export * from "./Room"

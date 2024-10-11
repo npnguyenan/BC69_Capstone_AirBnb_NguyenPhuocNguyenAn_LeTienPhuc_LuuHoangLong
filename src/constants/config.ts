@@ -1,5 +1,6 @@
 export const PATH = {
   login: "/login",
   register: "/dangky",
-  filmDetail: "/phim/:id"
+  filmDetail: "/phim/:id",
+  DetailRoom: "/room/:id"
 };

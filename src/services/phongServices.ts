@@ -1,4 +1,4 @@
-import { Phim } from "../@types";
+import { Room } from "../@types";
 import { apiInstance } from "../constants";
 
 const api = apiInstance.create({
@@ -6,5 +6,6 @@ const api = apiInstance.create({
 });
 
 export const phongServices = {
-  getPhong: () => api.get<HttpResponse<Phim[]>>("/phong-thue"),
+  getRoom: () => api.get<HttpResponse<Room[]>>("/phong-thue"),
+  getDetailRoom: (id: any) => api.get<HttpResponse<Room>>(`/phong-thue/${id}`),
 };

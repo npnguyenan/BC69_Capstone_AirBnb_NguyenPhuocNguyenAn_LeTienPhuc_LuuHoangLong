@@ -1,4 +1,4 @@
-export type Phim = {
+export type Room = {
   id: number;
   tenPhong: string;
   khach: number;

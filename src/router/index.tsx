@@ -1,6 +1,7 @@
 import { useRoutes } from "react-router-dom";
-import { Home } from "../pages";
+import { DetailRoom, Home } from "../pages";
 import { MainLayout } from "../component";
+import { PATH } from "../constants";
 
 export const routers = () =>
   useRoutes([
@@ -10,6 +11,10 @@ export const routers = () =>
         {
           index: true,
           element: <Home />,
+        },
+        {
+          path: PATH.DetailRoom,
+          element: <DetailRoom />,
         },
       ],
     },

@@ -1,2 +1,3 @@
-export * from "./QuanLyBinhLuan";
-export * from "./QuanLyNguoiDung";
+export * from "./Comment";
+export * from "./User";
+export * from "./Room";

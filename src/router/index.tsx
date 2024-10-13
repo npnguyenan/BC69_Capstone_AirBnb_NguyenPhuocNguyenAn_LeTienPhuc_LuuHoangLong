@@ -1,12 +1,12 @@
 import { useRoutes } from "react-router-dom";
-import { DetailRoom, Home } from "../pages";
-import { MainLayout } from "../component";
 import { PATH } from "../constants";
+import Main from "../components/Main";
+import { Comment, DetailRoom, Home, User } from "../pages";
 
 export const routers = () =>
   useRoutes([
     {
-      element: <MainLayout />,
+      element: <Main />,
       children: [
         {
           index: true,
@@ -16,6 +16,14 @@ export const routers = () =>
           path: PATH.DetailRoom,
           element: <DetailRoom />,
         },
+        {
+          path: PATH.user,
+          element: <User />,
+        },
       ],
+    },
+    {
+      path: PATH.comment,
+      element: <Comment />,
     },
   ]);

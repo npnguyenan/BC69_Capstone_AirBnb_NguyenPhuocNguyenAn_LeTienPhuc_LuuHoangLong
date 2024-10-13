@@ -1,4 +1,4 @@
-import { HomeTemplate } from "../component";
+import { HomeTemplate } from "../components";
 
 export const Home = () => {
   return (

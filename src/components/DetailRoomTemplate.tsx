@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { phongServices } from "../../services";
 import { Row, Col, Card, Typography } from "antd";
+import { phongServices } from "../services";
 
 const { Title, Paragraph } = Typography;
 

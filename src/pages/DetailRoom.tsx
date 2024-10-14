@@ -1,4 +1,4 @@
-import { DetailRoomTemplate } from "../components";
+import { DetailRoomTemplate } from "../components/templates";
 
 export const DetailRoom = () => {
   return (

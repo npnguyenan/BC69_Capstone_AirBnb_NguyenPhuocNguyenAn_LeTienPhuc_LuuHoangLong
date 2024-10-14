@@ -34,7 +34,7 @@ export const HomeTemplate = () => {
                 }
                 className="border-none h-full"
               >
-                <div className="p-4">
+                <div className="p-4 cursor-none">
                   <h3 className="text-lg font-semibold">{room.tenPhong}</h3>
                   <p className="text-gray-500 mt-2">
                     Giá: {room.giaTien.toLocaleString()} $/đêm

@@ -1,20 +1,37 @@
 import { useRoutes } from "react-router-dom";
 import { PATH } from "../constants";
-import MainTemplate from "../components/layouts/MainLayout";
-import { Comment, DetailRoom, Home } from "../pages";
+import { Comment, DetailRoom, Home, User } from "../pages";
+import { FormUserTemplate } from "../components/templates/FormUserTemplate";
+import { FormEditUserTemplate } from "../components/templates/FormEditUserTemplate";
+import MainLayout from "../components/layouts/MainLayout";
 
 export const routers = () =>
   useRoutes([
     {
-      element: <MainTemplate />,
+      element: <MainLayout />,
       children: [
         {
           index: true,
           element: <Home />,
         },
         {
-          path: PATH.DetailRoom,
-          element: <DetailRoom />,
+          element: <User />,
+          path: PATH.user,
+          children: [
+            // {
+            // element: <UserListTemplate />,
+            // children: [
+            {
+              element: <FormUserTemplate />,
+              path: PATH.addUser,
+            },
+            {
+              element: <FormEditUserTemplate />,
+              path: PATH.editUser,
+            },
+            // ],
+            // },
+          ],
         },
         {
           element: <Comment />,

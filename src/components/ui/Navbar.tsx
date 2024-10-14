@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { MenuOutlined } from "@ant-design/icons";
-import LoginTemplate from "./LoginTemplate";
+import LoginTemplate from "../templates/LoginTemplate";
 import search from "../../images/search.jpg";
 import airbnblogo from "../../images/logo.png";
 import userlogo from "../../images/userlogo.jpg";
 import { viTriServices } from "../../services";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch } from "../../stores";
-import { userActions, userSelector } from "../../stores/quanLyNguoiDung";
-import SignupTemplate from "./SignupTemplate";
+import { userActions, userSelector } from "../../stores/quanLyDangNhap";
+import SignupTemplate from "../templates/SignupTemplate";
 
-export const NavbarTemplate = () => {
+export const Navbar = () => {
   const { user } = userSelector();
   console.log("user: ", user);
   const dispatch = useAppDispatch();

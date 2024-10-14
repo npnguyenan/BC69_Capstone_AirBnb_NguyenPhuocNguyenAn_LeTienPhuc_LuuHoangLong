@@ -1,7 +1,7 @@
 export const PATH = {
   DetailRoom: "/room/:id",
-  comment: "/admin/comment",
-  user: "/admin/user",
+  comment: "/comment",
+  user: "/user",
   addUser: "/user/add",
   editUser: "/user/edit",
 };

@@ -3,10 +3,6 @@ import { PATH } from "../constants";
 import Main from "../components/Main";
 import { Comment, DetailRoom, Home, User } from "../pages";
 import { MainLayout } from "../components";
-import {
-  FormEditUserTemplate,
-  FormUserTemplate,
-} from "../components/templates";
 
 export const routers = () =>
   useRoutes([
@@ -24,21 +20,7 @@ export const routers = () =>
         {
           path: PATH.user,
           element: <User />,
-          children: [
-            // {
-            // element: <UserListTemplate />,
-            // children: [
-            {
-              element: <FormUserTemplate />,
-              path: PATH.addUser,
-            },
-            {
-              element: <FormEditUserTemplate />,
-              path: PATH.editUser,
-            },
-            // ],
-            // },
-          ],
+          children: [],
         },
         {
           element: <Comment />,

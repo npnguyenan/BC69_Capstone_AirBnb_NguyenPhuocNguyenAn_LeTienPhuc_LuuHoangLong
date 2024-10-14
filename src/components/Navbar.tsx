@@ -1,15 +1,19 @@
 import { useState } from "react";
-import { Dropdown } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { SignupComponent } from "./SignupComponent";
 import LoginComponent from "./LoginComponent";
 import search from "../images/search.jpg";
 import logo from "../images/logo.png";
-import user from "../images/user.jpg";
+import userlogo from "../images/userlogo.jpg";
 import { viTriServices } from "../services";
 import { useQuery } from "@tanstack/react-query";
+import { useAppDispatch } from "../stores";
+import { userActions, userSelector } from "../stores/quanLyNguoiDung";
 
 export const Navbar = () => {
+  const { user } = userSelector();
+  console.log("user: ", user);
+  const dispatch = useAppDispatch();
   const { data: dataLocation } = useQuery({
     queryKey: ["ListLocation"],
     queryFn: () => viTriServices.getLocation(),
@@ -63,7 +67,7 @@ export const Navbar = () => {
     <div className="flex items-center p-3 border border-b-gray-300">
       <img src={logo} alt="Logo" className="w-24 h-8 ml-10" />
       <div
-        className="p-2 h-12 flex items-center border border-gray-300 rounded-3xl shadow-lg"
+        className="p-2 h-12 flex items-center border border-gray-300 rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-300"
         style={{ marginLeft: "30em" }}
       >
         <div className="relative w-24">
@@ -97,33 +101,48 @@ export const Navbar = () => {
 
       <div
         onClick={() => setPopUp(!popUp)}
-        className="cursor-pointer flex items-center border border-spacing-1 rounded-full pl-1 pr-2"
+        className="cursor-pointer flex items-center border border-spacing-3 rounded-full pl-3 pr-2 h-18 hover:shadow-xl transition-shadow duration-300"
         style={{ marginLeft: "20em" }}
       >
         {popUp && (
-          <div className="shadow-xl h-16 w-28 z-10 absolute bg-white mt-32 p-1">
-            <h1
-              onClick={() => {
-                setSign(true);
-              }}
-              className="font-semibold text-sm"
-            >
-              Signup
-            </h1>
-            <hr className="mt-2" />
-            <h1
-              onClick={() => {
-                setLog(true);
-              }}
-              className="font-thin text-sm"
-            >
-              login
-            </h1>
+          <div className="shadow-xl h-16 w-32 z-10 absolute bg-white mt-32 p-1 rounded-2xl">
+            {!user ? (
+              <>
+                <h1
+                  onClick={() => {
+                    setSign(true);
+                  }}
+                  className="font-semibold text-sm"
+                >
+                  Signup
+                </h1>
+                <hr className="mt-2" />
+                <h1
+                  onClick={() => {
+                    setLog(true);
+                  }}
+                  className="font-thin text-sm"
+                >
+                  login
+                </h1>
+              </>
+            ) : (
+              <h1
+                onClick={() => dispatch(userActions.logOut())}
+                className="font-thin text-sm"
+              >
+                logout
+              </h1>
+            )}
           </div>
         )}
         <MenuOutlined className="w-5 h-5 cursor-pointer" />
         <div className="relative w-9 h-9 overflow-hidden rounded-full border-4 border-white ml-2">
-          <img src={user} alt="user" className="object-cover w-full h-full" />
+          <img
+            src={userlogo}
+            alt="user"
+            className="object-cover w-full h-full"
+          />
         </div>
       </div>
       {sign && (

@@ -1,9 +1,9 @@
-import { LoginAPIResponse } from '../../@types/QuanLyUser';
+import { LoginAPIResponse } from "../../@types/QuanLyUser";
 import { createSlice } from "@reduxjs/toolkit";
 import { userThunks } from "./thunk";
 import { RegisterSchemaType } from "../../schemas";
 import { storage } from "../../utils";
-import { localStorageKey } from "../../constants";
+import { localStorageKeys } from "../../constants";
 
 type InitialState = {
   isLoadingRegister: boolean;
@@ -16,15 +16,12 @@ type InitialState = {
 const initialState: InitialState = {
   isLoadingRegister: false,
   userRegister: undefined,
-  user: storage(localStorageKey.USER),
+  user: storage(localStorageKeys.USER),
 };
 
 const { dangKy } = userThunks;
 
-export const {
-  reducer: userReducer,
-  actions: userActions,
-} = createSlice({
+export const { reducer: userReducer, actions: userActions } = createSlice({
   name: "user",
   initialState,
 
@@ -35,14 +32,14 @@ export const {
       state.user = payload;
 
       // Lưu user vào local storage
-      localStorage.setItem(localStorageKey.USER, JSON.stringify(payload));
+      localStorage.setItem(localStorageKeys.USER, JSON.stringify(payload));
     },
     logOut: (state) => {
       // Xóa thông tin user ở store
       state.user = null;
 
       //  Xóa thông tin user ở local storage
-      localStorage.removeItem(localStorageKey.USER);
+      localStorage.removeItem(localStorageKeys.USER);
     },
   },
 

@@ -2,7 +2,6 @@ import Title from "antd/es/typography/Title";
 import React, { useState } from "react";
 import {
   Modal,
-  Form,
   Input,
   Button,
   Select,
@@ -20,43 +19,19 @@ import {
 import "../styles/SignupCustomer.css";
 import "react-phone-input-2/lib/style.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { userRegisterMutation } from "../hooks/api";
-import { RegisterSchema, RegisterSchemaType } from "../schemas";
+import { userRegisterMutation } from "../../hooks/api";
+import { RegisterSchema, RegisterSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import moment from "moment";
 
 // Định nghĩa kiểu cho các props
-interface SignupComponentProps {
+interface SignupTemplateProps {
   sign?: boolean;
   onOk: () => void;
   onCancel: () => void;
 }
 
-const countries = [
-  { code: "SG", name: "Singapore", dialCode: "+65" },
-  { code: "US", name: "United States", dialCode: "+1" },
-  { code: "CA", name: "Canada", dialCode: "+1" },
-  { code: "GB", name: "United Kingdom", dialCode: "+44" },
-  { code: "AU", name: "Australia", dialCode: "+61" },
-  { code: "IN", name: "India", dialCode: "+91" },
-  { code: "JP", name: "Japan", dialCode: "+81" },
-  { code: "FR", name: "France", dialCode: "+33" },
-  { code: "DE", name: "Germany", dialCode: "+49" },
-  { code: "BR", name: "Brazil", dialCode: "+55" },
-  { code: "ZA", name: "South Africa", dialCode: "+27" },
-  { code: "MY", name: "Malaysia", dialCode: "+60" },
-  { code: "VN", name: "Vietnam", dialCode: "+84" },
-  { code: "TH", name: "Thailand", dialCode: "+66" },
-  { code: "PH", name: "Philippines", dialCode: "+63" },
-  { code: "NZ", name: "New Zealand", dialCode: "+64" },
-  // Bạn có thể thêm các quốc gia khác tại đây
-];
-
-export const SignupComponent: React.FC<SignupComponentProps> = ({
-  sign,
-  onOk,
-  onCancel,
-}) => {
+const SignupTemplate: React.FC<SignupTemplateProps> = ({ sign, onCancel }) => {
   const registerMutation = userRegisterMutation();
   //const dispatch = useAppDispatch()
   //const { isLoadingRegister } = useuserSelector()
@@ -105,7 +80,7 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
         }}
       >
         <Title level={3} className="font-semibold text-2xl">
-          Welcome to Airbnb
+          Airbnb Xin chào
         </Title>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
@@ -128,7 +103,7 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
           />
           {errors.name && <p className="text-red-500">{errors.name.message}</p>}
           <p className="text-black text-16 mt-1">
-            email <span className="text-red-500">*</span>
+            Email <span className="text-red-500">*</span>
           </p>
           <Controller
             name="email"
@@ -141,7 +116,7 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
             <p className="text-red-500">{errors.email.message}</p>
           )}
           <p className="text-black text-16 mt-1">
-            password <span className="text-red-500">*</span>
+            Mật Khâut <span className="text-red-500">*</span>
           </p>
           <Controller
             name="password"
@@ -162,7 +137,7 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
             <p className="text-red-500">{errors.password.message}</p>
           )}
           <p className="text-black text-16 mt-1">
-            phone <span className="text-red-500">*</span>
+            Số Điện Thoại <span className="text-red-500">*</span>
           </p>
           <Controller
             name="phone"
@@ -175,7 +150,7 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
             <p className="text-red-500">{errors.phone.message}</p>
           )}
           <p className="text-black text-16 mt-1">
-            ngày sinh <span className="text-red-500">*</span>
+            Ngày sinh <span className="text-red-500">*</span>
           </p>
           <Controller
             name="birthday"
@@ -195,7 +170,7 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
             <p className="text-red-500">{errors?.birthday?.message}</p>
           )}
           <p className="text-black text-16 mt-1">
-            giới tính <span className="text-red-500">*</span>
+            Giới tính <span className="text-red-500">*</span>
           </p>
           <Controller
             name="gender"
@@ -214,7 +189,7 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
             <p className="text-red-500">{errors.gender.message}</p>
           )}
           <p className="text-black text-16 mt-1">
-            quyền <span className="text-red-500">*</span>
+            Quyền <span className="text-red-500">*</span>
           </p>
           <Controller
             name="role"
@@ -277,3 +252,5 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
     </Modal>
   );
 };
+
+export default SignupTemplate;

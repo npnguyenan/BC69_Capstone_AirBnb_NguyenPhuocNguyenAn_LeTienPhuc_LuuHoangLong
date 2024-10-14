@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Main from "./components/Main";
-import { SignupComponent } from "./components/SignupComponent";
-import LoginComponent from "./components/LoginComponent";
+import Main from "./components/templates/MainTemplate";
+import { SignupComponent } from "./components/templates/SignupTemplate";
+import LoginComponent from "./components/templates/LoginTemplate";
 import { HomeTemplate } from "./components";
 
 function App() {

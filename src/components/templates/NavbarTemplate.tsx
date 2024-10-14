@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { MenuOutlined } from "@ant-design/icons";
-import { SignupComponent } from "./SignupComponent";
-import LoginComponent from "./LoginComponent";
+import LoginTemplate from "./LoginTemplate";
 import search from "../images/search.jpg";
 import logo from "../images/logo.png";
 import userlogo from "../images/userlogo.jpg";
-import { viTriServices } from "../services";
+import { viTriServices } from "../../services";
 import { useQuery } from "@tanstack/react-query";
-import { useAppDispatch } from "../stores";
-import { userActions, userSelector } from "../stores/quanLyNguoiDung";
+import { useAppDispatch } from "../../stores";
+import { userActions, userSelector } from "../../stores/quanLyNguoiDung";
+import SignupTemplate from "./SignupTemplate";
 
-export const Navbar = () => {
+export const NavbarTemplate = () => {
   const { user } = userSelector();
   console.log("user: ", user);
   const dispatch = useAppDispatch();
@@ -98,7 +98,6 @@ export const Navbar = () => {
           <img src={search} className="object-cover w-full h-full" />
         </div>
       </div>
-
       <div
         onClick={() => setPopUp(!popUp)}
         className="cursor-pointer flex items-center border border-spacing-3 rounded-full pl-3 pr-2 h-18 hover:shadow-xl transition-shadow duration-300"
@@ -146,15 +145,16 @@ export const Navbar = () => {
         </div>
       </div>
       {sign && (
-        <SignupComponent
+        <SignupTemplate
           sign={sign}
           onOk={handleOk}
           onCancel={handleCancelSign}
         />
       )}
       {log && (
-        <LoginComponent log={log} onOk={handleOk} onCancel={handleCancelLog} />
+        <LoginTemplate log={log} onOk={handleOk} onCancel={handleCancelLog} />
       )}
+      ;
     </div>
   );
 };

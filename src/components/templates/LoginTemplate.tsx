@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Title from "antd/es/typography/Title";
-import { Modal, Form, Input, Button, Select, Divider } from "antd";
-import PhoneInput from "react-phone-input-2";
+import { Modal, Input, Button, Divider } from "antd";
 import "react-phone-input-2/lib/style.css";
 import {
   FacebookOutlined,
@@ -13,22 +12,18 @@ import {
   EyeTwoTone,
 } from "@ant-design/icons";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { LoginSchema, LoginSchemaType } from "../schemas";
+import { LoginSchema, LoginSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userLoginMutatuon } from "../hooks/api";
+import { userLoginMutatuon } from "../../hooks/api";
 
 // Định nghĩa kiểu cho các props
-interface SignupComponentProps {
+interface LoginTemplateProps {
   log?: boolean;
   onOk: () => void;
   onCancel: () => void;
 }
 
-const LoginComponent: React.FC<SignupComponentProps> = ({
-  log,
-  onOk,
-  onCancel,
-}) => {
+const LoginTemplate: React.FC<LoginTemplateProps> = ({ log, onCancel }) => {
   const {
     handleSubmit,
     control,
@@ -56,9 +51,7 @@ const LoginComponent: React.FC<SignupComponentProps> = ({
   return (
     <Modal
       title={
-        <div style={{ textAlign: "center", fontWeight: "bold" }}>
-          Log in or sign up
-        </div>
+        <div style={{ textAlign: "center", fontWeight: "bold" }}>Đăng nhập</div>
       } // Căn giữa tiêu đề
       open={log}
       onCancel={onCancel}
@@ -75,7 +68,7 @@ const LoginComponent: React.FC<SignupComponentProps> = ({
         }}
       >
         <Title level={3} className="font-semibold text-2xl">
-          Welcome to Airbnb
+          Airbnb Xin Chào
         </Title>
         <form onSubmit={handleSubmit(onSubmit)}>
           <p className="text-black text-16 mt-1">
@@ -92,7 +85,7 @@ const LoginComponent: React.FC<SignupComponentProps> = ({
             <p className="text-red-500">{errors.email.message}</p>
           )}
           <p className="text-black text-16 mt-1">
-            password <span className="text-red-500">*</span>
+            Mật Khẩu <span className="text-red-500">*</span>
           </p>
           <Controller
             name="password"
@@ -161,4 +154,4 @@ const LoginComponent: React.FC<SignupComponentProps> = ({
   );
 };
 
-export default LoginComponent;
+export default LoginTemplate;

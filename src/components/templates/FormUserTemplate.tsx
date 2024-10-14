@@ -238,16 +238,6 @@ export const FormUserTemplate = (props: Props) => {
                       />
                     )}
                   />
-                  <p>Ảnh đại diện</p>
-                  <img
-                    src={
-                      avatarSrc
-                        ? avatarSrc
-                        : "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
-                    }
-                    alt=""
-                    style={{ width: "100px" }}
-                  />
                 </div>
               </div>
             </div>

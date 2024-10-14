@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import LoginTemplate from "./LoginTemplate";
-import search from "../images/search.jpg";
-import logo from "../images/logo.png";
-import userlogo from "../images/userlogo.jpg";
+import search from "../../images/search.jpg";
+import airbnblogo from "../../images/logo.png";
+import userlogo from "../../images/userlogo.jpg";
 import { viTriServices } from "../../services";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch } from "../../stores";
@@ -65,7 +65,7 @@ export const NavbarTemplate = () => {
 
   return (
     <div className="flex items-center p-3 border border-b-gray-300">
-      <img src={logo} alt="Logo" className="w-24 h-8 ml-10" />
+      <img src={airbnblogo} alt="Logo" className="w-24 h-8 ml-10" />
       <div
         className="p-2 h-12 flex items-center border border-gray-300 rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-300"
         style={{ marginLeft: "30em" }}
@@ -154,7 +154,6 @@ export const NavbarTemplate = () => {
       {log && (
         <LoginTemplate log={log} onOk={handleOk} onCancel={handleCancelLog} />
       )}
-      ;
     </div>
   );
 };

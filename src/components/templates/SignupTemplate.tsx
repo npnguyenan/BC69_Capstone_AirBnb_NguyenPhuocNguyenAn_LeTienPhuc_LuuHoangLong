@@ -16,7 +16,6 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
 } from "@ant-design/icons";
-import "../styles/SignupCustomer.css";
 import "react-phone-input-2/lib/style.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { userRegisterMutation } from "../../hooks/api";
@@ -33,8 +32,6 @@ interface SignupTemplateProps {
 
 const SignupTemplate: React.FC<SignupTemplateProps> = ({ sign, onCancel }) => {
   const registerMutation = userRegisterMutation();
-  //const dispatch = useAppDispatch()
-  //const { isLoadingRegister } = useuserSelector()
   const {
     handleSubmit,
     control,

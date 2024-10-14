@@ -15,6 +15,7 @@ export const DetailRoomTemplate = () => {
   });
 
   const room = data?.data?.content;
+  console.log("room: ", room);
 
   if (!room) return <div>Loading...</div>;
 

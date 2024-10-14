@@ -1,6 +1,0 @@
-.custom-close {
-    position: absolute;
-    left: 16px; /* Đặt nút "X" về bên trái */
-    top: 16px;  /* Điều chỉnh khoảng cách từ trên xuống */
-    cursor: pointer;
-  }

@@ -1,7 +1,7 @@
 import { useRoutes } from "react-router-dom";
 import { PATH } from "../constants";
-import MainTemplate from "../components/templates/MainTemplate";
-import { Comment, DetailRoom, Home, User } from "../pages";
+import MainTemplate from "../components/layouts/MainLayout";
+import { Comment, DetailRoom, Home } from "../pages";
 
 export const routers = () =>
   useRoutes([
@@ -15,11 +15,6 @@ export const routers = () =>
         {
           path: PATH.DetailRoom,
           element: <DetailRoom />,
-        },
-        {
-          path: PATH.user,
-          element: <User />,
-          children: [],
         },
         {
           element: <Comment />,

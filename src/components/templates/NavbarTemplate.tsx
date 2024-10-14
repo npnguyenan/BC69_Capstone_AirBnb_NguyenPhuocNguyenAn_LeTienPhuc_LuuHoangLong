@@ -7,7 +7,7 @@ import userlogo from "../../images/userlogo.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch } from "../../stores";
 import {
-  quanLyNguoiDungActions,
+  userActions,
   useQuanLyNguoiDungSelector,
 } from "../../stores/quanLyNguoiDung";
 import SignupTemplate from "./SignupTemplate";
@@ -160,7 +160,7 @@ export const NavbarTemplate = () => {
 
                 <h1
                   onClick={() => {
-                    dispatch(quanLyNguoiDungActions.logOut());
+                    dispatch(userActions.logOut());
                     navigate("/");
                   }}
                   className="font-thin text-sm"

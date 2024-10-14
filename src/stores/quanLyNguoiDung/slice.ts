@@ -28,11 +28,8 @@ const initialState: InitialState = {
 
 const { dangKy } = userThunks;
 
-export const {
-  reducer: quanLyNguoiDungReducer,
-  actions: quanLyNguoiDungActions,
-} = createSlice({
-  name: "quanLyNguoiDung",
+export const { reducer: userReducer, actions: userActions } = createSlice({
+  name: "user",
   initialState,
   reducers: {
     setAbc: () => {},

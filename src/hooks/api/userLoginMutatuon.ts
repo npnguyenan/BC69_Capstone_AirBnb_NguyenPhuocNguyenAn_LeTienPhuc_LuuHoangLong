@@ -3,7 +3,7 @@ import { LoginSchemaType } from "../../schemas";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "../../stores";
 import { userServices } from "../../services";
-import { quanLyNguoiDungActions } from "../../stores/quanLyNguoiDung";
+import { userActions } from "../../stores/quanLyNguoiDung";
 
 export const userLoginMutatuon = () => {
   const dispatch = useAppDispatch();
@@ -12,7 +12,7 @@ export const userLoginMutatuon = () => {
     mutationFn: (payload: LoginSchemaType) => userServices.dangNhap(payload),
     onSuccess: (data) => {
       // Lưu thông tin đăng nhập của user vào redux
-      dispatch(quanLyNguoiDungActions.setUser(data.data.content));
+      dispatch(userActions.setUser(data.data.content));
 
       window.location.reload();
     },

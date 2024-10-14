@@ -6,7 +6,7 @@ import { useAddUserMutation, useUpdateUserMutation } from "../../hooks/api";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import {
-  quanLyNguoiDungActions,
+  userActions,
   useQuanLyNguoiDungSelector,
 } from "../../stores/quanLyNguoiDung";
 import { useAppDispatch } from "../../stores";
@@ -29,7 +29,7 @@ export const FormUserTemplate = (props: Props) => {
   // Nếu nó đang ở trang add user thì setIsEditUser về false
   // isEditUser : false => không thể truy cập vào trang edit, khi nào bấm vào nút edit mới vào được
   if (location.pathname == PATH.addUser) {
-    dispatch(quanLyNguoiDungActions.setIsEditUser(false));
+    dispatch(userActions.setIsEditUser(false));
   }
 
   let avatarSrc: string | null = value?.avatar;

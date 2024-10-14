@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { quanLyBinhLuanReducer } from "./quanLyBinhLuan";
 import { useDispatch } from "react-redux";
-import { quanLyNguoiDungReducer } from "./quanLyNguoiDung";
+import { userReducer } from "./quanLyNguoiDung";
 
 export const store = configureStore({
-  reducer: { quanLyBinhLuanReducer, quanLyNguoiDungReducer },
+  reducer: { quanLyBinhLuanReducer, userReducer },
 });
 
 type AppDispatch = (typeof store)["dispatch"];

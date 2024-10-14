@@ -4,7 +4,7 @@ import { useDeleteUserMutation } from "../../hooks/api";
 import { useQuery } from "@tanstack/react-query";
 import { nguoiDungServices } from "../../services";
 import { useAppDispatch } from "../../stores";
-import { quanLyNguoiDungActions } from "../../stores/quanLyNguoiDung";
+import { userActions } from "../../stores/quanLyNguoiDung";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { PATH } from "../../constants";
 
@@ -88,8 +88,8 @@ export const UserListTemplate = () => {
                       // handleEditUser(user.id);
                       // setUserId(user.id);
                       // refetchUserById();
-                      dispatch(quanLyNguoiDungActions.setUserId(user.id));
-                      dispatch(quanLyNguoiDungActions.setIsEditUser(true));
+                      dispatch(userActions.setUserId(user.id));
+                      dispatch(userActions.setIsEditUser(true));
                       navigate(PATH.editUser);
                     }}
                   >

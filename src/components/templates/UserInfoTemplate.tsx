@@ -1,6 +1,6 @@
 import { Button, Input } from "antd";
 import {
-  quanLyNguoiDungActions,
+  userActions,
   useQuanLyNguoiDungSelector,
 } from "../../stores/quanLyNguoiDung";
 import { useQuery } from "@tanstack/react-query";
@@ -147,9 +147,7 @@ export const UserInfoTemplate = () => {
                       console.log("file: ", file);
 
                       const fileURL = URL.createObjectURL(file);
-                      dispatch(
-                        quanLyNguoiDungActions.setAvatarPreview(fileURL)
-                      );
+                      dispatch(userActions.setAvatarPreview(fileURL));
                       field.onChange(file);
                     } else {
                       console.error("No file selected.");
@@ -166,7 +164,7 @@ export const UserInfoTemplate = () => {
                 htmlType="button"
                 className="cursor-pointer bg-red-400"
                 onClick={() => {
-                  dispatch(quanLyNguoiDungActions.setUpdateAvatar(false));
+                  dispatch(userActions.setUpdateAvatar(false));
                 }}
               >
                 Hủy
@@ -177,10 +175,8 @@ export const UserInfoTemplate = () => {
           <p
             className="cursor-pointer hover:text-blue-500"
             onClick={() => {
-              dispatch(quanLyNguoiDungActions.setUpdateAvatar(true));
-              dispatch(
-                quanLyNguoiDungActions.setAvatarPreview(userInfo?.avatar)
-              );
+              dispatch(userActions.setUpdateAvatar(true));
+              dispatch(userActions.setAvatarPreview(userInfo?.avatar));
             }}
           >
             Cập nhật ảnh đại diện

@@ -13,10 +13,15 @@ export const nguoiDungServices = {
     api.delete<HttpResponse<User[]>>(`/users?id=${query}`),
   addUser: (payload: User) =>
     api.post<HttpResponse<InputUserSchemaType[]>>(`/users`, payload),
-  getUserById: (query = "") =>
-    api.get<HttpResponse<InputUserSchemaType[]>>(`/users/${query}`),
+  getUserById: (query = "") => api.get<HttpResponse<User>>(`/users/${query}`),
   getUserByName: (query = "") =>
     api.get<HttpResponse<User[]>>(`/users/search/${query}`),
   updateUser: (query = "", payload: User) =>
     api.put<HttpResponse<User[]>>(`/users/${query}`, payload),
+  updateAvatar: (payload: FormData) =>
+    api.post<HttpResponse<User[]>>(`/users/upload-avatar`, payload, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 };

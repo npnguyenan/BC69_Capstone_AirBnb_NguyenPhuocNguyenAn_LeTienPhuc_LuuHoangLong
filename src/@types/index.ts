@@ -1,3 +1,4 @@
 export * from "./Comment";
-export * from "./User";
 export * from "./Room";
+export * from "./Location";
+export * from "./QuanLyUser";

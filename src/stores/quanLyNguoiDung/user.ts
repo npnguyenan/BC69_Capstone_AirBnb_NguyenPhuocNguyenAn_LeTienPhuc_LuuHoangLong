@@ -1,4 +1,4 @@
 import { localStorageKeys } from "../../constants/localStorageKeys";
 import { storage } from "../../utils";
 
-// export const user = storage(localStorageKeys.USER);
+export const userStorage = storage(localStorageKeys.USER);

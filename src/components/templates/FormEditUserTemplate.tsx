@@ -1,7 +1,6 @@
 import { FormUserTemplate } from "./FormUserTemplate";
-import { Button } from "antd";
-import { useDeleteUserMutation } from "../../hooks/api";
-import { useEffect, useState } from "react";
+
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { nguoiDungServices } from "../../services";
 import { useQuanLyNguoiDungSelector } from "../../stores/quanLyNguoiDung";

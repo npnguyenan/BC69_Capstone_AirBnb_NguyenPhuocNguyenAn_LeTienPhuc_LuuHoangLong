@@ -1,6 +1,4 @@
-import { Avatar } from "antd";
 import z from "zod";
-import { User } from "../@types";
 
 export const InputUserSchema = z.object({
   id: z.number().default(0),
@@ -23,6 +21,7 @@ export const InputUserSchema = z.object({
     ),
   gender: z.boolean({ message: "Vui lòng chọn giới tính" }),
   role: z.string({ message: "Vui lòng chọn role" }),
+  avatar: z.string().optional(),
 });
 
 export type InputUserSchemaType = z.infer<typeof InputUserSchema>;

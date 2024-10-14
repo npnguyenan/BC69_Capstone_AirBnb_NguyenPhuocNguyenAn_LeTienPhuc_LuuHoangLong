@@ -1,12 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import { sleep } from "../../utils";
 import { binhLuanServices } from "../../services";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-type Props = {
-  roomId: number;
-};
+import { CommentTemplate } from "./CommentTemplate";
+import {
+  quanLyBinhLuanActions,
+  useQuanLyBinhLuanSelector,
+} from "../../stores/quanLyBinhLuan";
+import { useAppDispatch } from "../../stores";
+import { useQuanLyNguoiDungSelector } from "../../stores/quanLyNguoiDung";
+import { DeleteCommentTemplate } from "./DeleteCommentTemplate";
+
 export const CommentByRoomTemplate = () => {
+  const { reloadCmt } = useQuanLyBinhLuanSelector();
+  const { user } = useQuanLyNguoiDungSelector();
+  const dispatch = useAppDispatch();
   const { id } = useParams();
   console.log("id: ", id);
   let { data: cmtList, refetch: refetchCmt } = useQuery({
@@ -21,9 +29,17 @@ export const CommentByRoomTemplate = () => {
 
   useEffect(() => {
     if (id) {
-      refetchCmt(); // Gọi lại API khi userId thay đổi
+      refetchCmt(); // Gọi lại API khi id phòng thay đổi
     }
   }, [id, refetchCmt]);
+
+  // Reload lại API mỗi khi người dùng đăng bình luận
+  useEffect(() => {
+    if (reloadCmt) {
+      refetchCmt();
+      dispatch(quanLyBinhLuanActions.setReloadCmt(false));
+    }
+  }, [reloadCmt, refetchCmt]);
 
   const commentList = cmtList?.data.content;
   console.log("commentList: ", commentList);
@@ -60,9 +76,7 @@ export const CommentByRoomTemplate = () => {
                       : "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
                   }
                   alt=""
-                  width={60}
-                  height={60}
-                  style={{ borderRadius: "50%" }}
+                  style={{ borderRadius: "50%", width: 50, height: 50 }}
                 />
               </div>
               <div className="col-span-11 mx-10">
@@ -72,7 +86,7 @@ export const CommentByRoomTemplate = () => {
                   </h2>
                   <p className="my-[5px]">{cmt.noiDung}</p>
                 </div>
-                <div className="mx-10">
+                <div className="mx-10 inline">
                   <p>
                     {cmt.saoBinhLuan}/5
                     <i className="fa-solid fa-star text-yellow-500"></i>
@@ -80,6 +94,11 @@ export const CommentByRoomTemplate = () => {
                       {" "}
                       {formatDateTime(cmt.ngayBinhLuan)}
                     </span>
+                    {user?.user?.role == "ADMIN" ? (
+                      <DeleteCommentTemplate idCmt={cmt.id} />
+                    ) : (
+                      <></>
+                    )}
                   </p>
                 </div>
               </div>
@@ -87,13 +106,7 @@ export const CommentByRoomTemplate = () => {
           );
         })
       )}
+      {user ? <CommentTemplate /> : <></>}
     </div>
   );
 };
-
-// avatar:"http://sc04.alicdn.com/kf/Hc3e61591078043e09dba7808a6be5d21n.jpg",
-// id:7968,
-// ngayBinhLuan:"2024-08-21",
-// noiDung:"Phòng quá đẹp",
-// saoBinhLuan:5,
-// tenNguoiBinhLuan:"admin",

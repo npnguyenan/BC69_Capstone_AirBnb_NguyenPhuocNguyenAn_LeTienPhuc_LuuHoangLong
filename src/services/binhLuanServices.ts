@@ -11,4 +11,8 @@ export const binhLuanServices = {
     api.get<HttpResponse<CommentByRoom[]>>(
       `/lay-binh-luan-theo-phong/${query}`
     ),
+  postBinhLuan: (payload: Comment) =>
+    api.post<HttpResponse<CommentByRoom[]>>(``, payload),
+  deleteBinhLuan: (query = "") =>
+    api.delete<HttpResponse<CommentByRoom[]>>(`/${query}`),
 };

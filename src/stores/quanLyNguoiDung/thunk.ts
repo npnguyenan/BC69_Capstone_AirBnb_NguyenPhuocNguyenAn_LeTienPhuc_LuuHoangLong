@@ -1,26 +1,27 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { nguoiDungServices } from "../../services";
+import { userServices } from "../../services";
+import { RegisterSchemaType } from "../../schemas";
 import { sleep } from "../../utils";
-// import { User } from "../../@types";
 
-const getDanhSach = createAsyncThunk(
-  "quanLyNguoiDung/getDanhSach",
-  // payload: giá trị truyền vào khi action được dispatch
-  async (payload: any, { rejectWithValue }) => {
+const dangKy = createAsyncThunk(
+  "user/dangKy",
+  async (payload: RegisterSchemaType, thunkAPI) => {
     try {
+      console.log("thunkAPI: ", thunkAPI);
       console.log("payload: ", payload);
 
       await sleep(2000);
 
-      const result = await nguoiDungServices.getDanhSach(payload);
+      const result = await userServices.dangKy(payload);
       console.log("result: ", result);
 
       return result.data.content;
-    } catch (error) {
-      console.log("error: ", error);
-      return rejectWithValue(error);
+    } catch (err) {
+      const { rejectWithValue } = thunkAPI;
+      console.log("err: ", err);
+      return rejectWithValue(err);
     }
   }
 );
 
-export const quanLyNguoiDungThunks = { getDanhSach };
+export const userThunks = { dangKy };

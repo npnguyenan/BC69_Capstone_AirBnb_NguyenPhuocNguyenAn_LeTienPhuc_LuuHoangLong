@@ -23,7 +23,6 @@ export const FormUserTemplate = (props: Props) => {
   const { isEditUser } = useQuanLyNguoiDungSelector();
 
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
 
   // Lấy đường dẫn hiện tại của trang
   const location = useLocation();
@@ -34,6 +33,7 @@ export const FormUserTemplate = (props: Props) => {
   }
 
   let avatarSrc: string | null = value?.avatar;
+
   const {
     control,
     handleSubmit,
@@ -67,33 +67,6 @@ export const FormUserTemplate = (props: Props) => {
       updateUserMutation.mutate(data);
     }
   };
-
-  // // Lấy tên file từ Url
-  // function getFileNameFromUrl(url: String) {
-  //   // Tách tên file từ URL bằng cách cắt chuỗi theo dấu '/'
-  //   const parts = url.split("/");
-  //   // Phần tử cuối cùng trong mảng sẽ là tên file
-  //   return parts[parts.length - 1];
-  // }
-
-  // // Chuyển từ url hình ảnh sang file
-  // async function urlToFile(
-  //   url: string,
-  //   fileName: string,
-  //   mimeType = "image/jpeg"
-  // ) {
-  //   // Tải dữ liệu từ URL dưới dạng blob
-  //   const response = await fetch(url);
-  //   const blob = await response.blob();
-
-  //   // Chuyển blob thành file
-  //   const filePromise = new File([blob], fileName, {
-  //     type: mimeType,
-  //   });
-
-  //   const file: File = await filePromise;
-  //   return file;
-  // }
 
   return (
     <div className="my-20 container mx-auto">

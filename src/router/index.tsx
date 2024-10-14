@@ -1,16 +1,16 @@
 import { useRoutes } from "react-router-dom";
 import { PATH } from "../constants";
-import { Comment, DetailRoom, Home, User } from "../pages";
-import { MainLayout } from "../components";
+import { DetailRoom, Home, User, UserManage } from "../pages";
 import {
   FormEditUserTemplate,
   FormUserTemplate,
 } from "../components/templates";
+import MainTemplate from "../components/templates/MainTemplate";
 
 export const routers = () =>
   useRoutes([
     {
-      element: <MainLayout />,
+      element: <MainTemplate />,
       children: [
         {
           index: true,
@@ -18,6 +18,10 @@ export const routers = () =>
         },
         {
           element: <User />,
+          path: PATH.info,
+        },
+        {
+          element: <UserManage />,
           path: PATH.user,
           children: [
             // {
@@ -35,10 +39,7 @@ export const routers = () =>
             // },
           ],
         },
-        {
-          element: <Comment />,
-          path: PATH.comment,
-        },
+
         {
           path: PATH.DetailRoom,
           element: <DetailRoom />,

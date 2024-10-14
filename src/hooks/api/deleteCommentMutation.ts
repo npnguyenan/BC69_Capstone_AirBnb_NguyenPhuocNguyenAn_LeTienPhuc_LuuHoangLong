@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { binhLuanServices } from "../../services";
-import { Comment } from "../../@types";
 import { useAppDispatch } from "../../stores";
 import { quanLyBinhLuanActions } from "../../stores/quanLyBinhLuan";
 import { sleep } from "../../utils";

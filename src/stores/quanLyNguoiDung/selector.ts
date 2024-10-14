@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { RootState } from "..";
+import { useSelector } from 'react-redux'
+import { RootState } from '..'
 
-export const useQuanLyNguoiDungSelector = () =>
-  useSelector((state: RootState) => state.quanLyBinhLuanReducer);
+export const useuserSelector = () =>
+    useSelector((state: RootState) => state.userReducer)

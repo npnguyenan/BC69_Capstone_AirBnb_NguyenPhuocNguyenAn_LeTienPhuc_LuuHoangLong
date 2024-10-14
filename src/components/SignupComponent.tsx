@@ -1,16 +1,29 @@
 import Title from "antd/es/typography/Title";
 import React, { useState } from "react";
-import { Modal, Form, Input, Button, Select, Divider } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  Button,
+  Select,
+  Divider,
+  DatePicker,
+  Switch,
+} from "antd";
 import {
   FacebookOutlined,
   GoogleOutlined,
   AppleOutlined,
-  MailOutlined,
-  PhoneOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
 } from "@ant-design/icons";
 import "../styles/SignupCustomer.css";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { userRegisterMutation } from "../hooks/api";
+import { RegisterSchema, RegisterSchemaType } from "../schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import moment from "moment";
 
 // Định nghĩa kiểu cho các props
 interface SignupComponentProps {
@@ -44,18 +57,32 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
   onOk,
   onCancel,
 }) => {
-  const [form] = Form.useForm();
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState(false);
+  const registerMutation = userRegisterMutation();
+  //const dispatch = useAppDispatch()
+  //const { isLoadingRegister } = useuserSelector()
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<RegisterSchemaType>({
+    mode: "onChange",
+    resolver: zodResolver(RegisterSchema),
+  });
 
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  // const handlePhoneChange = (e) => {
-  //   setPhone(e.target.value);
-  // };
+  console.log("errors: ", errors);
 
-  // const handleSubmit = (values) => {
-  //   console.log("Submitted phone number: ", values);
-  // };
+  // onSubmit chỉ đc gọi khi validation ko có errors
+  const onSubmit: SubmitHandler<RegisterSchemaType> = async (values) => {
+    registerMutation.mutate(values);
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Hàm để toggle trạng thái ẩn/hiện mật khẩu
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <Modal
       title={
@@ -80,76 +107,144 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
         <Title level={3} className="font-semibold text-2xl">
           Welcome to Airbnb
         </Title>
-        {/* <Form form={form} layout="vertical" onFinish={handleSubmit}> */}
-        <Form form={form} layout="vertical">
-          {email ? (
-            <>
-              <Form.Item className="mb-4">
-                <Input
-                  placeholder="Email"
-                  className="mb-2 p-2 text-lg h-14"
-                ></Input>
-              </Form.Item>
-            </>
-          ) : (
-            <>
-              <Form.Item label="Country/Region" className="mb-4">
-                <Select
-                  className="h-14"
-                  defaultValue={selectedCountry.name}
-                  onChange={(value) => {
-                    const country = countries.find((c) => c.name === value);
-                    if (country) {
-                      setSelectedCountry(country);
-                    }
-                  }}
-                >
-                  {countries.map((country) => (
-                    <Select.Option key={country.code} value={country.name}>
-                      {country.name} {country.dialCode}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Form.Item className="mb-4">
-                <PhoneInput
-                  inputClass="h-14"
-                  country={selectedCountry.code.toLowerCase()}
-                  inputStyle={{
-                    width: "100%",
-                    borderRadius: "4px",
-                    border: "1px solid #d9d9d9",
-                  }}
-                />
-              </Form.Item>
-            </>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="id"
+            control={control}
+            render={({ field }) => (
+              <Input type="number" status={errors.id && "error"} {...field} />
+            )}
+          />
+          {errors.id && <p className="text-red-500">{errors.id.message}</p>}
+          <p className="text-black text-16 mt-1">
+            Tên <span className="text-red-500">*</span>
+          </p>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <Input type="text" status={errors.name && "error"} {...field} />
+            )}
+          />
+          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+          <p className="text-black text-16 mt-1">
+            email <span className="text-red-500">*</span>
+          </p>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <Input type="email" status={errors.email && "error"} {...field} />
+            )}
+          />
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
           )}
-
-          {email && (
-            <Form.Item className="mb-4">
-              <Input
-                placeholder="Password"
-                className="mb-2 p-2 text-lg h-14"
-              ></Input>
-            </Form.Item>
+          <p className="text-black text-16 mt-1">
+            password <span className="text-red-500">*</span>
+          </p>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <Input.Password
+                type={showPassword ? "text" : "password"} // Đổi type giữa text và password
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
+                onClick={togglePasswordVisibility} // Chuyển đổi khi bấm vào icon
+                status={errors.password && "error"}
+                {...field}
+              />
+            )}
+          />
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
           )}
+          <p className="text-black text-16 mt-1">
+            phone <span className="text-red-500">*</span>
+          </p>
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => (
+              <Input status={errors.phone && "error"} {...field} />
+            )}
+          />
+          {errors.phone && (
+            <p className="text-red-500">{errors.phone.message}</p>
+          )}
+          <p className="text-black text-16 mt-1">
+            ngày sinh <span className="text-red-500">*</span>
+          </p>
+          <Controller
+            name="birthday"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                {...field}
+                format="DD/MM/YYYY"
+                value={field.value ? moment(field.value, "DD/MM/YYYY") : null}
+                onChange={(date) =>
+                  field.onChange(date ? date.format("DD/MM/YYYY") : null)
+                }
+              />
+            )}
+          />
+          {errors?.birthday?.message && (
+            <p className="text-red-500">{errors?.birthday?.message}</p>
+          )}
+          <p className="text-black text-16 mt-1">
+            giới tính <span className="text-red-500">*</span>
+          </p>
+          <Controller
+            name="gender"
+            control={control}
+            defaultValue={false} // Mặc định là Female (false)
+            render={({ field }) => (
+              <Switch
+                checkedChildren="Male" // Giá trị "true" đại diện cho Male
+                unCheckedChildren="Female" // Giá trị "false" đại diện cho Female
+                checked={field.value} // Nếu giá trị là true thì chọn Male
+                onChange={(checked) => field.onChange(checked)} // Cập nhật giá trị khi switch
+              />
+            )}
+          />
+          {errors.gender && (
+            <p className="text-red-500">{errors.gender.message}</p>
+          )}
+          <p className="text-black text-16 mt-1">
+            quyền <span className="text-red-500">*</span>
+          </p>
+          <Controller
+            name="role"
+            control={control}
+            render={({ field }) => (
+              <Select
+                className=" w-[6em]"
+                {...field}
+                options={[
+                  { value: "user", label: "User" },
+                  { value: "admin", label: "Admin" },
+                ]}
+                onChange={(value) => field.onChange(value)}
+              />
+            )}
+          />
+          {errors.role && <p className="text-red-500">{errors.role.message}</p>}
           <h1 className="text-xs mb-4">
             We’ll call or text you to confirm your number. Standard message and
             data rates apply. Privacy Policy
           </h1>
-
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              style={{ backgroundColor: "#FF385C", borderColor: "#FF385C" }}
-              className="bg-rose-700 h-12 text-white font-bold py-2 px-4 rounded w-11/12"
-            >
-              {email ? "Agree and Continue" : "continue"}
-            </Button>
-          </Form.Item>
-        </Form>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={registerMutation.isPending}
+            className="h-12 text-white font-bold py-2 px-4 rounded w-[25em] bg-[#FF385C] border-[#FF385C]"
+          >
+            Đăng Ký
+          </Button>
+        </form>
 
         <Divider>or</Divider>
 
@@ -171,13 +266,13 @@ export const SignupComponent: React.FC<SignupComponentProps> = ({
           Continue with Apple
         </Button>
 
-        <Button
+        {/* <Button
           onClick={() => setEmail(!email)}
           block
           icon={email ? <MailOutlined /> : <PhoneOutlined />}
         >
           {email ? "Continue with Phone" : "Continue with Email"}
-        </Button>
+        </Button> */}
       </div>
     </Modal>
   );

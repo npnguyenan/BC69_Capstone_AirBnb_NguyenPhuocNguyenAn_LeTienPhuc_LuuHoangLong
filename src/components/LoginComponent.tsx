@@ -9,7 +9,13 @@ import {
   AppleOutlined,
   MailOutlined,
   PhoneOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
 } from "@ant-design/icons";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { LoginSchema, LoginSchemaType } from "../schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { userLoginMutatuon } from "../hooks/api";
 
 // Định nghĩa kiểu cho các props
 interface SignupComponentProps {
@@ -17,34 +23,36 @@ interface SignupComponentProps {
   onOk: () => void;
   onCancel: () => void;
 }
-const countries = [
-  { code: "SG", name: "Singapore", dialCode: "+65" },
-  { code: "US", name: "United States", dialCode: "+1" },
-  { code: "CA", name: "Canada", dialCode: "+1" },
-  { code: "GB", name: "United Kingdom", dialCode: "+44" },
-  { code: "AU", name: "Australia", dialCode: "+61" },
-  { code: "IN", name: "India", dialCode: "+91" },
-  { code: "JP", name: "Japan", dialCode: "+81" },
-  { code: "FR", name: "France", dialCode: "+33" },
-  { code: "DE", name: "Germany", dialCode: "+49" },
-  { code: "BR", name: "Brazil", dialCode: "+55" },
-  { code: "ZA", name: "South Africa", dialCode: "+27" },
-  { code: "MY", name: "Malaysia", dialCode: "+60" },
-  { code: "VN", name: "Vietnam", dialCode: "+84" },
-  { code: "TH", name: "Thailand", dialCode: "+66" },
-  { code: "PH", name: "Philippines", dialCode: "+63" },
-  { code: "NZ", name: "New Zealand", dialCode: "+64" },
-  // Bạn có thể thêm các quốc gia khác tại đây
-];
 
 const LoginComponent: React.FC<SignupComponentProps> = ({
   log,
   onOk,
   onCancel,
 }) => {
-  const [form] = Form.useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<LoginSchemaType>({
+    mode: "onChange",
+    resolver: zodResolver(LoginSchema),
+  });
+
+  const loginMutation = userLoginMutatuon();
   const [email, setEmail] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Hàm để toggle trạng thái ẩn/hiện mật khẩu
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  // onSubmit chỉ đc gọi khi validation ko có errors
+  const onSubmit: SubmitHandler<LoginSchemaType> = async (values) => {
+    loginMutation.mutate(values);
+  };
+
   return (
     <Modal
       title={
@@ -69,76 +77,56 @@ const LoginComponent: React.FC<SignupComponentProps> = ({
         <Title level={3} className="font-semibold text-2xl">
           Welcome to Airbnb
         </Title>
-        {/* <Form form={form} layout="vertical" onFinish={handleSubmit}> */}
-        <Form form={form} layout="vertical">
-          {email ? (
-            <>
-              <Form.Item className="mb-4">
-                <Input
-                  placeholder="Email"
-                  className="mb-2 p-2 text-lg h-10"
-                ></Input>
-              </Form.Item>
-            </>
-          ) : (
-            <>
-              <Form.Item label="Country/Region" className="mb-4">
-                <Select
-                  className="h-10"
-                  defaultValue={selectedCountry.name}
-                  onChange={(value) => {
-                    const country = countries.find((c) => c.name === value);
-                    if (country) {
-                      setSelectedCountry(country);
-                    }
-                  }}
-                >
-                  {countries.map((country) => (
-                    <Select.Option key={country.code} value={country.name}>
-                      {country.name} {country.dialCode}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Form.Item className="mb-4">
-                <PhoneInput
-                  inputClass="h-10"
-                  country={selectedCountry.code.toLowerCase()}
-                  inputStyle={{
-                    width: "100%",
-                    borderRadius: "4px",
-                    border: "1px solid #d9d9d9",
-                  }}
-                />
-              </Form.Item>
-            </>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <p className="text-black text-16 mt-1">
+            email <span className="text-red-500">*</span>
+          </p>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <Input type="email" status={errors.email && "error"} {...field} />
+            )}
+          />
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
           )}
-
-          {email && (
-            <Form.Item className="mb-4">
-              <Input
-                placeholder="Password"
-                className="mb-2 p-2 text-lg h-10"
-              ></Input>
-            </Form.Item>
+          <p className="text-black text-16 mt-1">
+            password <span className="text-red-500">*</span>
+          </p>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <Input.Password
+                type={showPassword ? "text" : "password"} // Đổi type giữa text và password
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
+                onClick={togglePasswordVisibility} // Chuyển đổi khi bấm vào icon
+                status={errors.password && "error"}
+                {...field}
+              />
+            )}
+          />
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
           )}
           <h1 className="text-xs mb-4">
             We’ll call or text you to confirm your number. Standard message and
             data rates apply. Privacy Policy
           </h1>
 
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              style={{ backgroundColor: "#FF385C", borderColor: "#FF385C" }}
-              className="bg-rose-700 h-12 text-white font-bold py-2 px-4 rounded w-11/12"
-            >
-              {email ? "Agree and Continue" : "continue"}
-            </Button>
-          </Form.Item>
-        </Form>
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            style={{ backgroundColor: "#FF385C", borderColor: "#FF385C" }}
+            className="bg-rose-700 h-12 text-white font-bold py-2 px-4 rounded w-11/12"
+          >
+            {email ? "Agree and Continue" : "continue"}
+          </Button>
+        </form>
 
         <Divider>or</Divider>
 
@@ -161,6 +149,7 @@ const LoginComponent: React.FC<SignupComponentProps> = ({
         </Button>
 
         <Button
+          disabled
           onClick={() => setEmail(!email)}
           block
           icon={email ? <PhoneOutlined /> : <MailOutlined />}

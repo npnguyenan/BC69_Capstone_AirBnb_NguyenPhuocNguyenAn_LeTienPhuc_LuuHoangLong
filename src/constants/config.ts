@@ -1,6 +1,6 @@
 export const PATH = {
-  login: "/login",
-  register: "/dangky",
+  login: "/auth/login",
+  register: "/auth/signup",
   DetailRoom: "/room/:id",
   comment: "/admin/comment",
   user: "/admin/user",

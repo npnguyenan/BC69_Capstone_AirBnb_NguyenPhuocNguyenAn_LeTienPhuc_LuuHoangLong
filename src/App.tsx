@@ -13,28 +13,28 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<Main />}>
-          <Route index element={<HomeTemplate />} /> 
-          <Route
-            path="/signup"
-            element={
-              <SignupComponent
-                sign={sign}
-                onOk={() => setSign(false)}
-                onCancel={() => setSign(false)}
-              />
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <LoginComponent
-                log={log}
-                onOk={() => setLog(false)}
-                onCancel={() => setLog(false)}
-              />
-            }
-          />
+          <Route index element={<HomeTemplate />} />
         </Route>
+        <Route
+          path="/signup"
+          element={
+            <SignupComponent
+              sign={sign}
+              onOk={() => setSign(false)}
+              onCancel={() => setSign(false)}
+            />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <LoginComponent
+              log={log}
+              onOk={() => setLog(false)}
+              onCancel={() => setLog(false)}
+            />
+          }
+        />
       </Routes>
     </div>
   );

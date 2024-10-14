@@ -41,6 +41,8 @@ export const Navbar = () => {
     setShowDropdown(false);
   };
 
+  const [popUp, setPopUp] = useState(false);
+
   const menu = (
     <div className="absolute z-10 bg-white border rounded-lg shadow-lg p-4 w-80">
       <div className="grid grid-cols-4 gap-2">
@@ -94,12 +96,32 @@ export const Navbar = () => {
       </div>
 
       <div
-        className="flex items-center border border-spacing-1 rounded-full pl-1 pr-2"
+        onClick={() => setPopUp(!popUp)}
+        className="cursor-pointer flex items-center border border-spacing-1 rounded-full pl-1 pr-2"
         style={{ marginLeft: "20em" }}
       >
-        <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
-          <MenuOutlined className="w-5 h-5 cursor-pointer" />
-        </Dropdown>
+        {popUp && (
+          <div className="shadow-xl h-16 w-28 z-10 absolute bg-white mt-32 p-1">
+            <h1
+              onClick={() => {
+                setSign(true);
+              }}
+              className="font-semibold text-sm"
+            >
+              Signup
+            </h1>
+            <hr className="mt-2" />
+            <h1
+              onClick={() => {
+                setLog(true);
+              }}
+              className="font-thin text-sm"
+            >
+              login
+            </h1>
+          </div>
+        )}
+        <MenuOutlined className="w-5 h-5 cursor-pointer" />
         <div className="relative w-9 h-9 overflow-hidden rounded-full border-4 border-white ml-2">
           <img src={user} alt="user" className="object-cover w-full h-full" />
         </div>

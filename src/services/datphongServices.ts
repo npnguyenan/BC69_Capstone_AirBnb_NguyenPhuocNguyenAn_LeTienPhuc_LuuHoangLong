@@ -14,8 +14,10 @@ export const datphongServices = {
     api.delete<HttpResponse<Reservation[]>>(`/dat-phong?id=${query}`),
   addReservation: (payload: Reservation) =>
     api.post<HttpResponse<ReservationSchemaType[]>>(`/dat-phong`, payload),
-  getReservationById: (query = "") =>
-    api.get<HttpResponse<ReservationSchemaType[]>>(`/dat-phong/${query}`),
+  getReservationById: (id: any) =>
+    api.get<HttpResponse<ReservationSchemaType[]>>(`/dat-phong/${id}`),
+  getDetailReservationByUser: (id: any) =>
+    api.get<HttpResponse<Reservation>>(`/dat-phong/lay-theo-nguoi-dung/${id}`),
   updateReservation: (query = "", payload: Reservation) =>
     api.put<HttpResponse<Reservation[]>>(`/dat-phong/${query}`, payload),
 };

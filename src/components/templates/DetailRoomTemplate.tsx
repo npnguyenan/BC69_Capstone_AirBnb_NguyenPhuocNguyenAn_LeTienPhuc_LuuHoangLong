@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { datphongServices, phongServices } from "../../services";
-import { Row, Col, Typography, Input, Button, DatePicker } from "antd";
+import { Row, Col, Typography, Input, Button, DatePicker, Card } from "antd";
 import { CommentByRoomTemplate } from "./CommentByRoomTemplate";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ReservationSchema, ReservationSchemaType } from "../../schemas";
@@ -9,40 +9,68 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { userReservationMutation } from "../../hooks/api/userReservationMutation";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import Meta from "antd/es/card/Meta";
 
 const { Title, Paragraph } = Typography;
+interface Item {
+  id: any;
+  key: any; // Kiểu mở rộng để bao gồm các thuộc tính khác
+}
+interface ReservationResponse {
+  data?: {
+    content?: Record<string, Item[]>; // Hoặc ReserListData
+  };
+}
 
 export const DetailRoomTemplate = () => {
   const reservationMutation = userReservationMutation();
-  const [newId, setNewId] = useState<number>(0);
   const [userId, setUserId] = useState<string>("0");
-  const handleGenerateId = async () => {
-    // Hàm tạo ID ngẫu nhiên và kiểm tra trùng lặp
-    let newId: any; // Tạo ID không trùng
-    do {
-      newId = Math.floor(Math.random() * 99999); // Tạo ID ngẫu nhiên (0 đến 99999)
-    } while (reserListData?.data.content.find((user) => user.id === newId)); // Kiểm tra trùng
-    setNewId(newId); // Lưu ID mới vào state
-  };
-  // useEffect để chạy handleGenerateId ngay khi trang load
+
+  const { id } = useParams();
+
   useEffect(() => {
-    handleGenerateId(); // Gọi hàm để tạo ID khi component mount
     const userData = localStorage.getItem("USER");
     // Lấy ID từ localStorage khi component mount
     const storedUser = userData ? JSON.parse(userData) : null;
     setUserId(storedUser.user.id); // Lưu ID vào state
   }, []); // Dependency array trống để chỉ chạy một lần khi component được mount
-  const { id } = useParams();
 
-  let { data: reserListData } = useQuery({
-    queryKey: ["DatPhomInfo", id],
-    queryFn: () => datphongServices.getReservationById(),
+  let { data: reserListData }: { data?: ReservationResponse } = useQuery({
+    queryKey: ["GetDatPhongByUser", userId],
+    queryFn: () => datphongServices.getDetailReservationByUser(userId),
   });
-  const newId1 = reserListData?.data.content.find(
-    (user) => user.maPhong === id && user.maNguoiDung === userId
-  );
+
+  // Kiểm tra và chuyển đổi kiểu cho reserListData2
+  const reserListData2 = reserListData?.data?.content as
+    | Record<string, any>
+    | undefined;
+
+  let itemFound = false; // Tạo một flag để theo dõi xem đã tìm thấy item hay chưa
+  let myObject = []; // Định nghĩa myObject là một mảng các đối tượng Item
+  if (reserListData2) {
+    console.log("reserListData2: ", reserListData2);
+    // Kiểm tra xem reserListData2 có tồn tại hay không
+    for (const key in reserListData2) {
+      for (const innerKey in reserListData2[key]) {
+        if (innerKey === "maPhong") {
+          let temp = reserListData2[key][innerKey];
+          if (Number(temp) === Number(id)) {
+            console.log("Found item with id: ", temp);
+            itemFound = true;
+            break; // Nếu tìm thấy item, dừng vòng lặp
+          }
+        }
+      }
+      if (itemFound) {
+        myObject.push(reserListData2[key]); // Thêm đối tượng vào mảng
+        itemFound = false;
+      }
+    }
+  }
+  console.log("myObject", myObject);
+
   console.log("userId", userId);
-  console.log("newId1: ", newId1);
+
   const { data: roomListData } = useQuery({
     queryKey: ["DetailRoom", id],
     queryFn: () => phongServices.getDetailRoom(id),
@@ -65,7 +93,7 @@ export const DetailRoomTemplate = () => {
   const onSubmit: SubmitHandler<ReservationSchemaType> = async (values) => {
     let bookingDetail = {
       ...values,
-      id: Number(newId),
+      id: 0,
       maNguoiDung: Number(userId),
       maPhong: Number(room?.id),
     };
@@ -152,14 +180,10 @@ export const DetailRoomTemplate = () => {
                       format="DD/MM/YYYY"
                       value={
                         field.value ? moment(field.value, "DD/MM/YYYY") : null
-                      } // Chuyển đổi từ string sang moment object
-                      onChange={(date) => {
-                        // Kiểm tra xem ngày đã chọn có giá trị không
-                        const formattedDate = date
-                          ? date.format("DD/MM/YYYY")
-                          : null;
-                        field.onChange(formattedDate); // Chuyển đổi từ moment object sang string
-                      }}
+                      }
+                      onChange={(date) =>
+                        field.onChange(date ? date.format("DD/MM/YYYY") : null)
+                      }
                     />
                   )}
                 />
@@ -180,14 +204,10 @@ export const DetailRoomTemplate = () => {
                       format="DD/MM/YYYY"
                       value={
                         field.value ? moment(field.value, "DD/MM/YYYY") : null
-                      } // Chuyển đổi từ string sang moment object
-                      onChange={(date) => {
-                        // Kiểm tra xem ngày đã chọn có giá trị không
-                        const formattedDate = date
-                          ? date.format("DD/MM/YYYY")
-                          : null;
-                        field.onChange(formattedDate); // Chuyển đổi từ moment object sang string
-                      }}
+                      }
+                      onChange={(date) =>
+                        field.onChange(date ? date.format("DD/MM/YYYY") : null)
+                      }
                     />
                   )}
                 />
@@ -232,22 +252,37 @@ export const DetailRoomTemplate = () => {
               >
                 Đặt phòng
               </Button>
-              {/* <div className="mt-6">
-                <p className="text-gray-700">Bạn vẫn chưa bị trừ tiền</p>
-                <p className="mt-2">
-                  <span className="font-bold">đ1.085.098 x 5 đêm</span>{" "}
-                  <span className="text-red-600">đ5.425.490</span>
-                </p>
-                <p className="font-bold border-t border-gray-300 pt-2">
-                  Tổng trước thuế:{" "}
-                  <span className="text-red-600">đ5.425.490</span>
-                </p>
-              </div> */}
             </form>
           </div>
         </Col>
       </Row>
 
+      <Row className="pt-4 cursor-default" gutter={[16, 16]}>
+        <Col span={16}></Col>
+        <Col span={8}>
+          {myObject && (
+            <>
+              <h2>Danh sách đã đăng ký</h2>
+              <Row gutter={16}>
+                {myObject.map((room) => (
+                  <Row className="p-1">
+                    <Col span={8} key={room.id}>
+                      <Card hoverable style={{ width: 240 }}>
+                        <Meta
+                          title={`Phòng ${room.id}`}
+                          description={`Từ: ${moment(room.ngayDen).format(
+                            "DD/MM/YYYY"
+                          )} Đến: ${moment(room.ngayDi).format("DD/MM/YYYY")}`}
+                        />
+                      </Card>
+                    </Col>
+                  </Row>
+                ))}
+              </Row>
+            </>
+          )}
+        </Col>
+      </Row>
       <Row gutter={[16, 16]} style={{ marginTop: "40px" }}>
         <Col span={24}>
           <Title level={4} style={{ fontWeight: "bold" }}>

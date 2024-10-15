@@ -32,9 +32,9 @@ export const HomeTemplate = () => {
                     className="w-auto h-48 object-cover"
                   />
                 }
-                className="border-none h-full"
+                className="border-none h-full cursor-default"
               >
-                <div className="p-4 cursor-none">
+                <div className="p-4">
                   <h3 className="text-lg font-semibold">{room.tenPhong}</h3>
                   <p className="text-gray-500 mt-2">
                     Giá: {room.giaTien.toLocaleString()} $/đêm

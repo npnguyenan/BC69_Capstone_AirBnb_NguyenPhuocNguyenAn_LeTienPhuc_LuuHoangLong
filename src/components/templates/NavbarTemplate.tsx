@@ -174,7 +174,7 @@ export const NavbarTemplate = () => {
         <MenuOutlined className="w-5 h-5 cursor-pointer" />
         <div className="relative w-9 h-9 overflow-hidden rounded-full border-4 border-white ml-2">
           <img
-            src={userlogo}
+            src={user?.user?.avatar}
             alt="user"
             className="object-cover w-full h-full"
           />

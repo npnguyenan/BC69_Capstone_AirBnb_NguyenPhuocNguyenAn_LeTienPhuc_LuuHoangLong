@@ -80,7 +80,7 @@ export const UserListTemplate = () => {
                       deleteUserMutation.mutate(user);
                     }}
                   >
-                    Xóa
+                    <i className="fa-solid fa-trash text-white"></i>
                   </Button>
                   <Button
                     className="bg-yellow-400"
@@ -90,7 +90,7 @@ export const UserListTemplate = () => {
                       navigate(PATH.editUser);
                     }}
                   >
-                    Sửa
+                    <i className="fa-solid fa-pen-to-square text-white"></i>
                   </Button>
                 </td>
               </tr>

@@ -220,7 +220,7 @@ export const EditInfoTemplate = (props: Props) => {
               dispatch(userActions.setEditInfo(true));
             }}
           >
-            Chỉnh sửa hồ sơ
+            <i className="fa-solid fa-gear"></i> Chỉnh sửa hồ sơ
           </p>
         )}
       </div>

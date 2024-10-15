@@ -73,7 +73,7 @@ export const UserInfoTemplate = () => {
       <h1 className="text-center font-500 text-30 my-20">
         Thông tin tài khoản
       </h1>
-      <h2 className="text-20 font-400 text-center my-10">Ảnh đại diện</h2>
+      <h2 className="text-20 font-400 text-center my-10"> Ảnh đại diện</h2>
       <div className="flex justify-center">
         {updateAvatar ? (
           <div
@@ -172,7 +172,7 @@ export const UserInfoTemplate = () => {
               dispatch(userActions.setAvatarPreview(userInfo?.avatar));
             }}
           >
-            Cập nhật ảnh đại diện
+            <i className="fa-solid fa-pen"></i> Cập nhật ảnh đại diện
           </p>
         )}
       </div>

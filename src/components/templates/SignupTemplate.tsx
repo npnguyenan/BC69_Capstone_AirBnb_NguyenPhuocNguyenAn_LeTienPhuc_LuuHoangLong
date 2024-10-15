@@ -22,8 +22,6 @@ import { userRegisterMutation } from "../../hooks/api";
 import { RegisterSchema, RegisterSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import moment from "moment";
-import { useQuery } from "@tanstack/react-query";
-import { nguoiDungServices } from "../../services";
 
 // Định nghĩa kiểu cho các props
 interface SignupTemplateProps {
@@ -92,7 +90,7 @@ export const SignupTemplate: React.FC<SignupTemplateProps> = ({
           <Controller
             name="id"
             control={control}
-            render={({ field }) => <input type="hidden" value={0} />}
+            render={({ field }) => <input type="text" {...field} />}
           />
           <p className="text-black text-16 mt-1">
             Tên <span className="text-red-500">*</span>

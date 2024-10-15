@@ -59,7 +59,6 @@ export const {
         console.log("payload: ", payload);
         console.log("fulfilled");
         state.isLoadingRegister = false;
-        state.userRegister = payload;
       })
 
       // Gọi API thất bại

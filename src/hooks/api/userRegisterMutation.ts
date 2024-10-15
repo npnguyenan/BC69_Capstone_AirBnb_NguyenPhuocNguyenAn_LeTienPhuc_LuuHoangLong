@@ -5,8 +5,6 @@ import { RegisterSchemaType } from "../../schemas";
 import { sleep } from "../../utils";
 import { userServices } from "../../services";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { PATH } from "../../constants";
 
 // JS docs để note document
 

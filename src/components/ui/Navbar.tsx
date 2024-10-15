@@ -1,11 +1,19 @@
 import { useState } from "react";
-import { Dropdown, Menu } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import logo from "/images/logo.png";
-import userlogo from "/images/userlogo.jpg";
-import { SignupTemplate, LoginTemplate } from "../templates";
+import { useAppDispatch } from "../../stores";
+import {
+  userActions,
+  useQuanLyNguoiDungSelector,
+} from "../../stores/quanLyNguoiDung";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "../../constants";
+import { LoginTemplate, SignupTemplate } from "../templates";
 
 export const Navbar = () => {
+  const { user } = useQuanLyNguoiDungSelector();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [sign, setSign] = useState(false);
   const [log, setLog] = useState(false);
 
@@ -21,16 +29,7 @@ export const Navbar = () => {
     setLog(false);
   };
 
-  const menuUser = (
-    <Menu>
-      <Menu.Item key="login" onClick={() => setLog(true)}>
-        Đăng nhập
-      </Menu.Item>
-      <Menu.Item key="signup" onClick={() => setSign(true)}>
-        Đăng ký
-      </Menu.Item>
-    </Menu>
-  );
+  const [popUp, setPopUp] = useState(false);
 
   return (
     <div className="flex flex-wrap items-center justify-between p-3 border-b border-gray-300">
@@ -57,19 +56,72 @@ export const Navbar = () => {
         </a>
       </div>
       <div
-        className="flex items-center border border-spacing-1 rounded-full pl-1 pr-2 mt-2 sm:mt-0"
-        style={{ marginLeft: "auto" }}
+        onClick={() => setPopUp(!popUp)}
+        className="cursor-pointer  flex items-center border border-spacing-3 rounded-full pl-3 pr-2 h-18 hover:shadow-xl transition-shadow duration-300"
+        style={{ marginLeft: "20em" }}
       >
-        <Dropdown
-          overlay={menuUser}
-          trigger={["click"]}
-          placement="bottomRight"
-        >
-          <MenuOutlined className="w-6 ms-3 h-5 cursor-pointer" />
-        </Dropdown>
+        {popUp && (
+          <div className="shadow-xl h-90 w-32 z-10 absolute bg-white mt-32 p-1 rounded-2xl">
+            {!user ? (
+              <>
+                <h1
+                  onClick={() => {
+                    setSign(true);
+                  }}
+                  className="font-semibold text-sm"
+                >
+                  Sign up
+                </h1>
+                <hr className="mt-2" />
+                <h1
+                  onClick={() => {
+                    setLog(true);
+                  }}
+                  className="font-thin text-sm"
+                >
+                  Login
+                </h1>
+              </>
+            ) : (
+              <div className="py-10">
+                <h1
+                  onClick={() => {
+                    navigate(PATH.info);
+                  }}
+                  className="font-thin text-sm"
+                >
+                  Thông tin tài khoản
+                </h1>
+                {user?.user?.role == "ADMIN" ? (
+                  <h1
+                    onClick={() => {
+                      navigate(PATH.user);
+                    }}
+                    className="font-thin text-sm"
+                  >
+                    Quản lý người dùng
+                  </h1>
+                ) : (
+                  <></>
+                )}
+
+                <h1
+                  onClick={() => {
+                    dispatch(userActions.logOut());
+                    navigate("/");
+                  }}
+                  className="font-thin text-sm"
+                >
+                  Logout
+                </h1>
+              </div>
+            )}
+          </div>
+        )}
+        <MenuOutlined className="w-5 h-5 cursor-pointer" />
         <div className="relative w-9 h-9 overflow-hidden rounded-full border-4 border-white ml-2">
           <img
-            src={userlogo}
+            src={user?.user?.avatar}
             alt="user"
             className="object-cover w-full h-full"
           />

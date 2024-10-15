@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type InitialState = {};
+type InitialState = {
+  reloadCmt: boolean;
+};
 
-const initialState: InitialState = {};
+const initialState: InitialState = {
+  reloadCmt: false,
+};
 
 export const {
   reducer: quanLyBinhLuanReducer,
@@ -10,5 +14,9 @@ export const {
 } = createSlice({
   name: "quanLyBinhLuan",
   initialState,
-  reducers: {},
+  reducers: {
+    setReloadCmt: (state, { payload }) => {
+      state.reloadCmt = payload;
+    },
+  },
 });

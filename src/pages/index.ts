@@ -1,4 +1,4 @@
+export * from "./UserManage";
 export * from "./Home";
-export * from "./User";
 export * from "./DetailRoom";
-export * from "./Comment";
+export * from "./User";

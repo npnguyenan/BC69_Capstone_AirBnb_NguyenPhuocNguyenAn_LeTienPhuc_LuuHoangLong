@@ -1,7 +1,10 @@
 export const PATH = {
-  DetailRoom: "/room/:id",
   comment: "/comment",
-  user: "/user",
-  addUser: "/user/add",
-  editUser: "/user/edit",
+  user: "/admin/user",
+  addUser: "/admin/user/add",
+  editUser: "/admin/user/edit",
+  DetailRoom: "/room/:id",
+  info: "/user",
+  login: "/auth/login",
+  register: "/auth/signup",
 };

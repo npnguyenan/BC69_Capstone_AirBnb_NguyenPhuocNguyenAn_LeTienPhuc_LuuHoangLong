@@ -6,7 +6,7 @@ import { useAddUserMutation, useUpdateUserMutation } from "../../hooks/api";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import {
-  quanLyNguoiDungActions,
+  userActions,
   useQuanLyNguoiDungSelector,
 } from "../../stores/quanLyNguoiDung";
 import { useAppDispatch } from "../../stores";
@@ -23,17 +23,15 @@ export const FormUserTemplate = (props: Props) => {
   const { isEditUser } = useQuanLyNguoiDungSelector();
 
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
 
   // Lấy đường dẫn hiện tại của trang
   const location = useLocation();
   // Nếu nó đang ở trang add user thì setIsEditUser về false
   // isEditUser : false => không thể truy cập vào trang edit, khi nào bấm vào nút edit mới vào được
   if (location.pathname == PATH.addUser) {
-    dispatch(quanLyNguoiDungActions.setIsEditUser(false));
+    dispatch(userActions.setIsEditUser(false));
   }
 
-  let avatarSrc: string | null = value?.avatar;
   const {
     control,
     handleSubmit,
@@ -67,33 +65,6 @@ export const FormUserTemplate = (props: Props) => {
       updateUserMutation.mutate(data);
     }
   };
-
-  // // Lấy tên file từ Url
-  // function getFileNameFromUrl(url: String) {
-  //   // Tách tên file từ URL bằng cách cắt chuỗi theo dấu '/'
-  //   const parts = url.split("/");
-  //   // Phần tử cuối cùng trong mảng sẽ là tên file
-  //   return parts[parts.length - 1];
-  // }
-
-  // // Chuyển từ url hình ảnh sang file
-  // async function urlToFile(
-  //   url: string,
-  //   fileName: string,
-  //   mimeType = "image/jpeg"
-  // ) {
-  //   // Tải dữ liệu từ URL dưới dạng blob
-  //   const response = await fetch(url);
-  //   const blob = await response.blob();
-
-  //   // Chuyển blob thành file
-  //   const filePromise = new File([blob], fileName, {
-  //     type: mimeType,
-  //   });
-
-  //   const file: File = await filePromise;
-  //   return file;
-  // }
 
   return (
     <div className="my-20 container mx-auto">
@@ -264,16 +235,6 @@ export const FormUserTemplate = (props: Props) => {
                         placeholder="dd/mm/yyyy"
                       />
                     )}
-                  />
-                  <p>Ảnh đại diện</p>
-                  <img
-                    src={
-                      avatarSrc
-                        ? avatarSrc
-                        : "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
-                    }
-                    alt=""
-                    style={{ width: "100px" }}
                   />
                 </div>
               </div>

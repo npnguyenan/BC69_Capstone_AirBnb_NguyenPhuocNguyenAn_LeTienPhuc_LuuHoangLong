@@ -1,5 +1,6 @@
 import { FormUserTemplate } from "./FormUserTemplate";
-import { useEffect, useState } from "react";
+
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { nguoiDungServices } from "../../services";
 import { useQuanLyNguoiDungSelector } from "../../stores/quanLyNguoiDung";

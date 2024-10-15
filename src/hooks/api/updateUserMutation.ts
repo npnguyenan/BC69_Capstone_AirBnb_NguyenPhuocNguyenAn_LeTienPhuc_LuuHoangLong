@@ -1,7 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-// import { useAppDispatch } from "../../stores";
-// import { quanLyNguoiDungActions } from "../../stores/quanLyNguoiDung";
 import { User } from "../../@types";
 import { nguoiDungServices } from "../../services";
 import { sleep } from "../../utils";

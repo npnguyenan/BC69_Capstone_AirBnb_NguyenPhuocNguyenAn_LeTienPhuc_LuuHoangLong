@@ -1,6 +1,6 @@
-import React, { Fragment, ReactNode } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Fragment, ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
@@ -9,18 +9,7 @@ type Props = {
 export const ToastifyProvider = ({ children }: Props) => {
   return (
     <Fragment>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      <ToastContainer />
       {children}
     </Fragment>
   );

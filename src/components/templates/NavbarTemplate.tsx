@@ -53,12 +53,12 @@ export const NavbarTemplate = () => {
   const [popUp, setPopUp] = useState(false);
 
   const menu = (
-    <div className="absolute z-10 bg-white border rounded-lg shadow-lg p-4 w-80">
-      <div className="grid grid-cols-4 gap-2">
+    <div className="absolute z-10 bg-white border rounded-lg shadow-lg p-4 w-80 ">
+      <div className="grid grid-cols-4 gap-2 ">
         {dataLocation?.data?.content.map((item) => (
           <div
             key={item.id}
-            className="cursor-pointer py-2 px-1 text-center hover:bg-gray-200 rounded"
+            className="cursor-pointer py-2 px-1 text-center hover:bg-gray-200 rounded "
             onClick={() => handlePlaceSelect(item.tinhThanh)}
           >
             {item.tinhThanh}
@@ -68,7 +68,7 @@ export const NavbarTemplate = () => {
     </div>
   );
   return (
-    <div className="flex items-center p-3 border border-b-gray-300">
+    <div className="flex items-center p-3 border border-b-gray-300 ">
       <img
         src={logo}
         alt="Logo"
@@ -77,7 +77,7 @@ export const NavbarTemplate = () => {
       />
 
       <div
-        className="p-2 h-12 flex items-center border border-gray-300 rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+        className="p-2  h-12 flex items-center border border-gray-300 rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-300"
         style={{ marginLeft: "30em" }}
       >
         <div className="relative w-24">
@@ -110,11 +110,11 @@ export const NavbarTemplate = () => {
       </div>
       <div
         onClick={() => setPopUp(!popUp)}
-        className="cursor-pointer flex items-center border border-spacing-3 rounded-full pl-3 pr-2 h-18 hover:shadow-xl transition-shadow duration-300"
+        className="cursor-pointer  flex items-center border border-spacing-3 rounded-full pl-3 pr-2 h-18 hover:shadow-xl transition-shadow duration-300"
         style={{ marginLeft: "20em" }}
       >
         {popUp && (
-          <div className=" shadow-xl h-16 w-32 z-10 absolute bg-white mt-32 p-1 rounded-2xl">
+          <div className="shadow-xl h-90 w-32 z-10 absolute bg-white mt-32 p-1 rounded-2xl">
             {!user ? (
               <>
                 <h1
@@ -123,7 +123,7 @@ export const NavbarTemplate = () => {
                   }}
                   className="font-semibold text-sm"
                 >
-                  Signup
+                  Sign up
                 </h1>
                 <hr className="mt-2" />
                 <h1

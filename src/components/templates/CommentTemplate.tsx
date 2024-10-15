@@ -62,14 +62,11 @@ export const CommentTemplate = () => {
     setComment("");
   };
   return (
-    <div className="w-full grid grid-cols-12 my-30">
-      <div className="col-span-1 my-20">
-        <img
-          src={userInfo?.avatar}
-          style={{ width: 60, height: 60, borderRadius: "50%" }}
-        />
+    <div className="w-full grid grid-cols-12 my-30 lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-8">
+      <div className="col-span-1 my-20 w-[60px] h-[60px] lg:w-[60px] md:w-[60px] sm:w-[60px]">
+        <img src={userInfo?.avatar} style={{ borderRadius: "50%" }} />
       </div>
-      <div className="col-span-11 relative">
+      <div className="col-span-11 relative lg:col-span-9 md:col-span-7 sm:col-span-7">
         <form onSubmit={handleSubmit}>
           <Input.TextArea
             placeholder="Viết bình luận"

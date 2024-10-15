@@ -64,22 +64,22 @@ export const EditInfoTemplate = (props: Props) => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex justify-evenly text-[17px] my-20">
-        <div className="grid grid-cols-5 mx-auto">
+      <div className="text-[17px] my-20 flex justify-evenly">
+        <div className="grid grid-cols-5  md:grid-cols-3 ">
           <div className="col-span-1">
-            <p className="my-40 font-500">ID user : </p>
-            <p className="my-40 font-500">Họ tên : </p>
-            <p className="my-40 font-500">Ngày sinh :</p>
+            <p className="my-40 md:my-30 font-500">ID user : </p>
+            <p className="my-40 md:my-30 font-500">Họ tên : </p>
+            <p className="my-40 md:my-30 font-500">Ngày sinh :</p>
           </div>
           {editInfo ? (
-            <div className="col-span-4 font-400 ps-10">
+            <div className="col-span-4 md:col-span-2 font-400 ps-10 md:ps-0 ">
               <Controller
                 name="id"
                 control={control}
                 render={({ field }) => (
                   <Input
                     disabled
-                    className="mt-40 w-2/3"
+                    className="mt-40 md:mt-30 w-2/3 md:w-2/3"
                     status={errors.id && "error"}
                     {...field}
                   />
@@ -91,7 +91,7 @@ export const EditInfoTemplate = (props: Props) => {
                 control={control}
                 render={({ field }) => (
                   <Input
-                    className="mt-30 w-2/3"
+                    className="mt-30 w-2/3  md:mt-20"
                     status={errors.name && "error"}
                     {...field}
                   />
@@ -106,7 +106,7 @@ export const EditInfoTemplate = (props: Props) => {
                 render={({ field }) => (
                   <Input
                     placeholder="DD/MM/YYYY"
-                    className="mt-30 w-2/3 "
+                    className="mt-30 w-2/3 md:mt-20"
                     status={errors.birthday && "error"}
                     {...field}
                   />
@@ -117,27 +117,27 @@ export const EditInfoTemplate = (props: Props) => {
               )}
             </div>
           ) : (
-            <div className="col-span-4 font-400 ps-10">
-              <p className=" my-40">{user?.id}</p>
-              <p className=" my-40">{user?.name}</p>
-              <p className=" my-40">{user?.birthday}</p>
+            <div className="col-span-4 font-400 ps-1 md:col-span-2">
+              <p className=" my-40 md:my-30">{user?.id}</p>
+              <p className=" my-40 md:my-30">{user?.name}</p>
+              <p className=" my-40 md:my-30">{user?.birthday}</p>
             </div>
           )}
         </div>
-        <div className="grid grid-cols-5">
+        <div className="grid grid-cols-5 md:grid-cols-3">
           <div className="col-span-1">
-            <p className="my-40 font-500">Email :</p>
-            <p className="my-40 font-500">Số điện thoại :</p>
-            <p className="my-40 font-500">Giới tính : </p>
+            <p className="my-40 md:my-30 font-500">Email :</p>
+            <p className="my-40 md:my-30 font-500">Số điện thoại :</p>
+            <p className="my-40 md:my-30 font-500">Giới tính : </p>
           </div>
           {editInfo ? (
-            <div className="col-span-4 font-400 ps-10">
+            <div className="col-span-4 md:col-span-2 font-400 ps-10 md:ps-0 ">
               <Controller
                 name="email"
                 control={control}
                 render={({ field }) => (
                   <Input
-                    className="mt-40 w-2/3"
+                    className="mt-40 md:mt-30 w-2/3"
                     status={errors.email && "error"}
                     {...field}
                   />
@@ -151,7 +151,7 @@ export const EditInfoTemplate = (props: Props) => {
                 control={control}
                 render={({ field }) => (
                   <Input
-                    className="mt-30 w-2/3"
+                    className="mt-30 w-2/3 md:mt-20"
                     status={errors.phone && "error"}
                     {...field}
                   />
@@ -166,7 +166,7 @@ export const EditInfoTemplate = (props: Props) => {
                 control={control}
                 render={({ field }) => (
                   <Select
-                    className="mt-30"
+                    className="mt-30 md:mt-20"
                     {...field}
                     placeholder="Chọn giới tính"
                     style={{ width: 150 }}
@@ -185,10 +185,10 @@ export const EditInfoTemplate = (props: Props) => {
               )}
             </div>
           ) : (
-            <div className="col-span-4 font-400 ps-10">
-              <p className=" my-40">{user?.email}</p>
-              <p className=" my-40">{user?.phone}</p>
-              <p className=" my-40">{user?.gender ? "Nam" : "Nữ"}</p>
+            <div className="col-span-4 font-400 ps-10 md:col-span-2">
+              <p className=" my-40 md:my-30">{user?.email}</p>
+              <p className=" my-40 md:my-30">{user?.phone}</p>
+              <p className=" my-40 md:my-30">{user?.gender ? "Nam" : "Nữ"}</p>
             </div>
           )}
         </div>
@@ -205,7 +205,7 @@ export const EditInfoTemplate = (props: Props) => {
               Cập nhật hồ sơ
             </Button>
             <Button
-              className="bg-red-500 mx-10"
+              className="bg-red-500 mx-10 text-white"
               onClick={() => {
                 dispatch(userActions.setEditInfo(false));
               }}

@@ -125,7 +125,7 @@ export const DetailRoomTemplate = () => {
         </Col>
       </Row>
       <div className="flex justify-center mt-20">
-        <div className="w-6/12 bg-red-">
+        <div className="w-6/12 sm:w-10/12 md:w-8/12">
           <h1 className="text-20 font-400 my-5 mx-10">Bình luận</h1>
           <div
             className="px-20 py-20 bg-gray-200"

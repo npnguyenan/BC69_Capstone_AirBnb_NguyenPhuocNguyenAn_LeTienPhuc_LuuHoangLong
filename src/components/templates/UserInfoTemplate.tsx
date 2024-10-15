@@ -69,7 +69,7 @@ export const UserInfoTemplate = () => {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto md:w-10/12">
       <h1 className="text-center font-500 text-30 my-20">
         Thông tin tài khoản
       </h1>

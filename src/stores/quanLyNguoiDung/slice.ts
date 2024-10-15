@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { LoginAPIResponse, User } from "../../@types";
+import { LoginAPIResponse } from "../../@types";
 import { localStorageKeys } from "../../constants";
 import { RegisterSchemaType } from "../../schemas";
 import { storage } from "../../utils";

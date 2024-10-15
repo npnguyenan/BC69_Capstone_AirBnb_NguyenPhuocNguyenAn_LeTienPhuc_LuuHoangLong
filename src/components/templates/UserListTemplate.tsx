@@ -27,11 +27,11 @@ export const UserListTemplate = () => {
   });
 
   return (
-    <div className="mx-auto container grid">
+    <div className="mx-auto container grid xl:w-11/12 lg:w-10/12">
       <div className="mx-auto">
         <Outlet />
       </div>
-      <h1 className="text-30 font-400 my-20">Danh sách người dùng</h1>
+      <h1 className="text-30 font-400 my-20 ">Danh sách người dùng</h1>
       {location.pathname == PATH.addUser ? (
         <></>
       ) : (
@@ -65,7 +65,7 @@ export const UserListTemplate = () => {
             // getPhoneAndPasswordUser(user.name);
             return (
               <tr key={user.id} className={count % 2 ? "bg-gray-300" : ""}>
-                <td className="py-10">{user.id}</td>
+                <td className="py-10 lg:py-0 ">{user.id}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.birthday}</td>
@@ -75,7 +75,7 @@ export const UserListTemplate = () => {
                 <td className="text-center">{user.role}</td>
                 <td>
                   <Button
-                    className="me-3 bg-red-400"
+                    className="me-3 bg-red-400 2xl:me-0"
                     onClick={() => {
                       deleteUserMutation.mutate(user);
                     }}
@@ -85,9 +85,6 @@ export const UserListTemplate = () => {
                   <Button
                     className="bg-yellow-400"
                     onClick={() => {
-                      // handleEditUser(user.id);
-                      // setUserId(user.id);
-                      // refetchUserById();
                       dispatch(userActions.setUserId(user.id));
                       dispatch(userActions.setIsEditUser(true));
                       navigate(PATH.editUser);

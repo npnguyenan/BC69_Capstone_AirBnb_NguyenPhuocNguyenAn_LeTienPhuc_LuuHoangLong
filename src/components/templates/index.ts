@@ -11,3 +11,4 @@ export * from "./UserListTemplate";
 export * from "./UserInfoTemplate";
 export * from "./CommentTemplate";
 export * from "./DeleteCommentTemplate";
+export * from "./EditInfoTemplate";

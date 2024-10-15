@@ -32,8 +32,6 @@ export const FormUserTemplate = (props: Props) => {
     dispatch(userActions.setIsEditUser(false));
   }
 
-  let avatarSrc: string | null = value?.avatar;
-
   const {
     control,
     handleSubmit,

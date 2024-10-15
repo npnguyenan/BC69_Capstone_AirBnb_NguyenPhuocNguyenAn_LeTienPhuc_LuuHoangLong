@@ -12,6 +12,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { UpdateAvatarSchema, UpdateAvatarSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateAvatarMutation } from "../../hooks/api";
+import { EditInfoTemplate } from "./EditInfoTemplate";
 
 export const UserInfoTemplate = () => {
   let { user } = useQuanLyNguoiDungSelector();
@@ -33,15 +34,15 @@ export const UserInfoTemplate = () => {
     },
     staleTime: 5 * 60 * 1000,
     // true:  gọi API, false: ko gọi
-    enabled: !!user?.user?.id,
+    enabled: !!user?.user?.avatar,
   });
+  const userInfo = userData?.data.content;
+
   useEffect(() => {
-    if (user?.user?.avatar) {
+    if (userInfo?.avatar) {
       refetchUser(); // Gọi lại API khi userId thay đổi
     }
-  }, [user?.user?.avatar, refetchUser]);
-
-  const userInfo = userData?.data.content;
+  }, [userInfo?.avatar, refetchUser, updateAvatar]);
 
   const {
     control,
@@ -56,16 +57,7 @@ export const UserInfoTemplate = () => {
 
   let onSubmit: SubmitHandler<UpdateAvatarSchemaType> = async (values) => {
     const formFile = new FormData();
-    formFile.append("avatar", values.avatar);
-    console.log("values.avatar: ", values.avatar);
-    // console.log("formFile: ", formFile);
-
-    // if (values.avatar instanceof File) {
-    //   formFile.append("avatar", values.avatar);
-    // } else {
-    //   console.error("Avatar is not a file.");
-    //   return;
-    // }
+    formFile.append("formFile", values.avatar);
 
     // Kiểm tra file đã thêm
     formFile.forEach((value, key) => {
@@ -73,6 +65,7 @@ export const UserInfoTemplate = () => {
     });
 
     updateAvatarMutation.mutate(formFile);
+    refetchUser();
   };
 
   return (
@@ -183,32 +176,7 @@ export const UserInfoTemplate = () => {
           </p>
         )}
       </div>
-
-      <div className="flex justify-around text-[17px]">
-        <div className="my-20">
-          <p className="my-20 font-500">
-            ID : <span className="font-400">{userInfo?.id}</span>
-          </p>
-          <p className="my-20 font-500">
-            Họ tên : <span className="font-400">{userInfo?.name}</span>
-          </p>
-          <p className="my-20 font-500">
-            Ngày sinh : <span className="font-400">{userInfo?.birthday}</span>
-          </p>
-        </div>
-        <div className="my-20">
-          <p className="my-20 font-500">
-            Email : <span className="font-400">{userInfo?.email}</span>
-          </p>
-          <p className="my-20 font-500">
-            Số điện thoại : <span className="font-400">{userInfo?.phone}</span>
-          </p>
-          <p className="my-20 font-500">
-            Giới tính :{" "}
-            <span className="font-400">{userInfo?.gender ? "Nam" : "Nữ"}</span>
-          </p>
-        </div>
-      </div>
+      <EditInfoTemplate userInfo={userInfo} />
     </div>
   );
 };

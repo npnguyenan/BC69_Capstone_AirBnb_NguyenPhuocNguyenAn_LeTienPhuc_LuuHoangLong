@@ -6,3 +6,4 @@ export * from "./userRegisterMutation";
 export * from "./updateAvatarMutation";
 export * from "./postCommentMutation";
 export * from "./deleteCommentMutation";
+export * from "./updateInfoMutation";

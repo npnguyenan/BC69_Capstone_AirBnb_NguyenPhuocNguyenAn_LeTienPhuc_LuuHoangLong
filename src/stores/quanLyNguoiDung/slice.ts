@@ -12,6 +12,7 @@ type InitialState = {
   userRegister?: RegisterSchemaType;
   updateAvatar: boolean;
   avatarPreview: string | undefined;
+  editInfo: boolean;
   // Lưu thông tin đăng nhập của user
   user: LoginAPIResponse | null;
 };
@@ -24,6 +25,7 @@ const initialState: InitialState = {
   user: storage(localStorageKeys.USER),
   updateAvatar: false,
   avatarPreview: undefined,
+  editInfo: false,
 };
 
 const { dangKy } = userThunks;
@@ -57,6 +59,9 @@ export const { reducer: userReducer, actions: userActions } = createSlice({
     },
     setAvatarPreview: (state, { payload }) => {
       state.avatarPreview = payload;
+    },
+    setEditInfo: (state, { payload }) => {
+      state.editInfo = payload;
     },
   },
   // Xử lý action bất đồng bộ (gọi API)

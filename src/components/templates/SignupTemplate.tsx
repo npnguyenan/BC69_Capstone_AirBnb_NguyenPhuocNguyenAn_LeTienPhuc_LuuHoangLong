@@ -37,7 +37,6 @@ export const SignupTemplate: React.FC<SignupTemplateProps> = ({
   onCancel,
 }) => {
   const registerMutation = userRegisterMutation();
-  const [newId, setNewId] = useState<number>(0);
   const {
     handleSubmit,
     control,
@@ -46,30 +45,16 @@ export const SignupTemplate: React.FC<SignupTemplateProps> = ({
     mode: "onChange",
     resolver: zodResolver(RegisterSchema),
   });
-  let { data: userListData } = useQuery({
-    queryKey: ["DanhSachNguoiDung"],
-    queryFn: async () => {
-      return nguoiDungServices.getDanhSach();
-    },
-    staleTime: 5 * 60 * 1000,
-    // true:  gọi API, false: ko gọi
-    enabled: true,
-    refetchInterval: 10000,
-  });
-  const handleGenerateId = async () => {
-    // Hàm tạo ID ngẫu nhiên và kiểm tra trùng lặp
-    let newId: any; // Tạo ID không trùng
-    do {
-      newId = Math.floor(Math.random() * 99999); // Tạo ID ngẫu nhiên (0 đến 99999)
-    } while (userListData?.data.content.find((user) => user.id === newId)); // Kiểm tra trùng
-    setNewId(newId); // Lưu ID mới vào state
-  };
 
   console.log("errors: ", errors);
 
   // onSubmit chỉ đc gọi khi validation ko có errors
   const onSubmit: SubmitHandler<RegisterSchemaType> = async (values) => {
-    registerMutation.mutate(values);
+    let RegisterDetail = {
+      ...values,
+      id: 0,
+    };
+    registerMutation.mutate(RegisterDetail);
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -107,7 +92,7 @@ export const SignupTemplate: React.FC<SignupTemplateProps> = ({
           <Controller
             name="id"
             control={control}
-            render={({ field }) => <input type="hidden" value={newId} />}
+            render={({ field }) => <input type="hidden" value={0} />}
           />
           <p className="text-black text-16 mt-1">
             Tên <span className="text-red-500">*</span>

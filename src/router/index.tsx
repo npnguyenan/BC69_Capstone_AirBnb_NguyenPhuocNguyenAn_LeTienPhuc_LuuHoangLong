@@ -1,11 +1,11 @@
 import { useRoutes } from "react-router-dom";
 import { PATH } from "../constants";
-import { Comment, DetailRoom, Home, User } from "../pages";
-import { MainLayout } from "../components/layouts";
+import { DetailRoom, Home, User } from "../pages";
 import {
   FormEditUserTemplate,
   FormUserTemplate,
 } from "../components/templates";
+import MainLayout from "../components/layouts/MainLayout";
 
 export const routers = () =>
   useRoutes([

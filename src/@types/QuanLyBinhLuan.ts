@@ -6,10 +6,3 @@ export type Comment = {
   noiDung: string;
   saoBinhLuan: number;
 };
-
-//   "id": 0,
-//   "maPhong": 0,
-//   "maNguoiBinhLuan": 0,
-//   "ngayBinhLuan": "string",
-//   "noiDung": "string",
-//   "saoBinhLuan": 0

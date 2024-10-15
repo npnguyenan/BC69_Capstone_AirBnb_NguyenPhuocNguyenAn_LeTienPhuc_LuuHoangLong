@@ -18,4 +18,4 @@ export type Room = {
   banUi: boolean;
   maViTri: number;
   hinhAnh: string;
-}
+};

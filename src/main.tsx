@@ -14,7 +14,7 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <ToastifyProvider>
-          <App /> {/* Bọc App trong BrowserRouter */}
+          <App /> 
         </ToastifyProvider>
       </QueryClientProvider>
     </Provider>

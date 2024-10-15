@@ -10,11 +10,4 @@ export type User = {
   avatar?: File;
 };
 
-//   "id": 0,
-//   "name": "string",
-//   "email": "string",
-//   "password": "string",
-//   "phone": "string",
-//   "birthday": "string",
-//   "gender": true,
-//   "role": "string
+

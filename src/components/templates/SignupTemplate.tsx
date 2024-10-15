@@ -32,7 +32,10 @@ interface SignupTemplateProps {
   onCancel: () => void;
 }
 
-const SignupTemplate: React.FC<SignupTemplateProps> = ({ sign, onCancel }) => {
+export const SignupTemplate: React.FC<SignupTemplateProps> = ({
+  sign,
+  onCancel,
+}) => {
   const registerMutation = userRegisterMutation();
   const [newId, setNewId] = useState<number>(0);
   const {
@@ -267,5 +270,3 @@ const SignupTemplate: React.FC<SignupTemplateProps> = ({ sign, onCancel }) => {
     </Modal>
   );
 };
-
-export default SignupTemplate;

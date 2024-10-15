@@ -23,7 +23,10 @@ interface LoginTemplateProps {
   onCancel: () => void;
 }
 
-const LoginTemplate: React.FC<LoginTemplateProps> = ({ log, onCancel }) => {
+export const LoginTemplate: React.FC<LoginTemplateProps> = ({
+  log,
+  onCancel,
+}) => {
   const {
     handleSubmit,
     control,
@@ -152,5 +155,3 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({ log, onCancel }) => {
     </Modal>
   );
 };
-
-export default LoginTemplate;

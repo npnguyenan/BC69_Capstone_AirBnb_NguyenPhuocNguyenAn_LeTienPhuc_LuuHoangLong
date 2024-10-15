@@ -141,14 +141,14 @@ export const DetailRoomTemplate = () => {
 
       {/* mô tả */}
       <Row gutter={[16, 16]}>
-        <Col span={16}>
+        <Col xs={24} sm={16}>
           <Paragraph>
             <strong style={{ fontWeight: "600" }}>{room.giuong}</strong> giường
             &middot; <strong>{room.phongTam}</strong> phòng tắm
           </Paragraph>
           <Paragraph>{room.moTa}</Paragraph>
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={8}>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="flex justify-between items-center mb-4">
               <p className="text-lg font-semibold text-red-600">
@@ -315,7 +315,7 @@ export const DetailRoomTemplate = () => {
             Tiện nghi phòng
           </Title>
           <Row gutter={[16, 16]} style={{ textAlign: "left" }}>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <div
                 style={{ padding: "10px", borderBottom: "1px solid #e9ecef" }}
               >
@@ -332,7 +332,7 @@ export const DetailRoomTemplate = () => {
                 Điều hòa: <strong>{room.dieuHoa ? "Có" : "Không"}</strong>
               </div>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <div
                 style={{ padding: "10px", borderBottom: "1px solid #e9ecef" }}
               >

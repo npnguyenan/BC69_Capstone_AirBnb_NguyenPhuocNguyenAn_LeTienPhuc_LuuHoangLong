@@ -22,6 +22,8 @@ import { userRegisterMutation } from "../../hooks/api";
 import { RegisterSchema, RegisterSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import moment from "moment";
+import { useQuery } from "@tanstack/react-query";
+import { nguoiDungServices } from "../../services";
 
 // Định nghĩa kiểu cho các props
 interface SignupTemplateProps {
@@ -32,6 +34,7 @@ interface SignupTemplateProps {
 
 const SignupTemplate: React.FC<SignupTemplateProps> = ({ sign, onCancel }) => {
   const registerMutation = userRegisterMutation();
+  const [newId, setNewId] = useState<number>(0);
   const {
     handleSubmit,
     control,
@@ -40,6 +43,24 @@ const SignupTemplate: React.FC<SignupTemplateProps> = ({ sign, onCancel }) => {
     mode: "onChange",
     resolver: zodResolver(RegisterSchema),
   });
+  let { data: userListData } = useQuery({
+    queryKey: ["DanhSachNguoiDung"],
+    queryFn: async () => {
+      return nguoiDungServices.getDanhSach();
+    },
+    staleTime: 5 * 60 * 1000,
+    // true:  gọi API, false: ko gọi
+    enabled: true,
+    refetchInterval: 10000,
+  });
+  const handleGenerateId = async () => {
+    // Hàm tạo ID ngẫu nhiên và kiểm tra trùng lặp
+    let newId: any; // Tạo ID không trùng
+    do {
+      newId = Math.floor(Math.random() * 99999); // Tạo ID ngẫu nhiên (0 đến 99999)
+    } while (userListData?.data.content.find((user) => user.id === newId)); // Kiểm tra trùng
+    setNewId(newId); // Lưu ID mới vào state
+  };
 
   console.log("errors: ", errors);
 
@@ -83,11 +104,8 @@ const SignupTemplate: React.FC<SignupTemplateProps> = ({ sign, onCancel }) => {
           <Controller
             name="id"
             control={control}
-            render={({ field }) => (
-              <Input type="number" status={errors.id && "error"} {...field} />
-            )}
+            render={({ field }) => <input type="hidden" value={newId} />}
           />
-          {errors.id && <p className="text-red-500">{errors.id.message}</p>}
           <p className="text-black text-16 mt-1">
             Tên <span className="text-red-500">*</span>
           </p>

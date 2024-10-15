@@ -114,8 +114,7 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({ log, onCancel }) => {
             type="primary"
             htmlType="submit"
             block
-            style={{ backgroundColor: "#FF385C", borderColor: "#FF385C" }}
-            className="bg-rose-700 h-12 text-white font-bold py-2 px-4 rounded w-11/12"
+            className=" h-12 text-white font-bold py-2 px-4 rounded w-[25em] bg-[#FF385C] border-[#FF385C]"
           >
             {email ? "Agree and Continue" : "continue"}
           </Button>

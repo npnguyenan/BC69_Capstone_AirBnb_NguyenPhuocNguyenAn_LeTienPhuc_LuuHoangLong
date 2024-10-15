@@ -1,4 +1,4 @@
-import { LoginAPIResponse, RegisterAPIResponse } from "../@types";
+import { LoginAPIResponse, User } from "../@types";
 import { apiInstance } from "../constants";
 import { LoginSchemaType, RegisterSchemaType } from "../schemas";
 
@@ -8,7 +8,7 @@ const api = apiInstance.create({
 
 export const userServices = {
   dangKy: (payload: RegisterSchemaType) =>
-    api.post<HttpResponse<RegisterAPIResponse>>("auth/signup", payload),
+    api.post<HttpResponse<User>>("auth/signup", payload),
 
   dangNhap: (payload: LoginSchemaType) =>
     api.post<HttpResponse<LoginAPIResponse>>("/auth/signin", payload),

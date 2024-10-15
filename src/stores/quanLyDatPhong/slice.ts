@@ -18,10 +18,10 @@ const initialState: InitialState = {
 };
 
 export const {
-  reducer: quanLyNguoiDungReducer,
-  actions: quanLyNguoiDungActions,
+  reducer: quanLyDatPhongReducer,
+  actions: quanLyDatPhongActions,
 } = createSlice({
-  name: "quanLyNguoiDung",
+  name: "quanLyDatPhong",
   initialState,
   reducers: {
     setUser: (state, { payload }) => {
@@ -44,29 +44,4 @@ export const {
       // Lưu user vào local storage
     },
   },
-
-  // Xử lý action bất đồng bộ (gọi API)
-  // extraReducers(builder) {
-  //   builder
-  //     .addCase(getDanhSach.pending, (state) => {
-  //       console.log("state: ", state);
-  //       // state.isLoadingRegister = true;
-  //       console.log("pending");
-  //     })
-
-  //     //   Gọi api thành công
-  //     .addCase(getDanhSach.fulfilled, (state, { payload }) => {
-  //       console.log("state: ", state);
-  //       console.log("payload: ", payload);
-  //       console.log("fulfilled");
-  //       // state.isLoadingRegister = false;
-  //       // state.userRegister = payload;
-  //     })
-
-  //     //   Gọi api thất bại
-  //     .addCase(getDanhSach.rejected, (state) => {
-  //       console.log("rejected: ");
-  //       // state.isLoadingRegister = false;
-  //     });
-  // },
 });

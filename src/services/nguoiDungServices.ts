@@ -1,7 +1,6 @@
 import { User } from "../@types";
 import { apiInstance } from "../constants";
 import { InputUserSchemaType } from "../schemas";
-// import { LoginSchemaType } from "../schemas";
 
 const api = apiInstance.create({
   baseURL: "https://airbnbnew.cybersoft.edu.vn/api",

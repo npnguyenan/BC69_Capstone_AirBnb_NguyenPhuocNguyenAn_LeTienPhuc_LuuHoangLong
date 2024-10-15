@@ -17,18 +17,16 @@ import { PATH } from "../../constants";
  */
 
 export const userRegisterMutation = () => {
-  const navigate = useNavigate();
   const registerMutation = useMutation({
     mutationKey: ["Register"],
-    // mutationFn: (payload: RegisterSchemaType) => userServices.dangKy(payload),
     mutationFn: async (payload: RegisterSchemaType) => {
-      await sleep(2000);
       return userServices.dangKy(payload);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       // Hàm đc gọi khi API thành công
       toast.success("Đăng ký thành công");
 
+      await sleep(1000);
       window.location.reload();
     },
     onError: (err: any) => {

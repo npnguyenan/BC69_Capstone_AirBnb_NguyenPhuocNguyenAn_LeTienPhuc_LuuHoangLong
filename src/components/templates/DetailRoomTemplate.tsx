@@ -1,23 +1,78 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { phongServices } from "../../services";
-import { Row, Col, Card, Typography } from "antd";
+import { datphongServices, phongServices } from "../../services";
+import { Row, Col, Typography, Input, Button, DatePicker } from "antd";
 import { CommentByRoomTemplate } from "./CommentByRoomTemplate";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { ReservationSchema, ReservationSchemaType } from "../../schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { userReservationMutation } from "../../hooks/api/userReservationMutation";
+import { useEffect, useState } from "react";
+import moment from "moment";
 
 const { Title, Paragraph } = Typography;
 
 export const DetailRoomTemplate = () => {
+  const reservationMutation = userReservationMutation();
+  const [newId, setNewId] = useState<number>(0);
+  const [userId, setUserId] = useState<string>("0");
+  const handleGenerateId = async () => {
+    // Hàm tạo ID ngẫu nhiên và kiểm tra trùng lặp
+    let newId: any; // Tạo ID không trùng
+    do {
+      newId = Math.floor(Math.random() * 99999); // Tạo ID ngẫu nhiên (0 đến 99999)
+    } while (reserListData?.data.content.find((user) => user.id === newId)); // Kiểm tra trùng
+    setNewId(newId); // Lưu ID mới vào state
+  };
+  // useEffect để chạy handleGenerateId ngay khi trang load
+  useEffect(() => {
+    handleGenerateId(); // Gọi hàm để tạo ID khi component mount
+    const userData = localStorage.getItem("USER");
+    // Lấy ID từ localStorage khi component mount
+    const storedUser = userData ? JSON.parse(userData) : null;
+    setUserId(storedUser.user.id); // Lưu ID vào state
+  }, []); // Dependency array trống để chỉ chạy một lần khi component được mount
   const { id } = useParams();
 
-  const { data } = useQuery({
+  let { data: reserListData } = useQuery({
+    queryKey: ["DatPhomInfo", id],
+    queryFn: () => datphongServices.getReservationById(),
+  });
+  const newId1 = reserListData?.data.content.find(
+    (user) => user.maPhong === id && user.maNguoiDung === userId
+  );
+  console.log("userId", userId);
+  console.log("newId1: ", newId1);
+  const { data: roomListData } = useQuery({
     queryKey: ["DetailRoom", id],
     queryFn: () => phongServices.getDetailRoom(id),
   });
 
-  const room = data?.data?.content;
-  console.log("room: ", room);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<ReservationSchemaType>({
+    mode: "onChange",
+    resolver: zodResolver(ReservationSchema),
+  });
+
+  const room = roomListData?.data?.content;
 
   if (!room) return <div>Loading...</div>;
+
+  // onSubmit chỉ đc gọi khi validation ko có errors
+  const onSubmit: SubmitHandler<ReservationSchemaType> = async (values) => {
+    let bookingDetail = {
+      ...values,
+      id: Number(newId),
+      maNguoiDung: Number(userId),
+      maPhong: Number(room?.id),
+    };
+
+    reservationMutation.mutate(bookingDetail);
+    console.log("Giá trị form sau khi submit:", bookingDetail); // Log giá trị của form
+  };
 
   return (
     <div
@@ -63,19 +118,133 @@ export const DetailRoomTemplate = () => {
           <Paragraph>{room.moTa}</Paragraph>
         </Col>
         <Col span={8}>
-          <Card
-            bordered
-            style={{
-              padding: "10px",
-              textAlign: "center",
-              borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.169)",
-            }}
-          >
-            <Title level={3}>
-              Giá: {room.giaTien.toLocaleString("vi-VN")} VND / đêm
-            </Title>
-          </Card>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-lg font-semibold text-red-600">
+                Giá: {room.giaTien.toLocaleString("vi-VN")} VND / đêm
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="id"
+                control={control}
+                render={({ field }) => (
+                  <Input type="hidden" {...field} value={0} /> // Đảm bảo newId luôn có giá trị
+                )}
+              />
+              <Controller
+                name="maPhong"
+                control={control}
+                render={({ field }) => (
+                  <input type="hidden" {...field} value={0} /> // Đảm bảo room.id luôn có giá trị
+                )}
+              />
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Nhận phòng</label>
+
+                <Controller
+                  name="ngayDen"
+                  control={control}
+                  render={({ field }) => (
+                    <DatePicker
+                      {...field}
+                      format="DD/MM/YYYY"
+                      value={
+                        field.value ? moment(field.value, "DD/MM/YYYY") : null
+                      } // Chuyển đổi từ string sang moment object
+                      onChange={(date) => {
+                        // Kiểm tra xem ngày đã chọn có giá trị không
+                        const formattedDate = date
+                          ? date.format("DD/MM/YYYY")
+                          : null;
+                        field.onChange(formattedDate); // Chuyển đổi từ moment object sang string
+                      }}
+                    />
+                  )}
+                />
+                {errors.ngayDen && (
+                  <p className="text-red-500">{errors.ngayDen.message}</p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Trả phòng</label>
+
+                <Controller
+                  name="ngayDi"
+                  control={control}
+                  render={({ field }) => (
+                    <DatePicker
+                      {...field}
+                      format="DD/MM/YYYY"
+                      value={
+                        field.value ? moment(field.value, "DD/MM/YYYY") : null
+                      } // Chuyển đổi từ string sang moment object
+                      onChange={(date) => {
+                        // Kiểm tra xem ngày đã chọn có giá trị không
+                        const formattedDate = date
+                          ? date.format("DD/MM/YYYY")
+                          : null;
+                        field.onChange(formattedDate); // Chuyển đổi từ moment object sang string
+                      }}
+                    />
+                  )}
+                />
+
+                {errors.ngayDi && (
+                  <p className="text-red-500">{errors.ngayDi.message}</p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-1">
+                  số lượng Khách
+                </label>
+                <Controller
+                  name="soLuongKhach"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      type="number"
+                      status={errors.soLuongKhach && "error"}
+                      {...field}
+                      value={field.value || 0} // Đảm bảo field.value luôn có giá trị
+                    />
+                  )}
+                />
+                {errors.soLuongKhach && (
+                  <p className="text-red-500">{errors.soLuongKhach.message}</p>
+                )}
+              </div>
+
+              <Controller
+                name="maNguoiDung"
+                control={control}
+                render={({ field }) => (
+                  <input type="hidden" {...field} value={0} /> // Đảm bảo userId luôn có giá trị
+                )}
+              />
+              <Button
+                htmlType="submit"
+                loading={reservationMutation.isPending}
+                className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded w-full"
+              >
+                Đặt phòng
+              </Button>
+              {/* <div className="mt-6">
+                <p className="text-gray-700">Bạn vẫn chưa bị trừ tiền</p>
+                <p className="mt-2">
+                  <span className="font-bold">đ1.085.098 x 5 đêm</span>{" "}
+                  <span className="text-red-600">đ5.425.490</span>
+                </p>
+                <p className="font-bold border-t border-gray-300 pt-2">
+                  Tổng trước thuế:{" "}
+                  <span className="text-red-600">đ5.425.490</span>
+                </p>
+              </div> */}
+            </form>
+          </div>
         </Col>
       </Row>
 

@@ -26,7 +26,6 @@ export const CommentByRoomTemplate = () => {
   }, [id, refetchCmt]);
 
   const commentList = cmtList?.data.content;
-  console.log("commentList: ", commentList);
 
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);

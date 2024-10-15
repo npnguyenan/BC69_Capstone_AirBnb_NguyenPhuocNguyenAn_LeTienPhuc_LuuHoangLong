@@ -2,17 +2,21 @@ import { useState } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import LoginTemplate from "../templates/LoginTemplate";
 import search from "../../images/search.jpg";
-import airbnblogo from "../../images/logo.png";
+import airbnblogo from "../../images/airbnblogo.png";
 import userlogo from "../../images/userlogo.jpg";
 import { viTriServices } from "../../services";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch } from "../../stores";
-import { userActions, userSelector } from "../../stores/quanLyDangNhap";
+import {
+  quanLyDangNhapActions,
+  quanLyDangNhapSelector,
+} from "../../stores/quanLyDangNhap";
 import SignupTemplate from "../templates/SignupTemplate";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
-  const { user } = userSelector();
-  console.log("user: ", user);
+  const navigate = useNavigate();
+  const { user } = quanLyDangNhapSelector();
   const dispatch = useAppDispatch();
   const { data: dataLocation } = useQuery({
     queryKey: ["ListLocation"],
@@ -65,7 +69,16 @@ export const Navbar = () => {
 
   return (
     <div className="flex items-center p-3 border border-b-gray-300">
-      <img src={airbnblogo} alt="Logo" className="w-24 h-8 ml-10" />
+      <img
+        src={airbnblogo}
+        alt="Logo"
+        className="w-24 h-8 ml-10 cursor-pointer"
+        onClick={() => {
+          {
+            navigate("/");
+          }
+        }}
+      />
       <div
         className="p-2 h-12 flex items-center border border-gray-300 rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-300"
         style={{ marginLeft: "30em" }}
@@ -126,12 +139,15 @@ export const Navbar = () => {
                 </h1>
               </>
             ) : (
-              <h1
-                onClick={() => dispatch(userActions.logOut())}
-                className="font-thin text-sm"
-              >
-                logout
-              </h1>
+              <>
+                <hr className="mt-2" />
+                <h1
+                  onClick={() => dispatch(quanLyDangNhapActions.logOut())}
+                  className="font-thin text-sm"
+                >
+                  logout
+                </h1>
+              </>
             )}
           </div>
         )}

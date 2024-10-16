@@ -30,8 +30,8 @@ export const DetailRoomTemplate = () => {
   let userData: any = null;
   let itemFound = false; // Tạo một flag để theo dõi xem đã tìm thấy item hay chưa
   let myObject = []; // Định nghĩa myObject là một mảng các đối tượng Item
+  userData = localStorage.getItem("USER");
   useEffect(() => {
-    userData = localStorage.getItem("USER");
     // Lấy ID từ localStorage khi component mount
     if (userData) {
       const storedUser = userData ? JSON.parse(userData) : null;
@@ -39,7 +39,7 @@ export const DetailRoomTemplate = () => {
     }
   }, []); // Dependency array trống để chỉ chạy một lần khi component được mount
 
-  if (!userData) {
+  if (userData) {
     let { data: reserListData }: { data?: ReservationResponse } = useQuery({
       queryKey: ["GetDatPhongByUser", userId],
       queryFn: () => datphongServices.getDetailReservationByUser(userId),
@@ -287,8 +287,8 @@ export const DetailRoomTemplate = () => {
                   <h2>Danh sách đã đăng ký</h2>
                   <Row gutter={16}>
                     {myObject.map((room) => (
-                      <Row className="p-1">
-                        <Col span={8} key={room.id}>
+                      <Row className="p-1" key={room.id}>
+                        <Col span={8}>
                           <Card hoverable style={{ width: 240 }}>
                             <Meta
                               title={`Phòng ${room.id}`}

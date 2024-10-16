@@ -90,7 +90,7 @@ export const SignupTemplate: React.FC<SignupTemplateProps> = ({
           <Controller
             name="id"
             control={control}
-            render={({ field }) => <input type="text" {...field} />}
+            render={({ field }) => <input type="hidden" {...field} value={0} />}
           />
           <p className="text-black text-16 mt-1">
             Tên <span className="text-red-500">*</span>
@@ -117,7 +117,7 @@ export const SignupTemplate: React.FC<SignupTemplateProps> = ({
             <p className="text-red-500">{errors.email.message}</p>
           )}
           <p className="text-black text-16 mt-1">
-            Mật Khâut <span className="text-red-500">*</span>
+            Mật Khẩu <span className="text-red-500">*</span>
           </p>
           <Controller
             name="password"

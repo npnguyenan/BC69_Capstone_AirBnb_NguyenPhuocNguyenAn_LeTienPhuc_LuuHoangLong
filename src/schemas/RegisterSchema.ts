@@ -21,12 +21,7 @@ const isValidDate = (date: string) => {
 
 // Validation và quy định kiểu dữ liệu trả về của Form tương ứng vs schema
 export const RegisterSchema = z.object({
-  id: z.coerce
-    .number()
-    .int("ID phải là số nguyên")
-    .refine((val) => Number.isFinite(val) && !`${val}`.includes("e"), {
-      message: "ID phải là số nguyên và không chứa ký tự 'e'",
-    }),
+  id: z.any(),
   name: z.string().min(1, "Tên không được để trống"),
   email: z.string().email("Email không đúng định dạng"),
   password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),

@@ -294,7 +294,7 @@ export const DetailRoomTemplate = () => {
                               title={`Phòng ${room.id}`}
                               description={`Từ: ${moment(room.ngayDen).format(
                                 "DD/MM/YYYY"
-                              )} Đến: ${moment(room.ngayDi).format(
+                              )} \n Đến: ${moment(room.ngayDi).format(
                                 "DD/MM/YYYY"
                               )}`}
                             />

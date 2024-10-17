@@ -1,6 +1,6 @@
 import { useRoutes } from "react-router-dom";
 import { PATH } from "../constants";
-import { DetailRoom, Home, User } from "../pages";
+import { DetailRoom, Home, User, UserManage } from "../pages";
 import {
   FormEditUserTemplate,
   FormUserTemplate,
@@ -17,7 +17,7 @@ export const routers = () =>
           element: <Home />,
         },
         {
-          element: <User />,
+          element: <UserManage />,
           path: PATH.user,
           children: [
             {
@@ -33,6 +33,10 @@ export const routers = () =>
         {
           path: PATH.DetailRoom,
           element: <DetailRoom />,
+        },
+        {
+          element: <User />,
+          path: PATH.info,
         },
       ],
     },

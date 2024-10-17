@@ -31,12 +31,12 @@ export const UserListTemplate = () => {
       <div className="mx-auto">
         <Outlet />
       </div>
-      <h1 className="text-30 font-400 my-20 ">Danh sách người dùng</h1>
+      <h1 className="text-[30px] my-[20px] ">Danh sách người dùng</h1>
       {location.pathname == PATH.addUser ? (
         <></>
       ) : (
         <Button
-          className="px-10 w-fit mb-10"
+          className="px-[10px] w-fit mb-10"
           onClick={() => {
             navigate(PATH.addUser);
           }}

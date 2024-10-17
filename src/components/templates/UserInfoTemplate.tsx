@@ -70,14 +70,17 @@ export const UserInfoTemplate = () => {
 
   return (
     <div className="container mx-auto md:w-10/12">
-      <h1 className="text-center font-500 text-30 my-20">
+      <h1 className="text-center font-bold text-[30px] my-[20px]">
         Thông tin tài khoản
       </h1>
-      <h2 className="text-20 font-400 text-center my-10"> Ảnh đại diện</h2>
+      <h2 className="text-[20px] font-medium text-center my-[10px]">
+        {" "}
+        Ảnh đại diện
+      </h2>
       <div className="flex justify-center">
         {updateAvatar ? (
           <div
-            className="p-20 my-10 bg-gray-300 inline-block"
+            className="p-[20px] my-[10px] bg-gray-300 inline-block"
             style={{ borderRadius: "50%" }}
           >
             <img
@@ -92,7 +95,7 @@ export const UserInfoTemplate = () => {
           </div>
         ) : (
           <div
-            className="p-20 my-10 bg-gray-300 inline-block"
+            className="p-[20px] my-[10px] bg-gray-300 inline-block"
             style={{ borderRadius: "50%" }}
           >
             <img
@@ -108,7 +111,7 @@ export const UserInfoTemplate = () => {
         )}
       </div>
       <div
-        className="pb-20 flex justify-center items-center"
+        className="pb-[20px] flex justify-center items-center"
         style={{
           borderBottom: "1px solid black",
           borderStyle: "dotted",
@@ -128,7 +131,7 @@ export const UserInfoTemplate = () => {
               render={({ field }) => (
                 <Input
                   status={errors.avatar && "error"}
-                  className="mx-10 w-80 mb-20"
+                  className="mx-[10px] w-80 mb-[20px]"
                   type="file"
                   id="fileInput"
                   accept="image/*"
@@ -150,7 +153,10 @@ export const UserInfoTemplate = () => {
               )}
             />
             <div>
-              <Button htmlType="submit" className="cursor-pointer mx-10 px-10">
+              <Button
+                htmlType="submit"
+                className="cursor-pointer mx-[10px] px-[10px]"
+              >
                 Cập nhật ảnh đại diện
               </Button>
               <Button

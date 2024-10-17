@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Comment } from "../../@types";
 import { useParams } from "react-router-dom";
 import { usePostCommentMutation } from "../../hooks/api";
-
+import "../../styles/Comment.css";
 export const CommentTemplate = () => {
   const { user } = useQuanLyNguoiDungSelector();
   const { id } = useParams();
@@ -52,7 +52,6 @@ export const CommentTemplate = () => {
 
   const userInfo = userData?.data.content;
   console.log("userInfo: ", userInfo);
-  console.log("commentData before: ", commentData);
   const postCommentMutation = usePostCommentMutation();
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -62,25 +61,25 @@ export const CommentTemplate = () => {
     setComment("");
   };
   return (
-    <div className="w-full grid grid-cols-12 my-30 lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-8">
-      <div className="col-span-1 my-20 w-[60px] h-[60px] lg:w-[60px] md:w-[60px] sm:w-[60px]">
+    <div className=" grid grid-cols-6 my-[20px] lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-8">
+      <div className="col-span-1 my-[40px] w-[60px] h-[60px] lg:w-[60px] md:w-[60px] sm:w-[60px]">
         <img src={userInfo?.avatar} style={{ borderRadius: "50%" }} />
       </div>
-      <div className="col-span-11 relative lg:col-span-9 md:col-span-7 sm:col-span-7">
+      <div className="mx-[10px] col-span-5 relative lg:col-span-9 md:col-span-7 sm:col-span-7">
         <form onSubmit={handleSubmit}>
           <Input.TextArea
             placeholder="Viết bình luận"
             value={comment} // Liên kết giá trị với state
             onChange={(e) => setComment(e.target.value)} // Cập nhật state khi thay đổi
-            className="w-full px-20 pt-20 pe-[60px] text-[15px]"
-            style={{ height: 100, borderRadius: 15 }}
+            className="w-full px-[30px] pt-[30px] pe-[60px] text-[15px]"
+            style={{ height: 150, borderRadius: 15 }}
           />
           <Button
             htmlType="submit"
-            className="absolute top-30 right-10"
+            className="absolute top-[50px] right-[10px]"
             style={{ border: "1px transparent" }}
           >
-            <i className="fa-regular fa-paper-plane text-20"></i>
+            <i className="fa-regular fa-paper-plane text-[20px]"></i>
           </Button>
         </form>
         <div>

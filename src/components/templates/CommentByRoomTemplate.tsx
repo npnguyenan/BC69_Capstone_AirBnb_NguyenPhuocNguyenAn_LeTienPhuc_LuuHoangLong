@@ -65,10 +65,10 @@ export const CommentByRoomTemplate = () => {
           return (
             <div
               key={cmt.id}
-              className="grid grid-cols-12 my-10 py-10 bg-slate-50 2xl:grid-cols-12 xl:grid-cols-10 lg:grid-cols-8 md:grid-cols-7 sm:grid-cols-7"
+              className="grid grid-cols-6 my-10 py-10 px-10 bg-slate-50 2xl:grid-cols-12 xl:grid-cols-10 lg:grid-cols-8 md:grid-cols-7 sm:grid-cols-7"
               style={{ borderRadius: 15 }}
             >
-              <div className="col-span-1 m-10 mt-20">
+              <div className="col-span-1 flex justify-center">
                 <img
                   src={
                     cmt.avatar
@@ -79,17 +79,17 @@ export const CommentByRoomTemplate = () => {
                   style={{ borderRadius: "50%", width: 50, height: 50 }}
                 />
               </div>
-              <div className="col-span-11 mx-10 2xl:col-span-9 2xl:mx-10 xl:col-span-9 lg:col-span-7 md:col-span-6 sm:col-span-6">
-                <div className="mx-10 ">
-                  <h2 className="text-[17px] font-500 sm:text-[15px]">
+              <div className="col-span-5 w-full mx-10 2xl:col-span-9 xl:col-span-9 lg:col-span-7 md:col-span-6 sm:col-span-6">
+                <div>
+                  <h2 className="text-[17px] font-bold sm:text-[15px]">
                     {cmt.tenNguoiBinhLuan}
                   </h2>
-                  <p className="my-[5px] sm:text-[13px] sm:my-0">
+                  <p className="my-[5px] sm:text-[15px] sm:my-0">
                     {cmt.noiDung}
                   </p>
                 </div>
-                <div className="mx-10 inline">
-                  <p className="2xl:mx-10">
+                <div className="inline">
+                  <p className="mt-[10px]">
                     {cmt.saoBinhLuan}/5
                     <i className="fa-solid fa-star text-yellow-500"></i>
                     <span className="ms-10 ">

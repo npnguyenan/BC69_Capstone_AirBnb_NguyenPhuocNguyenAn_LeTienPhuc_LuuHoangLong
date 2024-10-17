@@ -67,11 +67,11 @@ export const FormUserTemplate = (props: Props) => {
   };
 
   return (
-    <div className="my-20 container mx-auto">
+    <div className="my-[20px] container mx-auto">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-12">
           <div className="col-span-6 ">
-            <div className="me-30">
+            <div className="me-[30px]">
               <p>
                 Họ tên <span className="text-red-600"> *</span>
               </p>
@@ -83,7 +83,7 @@ export const FormUserTemplate = (props: Props) => {
                 control={control}
                 render={({ field }) => (
                   <Input
-                    className="mb-20"
+                    className="mb-[20px]"
                     status={errors.name && "error"}
                     {...field}
                   />
@@ -100,7 +100,7 @@ export const FormUserTemplate = (props: Props) => {
                 control={control}
                 render={({ field }) => (
                   <Input
-                    className="mb-20"
+                    className="mb-[20px]"
                     status={errors.email && "error"}
                     {...field}
                   />
@@ -119,7 +119,7 @@ export const FormUserTemplate = (props: Props) => {
                     control={control}
                     render={({ field }) => (
                       <Input
-                        className="mb-20"
+                        className="mb-[20px]"
                         status={errors.password && "error"}
                         {...field}
                       />
@@ -135,7 +135,7 @@ export const FormUserTemplate = (props: Props) => {
                     render={({ field }) => (
                       <Input
                         disabled
-                        className="mb-20"
+                        className="mb-[20px]"
                         status={errors.id && "error"}
                         {...field}
                       />
@@ -158,7 +158,7 @@ export const FormUserTemplate = (props: Props) => {
                 control={control}
                 render={({ field }) => (
                   <Input
-                    className="mb-20"
+                    className="mb-[20px]"
                     status={errors.phone && "error"}
                     {...field}
                   />
@@ -177,7 +177,7 @@ export const FormUserTemplate = (props: Props) => {
                     control={control}
                     render={({ field }) => (
                       <Select
-                        className="mb-20"
+                        className="mb-[20px]"
                         {...field}
                         placeholder="Chọn giới tính"
                         style={{ width: 150 }}
@@ -229,7 +229,7 @@ export const FormUserTemplate = (props: Props) => {
                     control={control}
                     render={({ field }) => (
                       <Input
-                        className="mb-20"
+                        className="mb-[20px]"
                         {...field}
                         status={errors.birthday && "error"} // Hiển thị lỗi nếu có
                         placeholder="dd/mm/yyyy"

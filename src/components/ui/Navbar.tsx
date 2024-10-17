@@ -121,7 +121,11 @@ export const Navbar = () => {
         <MenuOutlined className="w-5 h-5 cursor-pointer" />
         <div className="relative w-9 h-9 overflow-hidden rounded-full border-4 border-white ml-2">
           <img
-            src={user?.user?.avatar}
+            src={
+              user?.user?.avatar
+                ? user.user.avatar
+                : "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
+            }
             alt="user"
             className="object-cover w-full h-full"
           />

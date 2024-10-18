@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { MenuOutlined } from "@ant-design/icons";
-import logo from "/images/logo.png";
+import airbnblogo from "/images/airbnblogo.png";
 import { useAppDispatch } from "../../stores";
 import {
   userActions,
@@ -27,7 +27,14 @@ export const Navbar = () => {
 
   return (
     <div className="flex flex-wrap items-center justify-between p-3 border-b border-gray-300">
-      <img src={logo} alt="Logo" className="w-24 h-8 ml-2 sm:ml-10" />
+      <img
+        src={airbnblogo}
+        alt="Logo"
+        className="w-24 h-8 ml-2 sm:ml-10 cursor-pointer"
+        onClick={() => {
+          navigate("/");
+        }}
+      />
 
       <div className="flex space-x-4 sm:space-x-6 ml-5 sm:ml-40 font-bold mt-2 sm:mt-0">
         <a

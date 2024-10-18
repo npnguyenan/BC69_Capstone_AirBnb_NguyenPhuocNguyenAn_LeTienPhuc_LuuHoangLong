@@ -10,6 +10,8 @@ import { userReservationMutation } from "../../hooks/api/userReservationMutation
 import { useEffect, useState } from "react";
 import moment from "moment";
 import Meta from "antd/es/card/Meta";
+import { quanLyDatPhongActions } from "../../stores/quanLyDatPhong";
+import { useDispatch } from "react-redux";
 
 const { Title, Paragraph } = Typography;
 interface Item {
@@ -25,6 +27,7 @@ interface ReservationResponse {
 export const DetailRoomTemplate = () => {
   const reservationMutation = userReservationMutation();
   const [userId, setUserId] = useState<string>("0");
+  const dispatch = useDispatch();
 
   const { id } = useParams();
   let userData: any = null;
@@ -289,7 +292,7 @@ export const DetailRoomTemplate = () => {
                     {myObject.map((room) => (
                       <Row className="p-1" key={room.id}>
                         <Col span={8}>
-                          <Card hoverable style={{ width: 240 }}>
+                          <Card style={{ width: 240 }}>
                             <Meta
                               title={`Phòng ${room.id}`}
                               description={`Từ: ${moment(room.ngayDen).format(

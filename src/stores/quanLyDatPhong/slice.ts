@@ -7,14 +7,14 @@ type InitialState = {
   user: User | null;
   users: User[] | [];
   userId: number | null;
-  isEditUser: boolean;
+  isEditReservation: boolean;
 };
 
 const initialState: InitialState = {
   user: null,
   users: [],
   userId: null,
-  isEditUser: false,
+  isEditReservation: false,
 };
 
 export const {
@@ -29,18 +29,18 @@ export const {
       // Lưu user vào local storage
       localStorage.setItem(localStorageKeys.USER, JSON.stringify(payload));
     },
-    setUserList: (state, { payload }) => {
+    setReservationList: (state, { payload }) => {
       state.users = payload;
     },
-    deleteUser: (state, { payload }) => {
+    deleteReservation: (state, { payload }) => {
       state.users = state.users.filter((item) => item.id != payload.id);
     },
-    setUserId: (state, { payload }) => {
+    setReservationId: (state, { payload }) => {
       state.userId = payload;
       // Lưu user vào local storage
     },
-    setIsEditUser: (state, { payload }) => {
-      state.isEditUser = payload;
+    setIsEditReservation: (state, { payload }) => {
+      state.isEditReservation = payload;
       // Lưu user vào local storage
     },
   },

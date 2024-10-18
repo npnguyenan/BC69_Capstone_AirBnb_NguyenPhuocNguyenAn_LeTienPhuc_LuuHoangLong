@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import logo from "/images/logo.png";
 import { useAppDispatch } from "../../stores";
@@ -16,20 +16,14 @@ export const Navbar = () => {
   const dispatch = useAppDispatch();
   const [sign, setSign] = useState(false);
   const [log, setLog] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const handleOk = () => {
-    setSign(false);
-  };
+  const handleOk = () => setSign(false);
+  const handleCancelSign = () => setSign(false);
+  const handleCancelLog = () => setLog(false);
 
-  const handleCancelSign = () => {
-    setSign(false);
-  };
-
-  const handleCancelLog = () => {
-    setLog(false);
-  };
-
-  const [popUp, setPopUp] = useState(false);
+  const toggleDropdown = () => setDropdownVisible(!dropdownVisible);
 
   return (
     <div className="flex flex-wrap items-center justify-between p-3 border-b border-gray-300">
@@ -55,62 +49,67 @@ export const Navbar = () => {
           Chat Support
         </a>
       </div>
-      <div
-        onClick={() => setPopUp(!popUp)}
-        className="cursor-pointer  flex items-center border border-spacing-3 rounded-full pl-3 pr-2 h-18 hover:shadow-xl transition-shadow duration-300"
-        style={{ marginLeft: "20em" }}
-      >
-        {popUp && (
-          <div className="shadow-xl h-90 w-32 z-10 absolute bg-white mt-32 p-1 rounded-2xl">
+
+      <div className="relative" onClick={toggleDropdown}>
+        <div className="cursor-pointer flex items-center border border-spacing-3 rounded-full pl-3 pr-2 h-18 hover:shadow-xl transition-shadow duration-300">
+          <MenuOutlined className="w-5 h-5 cursor-pointer" />
+          <div className="relative w-9 h-9 overflow-hidden rounded-full border-4 border-white ml-2">
+            <img
+              src={
+                user?.user?.avatar
+                  ? user.user.avatar
+                  : "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
+              }
+              alt="user"
+              className="object-cover w-full h-full"
+            />
+          </div>
+        </div>
+
+        {dropdownVisible && (
+          <div
+            ref={dropdownRef}
+            className="shadow-xl max-h-60 w-32 z-10 absolute bg-white mt-1 right-0 transform translate-x-[9%] p-1 rounded-2xl overflow-auto"
+          >
             {!user ? (
               <>
                 <h1
-                  onClick={() => {
-                    setSign(true);
-                  }}
-                  className="font-semibold text-sm"
+                  onClick={() => setSign(true)}
+                  className="font-semibold text-sm cursor-pointer"
                 >
                   Sign up
                 </h1>
                 <hr className="mt-2" />
                 <h1
-                  onClick={() => {
-                    setLog(true);
-                  }}
-                  className="font-thin text-sm"
+                  onClick={() => setLog(true)}
+                  className="font-thin text-sm cursor-pointer"
                 >
                   Login
                 </h1>
               </>
             ) : (
-              <div className="py-10">
+              <div className="py-2">
                 <h1
-                  onClick={() => {
-                    navigate(PATH.info);
-                  }}
-                  className="font-thin text-sm"
+                  onClick={() => navigate(PATH.info)}
+                  className="font-thin text-sm cursor-pointer max-w-full truncate"
                 >
                   Thông tin tài khoản
                 </h1>
-                {user?.user?.role == "ADMIN" ? (
+                {user?.user?.role === "ADMIN" && (
                   <h1
-                    onClick={() => {
-                      navigate(PATH.user);
-                    }}
-                    className="font-thin text-sm"
+                    onClick={() => navigate(PATH.user)}
+                    className="font-thin text-sm cursor-pointer max-w-full truncate"
                   >
                     Quản lý người dùng
                   </h1>
-                ) : (
-                  <></>
                 )}
-
+                <hr className="mt-2" />
                 <h1
                   onClick={() => {
                     dispatch(userActions.logOut());
                     navigate("/");
                   }}
-                  className="font-thin text-sm"
+                  className="font-thin text-sm cursor-pointer"
                 >
                   Logout
                 </h1>
@@ -118,18 +117,6 @@ export const Navbar = () => {
             )}
           </div>
         )}
-        <MenuOutlined className="w-5 h-5 cursor-pointer" />
-        <div className="relative w-9 h-9 overflow-hidden rounded-full border-4 border-white ml-2">
-          <img
-            src={
-              user?.user?.avatar
-                ? user.user.avatar
-                : "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
-            }
-            alt="user"
-            className="object-cover w-full h-full"
-          />
-        </div>
       </div>
 
       {sign && (

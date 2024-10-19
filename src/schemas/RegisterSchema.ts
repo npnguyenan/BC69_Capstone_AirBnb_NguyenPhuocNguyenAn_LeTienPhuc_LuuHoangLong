@@ -1,38 +1,27 @@
 import z from "zod";
 
-// Hàm kiểm tra định dạng ngày (DD/MM/YYYY)
-const isValidDate = (date: string) => {
-  // Kiểm tra định dạng chuỗi ngày (DD/MM/YYYY) bằng regex
-  const regex = /^([0-2][0-9]|(3)[0-1])\/(0[1-9]|1[0-2])\/(\d{4})$/;
-  if (!regex.test(date)) {
-    return false;
-  }
-
-  // Tách ngày, tháng, năm
-  const [day, month, year] = date.split("/").map(Number);
-
-  // Kiểm tra ngày hợp lệ theo tháng
-  const isValidMonth = month >= 1 && month <= 12;
-  const isValidDay =
-    day >= 1 && day <= (isValidMonth ? new Date(year, month, 0).getDate() : 0);
-
-  return isValidMonth && isValidDay;
-};
-
 // Validation và quy định kiểu dữ liệu trả về của Form tương ứng vs schema
 export const RegisterSchema = z.object({
   id: z.any(),
-  name: z.string().min(1, "Tên không được để trống"),
-  email: z.string().email("Email không đúng định dạng"),
+  name: z.string({ message: "Vui lòng nhập họ tên" }),
+  email: z
+    .string({ message: "Vui lòng nhập email" })
+    .regex(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Email không đúng"),
   password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
-  phone: z.string().min(10, "Số điện thoại phải có ít nhất 10 chữ số"),
-  birthday: z.string().refine(isValidDate, {
-    message: "Ngày sinh phải có định dạng DD/MM/YYYY và hợp lệ",
-  }),
+  phone: z
+    .string({ message: "Vui lòng nhập số điện thoại" })
+    .regex(
+      /^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$/,
+      "Số điện thoại không đúng"
+    ),
+  birthday: z
+    .string({ message: "Vui lòng nhập ngày sinh" })
+    .regex(
+      /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/,
+      "Nhập đúng định dạng"
+    ),
   gender: z.boolean().default(false), // true là Male, false là Female (default là Female)
-  role: z.string().refine((val: string) => ["user", "admin"].includes(val), {
-    message: "Vai trò phải là 'user' hoặc 'admin'",
-  }),
+  role: z.string({ message: "Vui lòng chọn role" }).optional().default("USER"),
 });
 
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;

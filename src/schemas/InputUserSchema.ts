@@ -6,7 +6,7 @@ export const InputUserSchema = z.object({
   email: z
     .string({ message: "Vui lòng nhập email" })
     .regex(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Email không đúng"),
-  password: z.string({ message: "Vui lòng nhập mật khẩu" }).optional(),
+  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
   phone: z
     .string({ message: "Vui lòng nhập số điện thoại" })
     .regex(

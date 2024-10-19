@@ -1,17 +1,34 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
-import { datphongServices, phongServices } from "../../services";
+import {
+  generatePath,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+import {
+  datphongServices,
+  nguoiDungServices,
+  phongServices,
+} from "../../services";
 import { Row, Col, Typography, Input, Button, DatePicker, Card } from "antd";
 import { CommentByRoomTemplate } from "./CommentByRoomTemplate";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ReservationSchema, ReservationSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userReservationMutation } from "../../hooks/api/userReservationMutation";
+import { useUpdateReservationMutation } from "../../hooks/api/updateReservationMutation";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import Meta from "antd/es/card/Meta";
-import { quanLyDatPhongActions } from "../../stores/quanLyDatPhong";
-import { useDispatch } from "react-redux";
+import { useAddReservationMutation } from "../../hooks/api/addReservationMutation copy";
+import {
+  quanLyDatPhongActions,
+  useQuanLyDatPhongSelector,
+} from "../../stores/quanLyDatPhong";
+import { PATH } from "../../constants";
+import { useAppDispatch } from "../../stores";
+import { Reservation } from "../../@types";
+import { useDeleteReservationMutation } from "../../hooks/api/deleteReservationMutation";
+import { useQuanLyNguoiDungSelector } from "../../stores/quanLyNguoiDung";
 
 const { Title, Paragraph } = Typography;
 interface Item {
@@ -25,27 +42,29 @@ interface ReservationResponse {
 }
 
 export const DetailRoomTemplate = () => {
-  const reservationMutation = userReservationMutation();
-  const [userId, setUserId] = useState<string>("0");
-  const dispatch = useDispatch();
-
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const addReservationMutation = useAddReservationMutation();
+  const updateReservationMutation = useUpdateReservationMutation();
+  const [reserData, setreserData] = useState<Reservation>();
+  const { isEditReservation } = useQuanLyDatPhongSelector();
+  const deleteReservationMutation = useDeleteReservationMutation();
+  if (location.pathname == PATH.DetailRoom) {
+    dispatch(quanLyDatPhongActions.setIsEditReservation(false));
+  }
   const { id } = useParams();
-  let userData: any = null;
   let itemFound = false; // Tạo một flag để theo dõi xem đã tìm thấy item hay chưa
   let myObject = []; // Định nghĩa myObject là một mảng các đối tượng Item
-  userData = localStorage.getItem("USER");
-  useEffect(() => {
-    // Lấy ID từ localStorage khi component mount
-    if (userData) {
-      const storedUser = userData ? JSON.parse(userData) : null;
-      setUserId(storedUser.user.id); // Lưu ID vào state
-    }
-  }, []); // Dependency array trống để chỉ chạy một lần khi component được mount
 
-  if (userData) {
+  let { user } = useQuanLyNguoiDungSelector();
+
+  const userInfo = user?.user?.id;
+
+  if (userInfo) {
     let { data: reserListData }: { data?: ReservationResponse } = useQuery({
-      queryKey: ["GetDatPhongByUser", userId],
-      queryFn: () => datphongServices.getDetailReservationByUser(userId),
+      queryKey: ["GetDatPhongByUser", userInfo],
+      queryFn: () => datphongServices.getDetailReservationByUser(userInfo),
     });
     // Kiểm tra và chuyển đổi kiểu cho reserListData2
     const reserListData2 = reserListData?.data?.content as
@@ -74,7 +93,7 @@ export const DetailRoomTemplate = () => {
     }
     console.log("myObject", myObject);
 
-    console.log("userId", userId);
+    console.log("userId", userInfo);
   }
 
   const { data: roomListData } = useQuery({
@@ -84,6 +103,7 @@ export const DetailRoomTemplate = () => {
 
   const {
     handleSubmit,
+    setValue,
     control,
     formState: { errors },
   } = useForm<ReservationSchemaType>({
@@ -94,18 +114,31 @@ export const DetailRoomTemplate = () => {
   const room = roomListData?.data?.content;
 
   if (!room) return <div>Loading...</div>;
+  console.log("room?.id: ", room?.id);
 
+  if (reserData) {
+    setValue("id", reserData.id);
+    setValue("maPhong", reserData.maPhong);
+    setValue("ngayDen", moment(reserData.ngayDen).format("DD/MM/YYYY"));
+    setValue("ngayDi", moment(reserData.ngayDi).format("DD/MM/YYYY"));
+    setValue("soLuongKhach", reserData.soLuongKhach);
+    setValue("maNguoiDung", reserData.maNguoiDung);
+  }
   // onSubmit chỉ đc gọi khi validation ko có errors
   const onSubmit: SubmitHandler<ReservationSchemaType> = async (values) => {
     let bookingDetail = {
       ...values,
       id: 0,
-      maNguoiDung: Number(userId),
+      maNguoiDung: Number(userInfo),
       maPhong: Number(room?.id),
     };
 
-    reservationMutation.mutate(bookingDetail);
-    console.log("Giá trị form sau khi submit:", bookingDetail); // Log giá trị của form
+    if (!isEditReservation) {
+      addReservationMutation.mutate(bookingDetail);
+      console.log("Giá trị form sau khi submit:", bookingDetail); // Log giá trị của form
+    } else if (isEditReservation) {
+      updateReservationMutation.mutate(bookingDetail);
+    }
   };
 
   return (
@@ -143,24 +176,24 @@ export const DetailRoomTemplate = () => {
       </div>
 
       {/* mô tả */}
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={16}>
-          <Paragraph>
-            <strong style={{ fontWeight: "600" }}>{room.giuong}</strong> giường
-            &middot; <strong>{room.phongTam}</strong> phòng tắm
-          </Paragraph>
-          <Paragraph>{room.moTa}</Paragraph>
-        </Col>
-        <Col xs={24} sm={8}>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-lg font-semibold text-red-600">
-                Giá: {room.giaTien.toLocaleString("vi-VN")} VND / đêm
-              </p>
-            </div>
-            {userData && (
-              <>
-                <form onSubmit={handleSubmit(onSubmit)}>
+      {userInfo && (
+        <>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} sm={16}>
+                <Paragraph>
+                  <strong style={{ fontWeight: "600" }}>{room.giuong}</strong>{" "}
+                  giường &middot; <strong>{room.phongTam}</strong> phòng tắm
+                </Paragraph>
+                <Paragraph>{room.moTa}</Paragraph>
+              </Col>
+              <Col xs={24} sm={8}>
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <div className="flex justify-between items-center mb-4">
+                    <p className="text-lg font-semibold text-red-600">
+                      Giá: {room.giaTien.toLocaleString("vi-VN")} VND / đêm
+                    </p>
+                  </div>
                   <Controller
                     name="id"
                     control={control}
@@ -266,52 +299,125 @@ export const DetailRoomTemplate = () => {
                       <input type="hidden" {...field} value={0} /> // Đảm bảo userId luôn có giá trị
                     )}
                   />
-                  <Button
-                    htmlType="submit"
-                    loading={reservationMutation.isPending}
-                    className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded w-full"
-                  >
-                    Đặt phòng
-                  </Button>
-                </form>
-              </>
-            )}
-          </div>
-        </Col>
-      </Row>
 
-      <Row className="pt-4 cursor-default" gutter={[16, 16]}>
-        <Col span={16}></Col>
-        <Col span={8}>
-          {userData && (
-            <>
-              {myObject && (
-                <>
-                  <h2>Danh sách đã đăng ký</h2>
-                  <Row gutter={16}>
-                    {myObject.map((room) => (
-                      <Row className="p-1" key={room.id}>
-                        <Col span={8}>
-                          <Card style={{ width: 240 }}>
-                            <Meta
-                              title={`Phòng ${room.id}`}
-                              description={`Từ: ${moment(room.ngayDen).format(
-                                "DD/MM/YYYY"
-                              )} \n Đến: ${moment(room.ngayDi).format(
-                                "DD/MM/YYYY"
-                              )}`}
-                            />
-                          </Card>
-                        </Col>
-                      </Row>
-                    ))}
-                  </Row>
-                </>
-              )}
-            </>
-          )}
-        </Col>
-      </Row>
+                  {!isEditReservation ? (
+                    <Button
+                      loading={addReservationMutation.isPending}
+                      className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded w-full"
+                      onClick={() => {
+                        const path = generatePath(PATH.DetailRoom, {
+                          id: room?.id,
+                        });
+                        navigate(path);
+                      }}
+                    >
+                      Đặt phòng
+                    </Button>
+                  ) : (
+                    <>
+                      <Button
+                        htmlType="submit"
+                        loading={updateReservationMutation.isPending}
+                        className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded w-20"
+                        onClick={() => {
+                          const path = generatePath(PATH.DetailRoom, {
+                            id: room?.id,
+                          });
+                          navigate(path);
+                        }}
+                      >
+                        Cập nhật
+                      </Button>
+
+                      <Button
+                        className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded"
+                        onClick={() => {
+                          const path = generatePath(PATH.DetailRoom, {
+                            id: room?.id,
+                          });
+                          navigate(path);
+                        }}
+                      >
+                        Hủy
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </Col>
+            </Row>
+            <Row className="pt-4 cursor-default" gutter={[16, 16]}>
+              <Col span={16}></Col>
+              <Col span={8}>
+                {userInfo && (
+                  <>
+                    {myObject && (
+                      <>
+                        <h2>Danh sách đã đăng ký</h2>
+                        <Row gutter={16}>
+                          {myObject.map((roomOrder) => (
+                            <Row className="p-1" key={roomOrder.id}>
+                              <Col span={8}>
+                                <Card style={{ width: 240 }}>
+                                  <Meta
+                                    title={`Phòng ${roomOrder.id}`}
+                                    description={`Từ: ${moment(
+                                      roomOrder.ngayDen
+                                    ).format("DD/MM/YYYY")} \n Đến: ${moment(
+                                      roomOrder.ngayDi
+                                    ).format("DD/MM/YYYY")}`}
+                                  />
+
+                                  <Button
+                                    className="btn btn-danger bg-blue-500 mt-2 w-20 text-white rounded-lg hover:bg-blue-600 transition-all"
+                                    onClick={() => {
+                                      deleteReservationMutation.mutate(
+                                        roomOrder.id
+                                      );
+                                      const path = generatePath(
+                                        PATH.DetailRoom,
+                                        {
+                                          id: room?.id,
+                                        }
+                                      );
+                                      navigate(path);
+                                    }}
+                                  >
+                                    Delete
+                                  </Button>
+                                  <Button
+                                    className="btn btn-info ms-3 pl-2 pr-1 w-20 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
+                                    onClick={() => {
+                                      setreserData(roomOrder);
+                                      dispatch(
+                                        quanLyDatPhongActions.setIsEditReservation(
+                                          true
+                                        )
+                                      );
+                                      const path = generatePath(
+                                        PATH.DetailRoom,
+                                        {
+                                          id: room?.id,
+                                        }
+                                      );
+                                      navigate(path);
+                                    }}
+                                  >
+                                    Edit
+                                  </Button>
+                                </Card>
+                              </Col>
+                            </Row>
+                          ))}
+                        </Row>
+                      </>
+                    )}
+                  </>
+                )}
+              </Col>
+            </Row>
+          </form>
+        </>
+      )}
       <Row gutter={[16, 16]} style={{ marginTop: "40px" }}>
         <Col span={24}>
           <Title level={4} style={{ fontWeight: "bold" }}>

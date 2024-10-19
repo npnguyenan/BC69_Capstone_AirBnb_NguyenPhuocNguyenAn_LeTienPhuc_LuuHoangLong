@@ -147,23 +147,25 @@ export const FormUserTemplate = (props: Props) => {
           </div>
           <div className="col-span-6">
             <div className="me-30">
-              <p>
-                Số điện thoại <span className="text-red-600"> *</span>
-              </p>
-              {errors.phone && (
-                <p className="text-red-500">{errors.phone.message}</p>
-              )}
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    className="mb-[20px]"
-                    status={errors.phone && "error"}
-                    {...field}
-                  />
+              <div>
+                <p>
+                  Số điện thoại <span className="text-red-600"> *</span>
+                </p>
+                {errors.phone && (
+                  <p className="text-red-500">{errors.phone.message}</p>
                 )}
-              />
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      className="mb-[20px]"
+                      status={errors.phone && "error"}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
               <div className="grid grid-cols-12 ">
                 <div className="col-span-7">
                   <p>

@@ -200,9 +200,6 @@ export const EditInfoTemplate = (props: Props) => {
           <>
             <Button
               htmlType="submit"
-              onClick={() => {
-                //   dispatch(userActions.setEditInfo(false));
-              }}
             >
               Cập nhật hồ sơ
             </Button>

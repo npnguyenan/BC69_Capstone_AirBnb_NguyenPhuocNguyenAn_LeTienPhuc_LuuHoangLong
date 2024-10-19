@@ -12,7 +12,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ReservationSchema, ReservationSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateReservationMutation } from "../../hooks/api/updateReservationMutation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 import Meta from "antd/es/card/Meta";
 import { useAddReservationMutation } from "../../hooks/api/addReservationMutation";
@@ -57,15 +57,25 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
   const userInfo = user?.user?.id;
 
   if (userInfo) {
-    let { data: reserListData }: { data?: ReservationResponse } = useQuery({
+    let {
+      data: reserListData,
+      refetch: refetchReserList,
+    }: { data?: ReservationResponse; refetch: () => void } = useQuery({
       queryKey: ["GetDatPhongByUser", userInfo],
       queryFn: () => datphongServices.getDetailReservationByUser(userInfo),
     });
+    // Cập nhật lại sau khi thao tác với reserListData
+    useEffect(() => {
+      if (reserListData) {
+        refetchReserList();
+      }
+    }, [reserListData, refetchReserList]);
+
     // Kiểm tra và chuyển đổi kiểu cho reserListData2
     const reserListData2 = reserListData?.data?.content as
       | Record<string, any>
       | undefined;
-
+    console.log("reserListData: ", reserListData);
     if (reserListData2) {
       console.log("reserListData2: ", reserListData2);
       // Kiểm tra xem reserListData2 có tồn tại hay không
@@ -86,7 +96,6 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
         }
       }
     }
-
   }
 
   const { data: roomListData } = useQuery({
@@ -364,8 +373,9 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
                                     className="btn btn-danger bg-blue-500 mt-2 w-20 text-white rounded-lg hover:bg-blue-600 transition-all"
                                     onClick={() => {
                                       deleteReservationMutation.mutate(
-                                        roomOrder.id
+                                        roomOrder
                                       );
+
                                       const path = generatePath(
                                         PATH.DetailRoom,
                                         {

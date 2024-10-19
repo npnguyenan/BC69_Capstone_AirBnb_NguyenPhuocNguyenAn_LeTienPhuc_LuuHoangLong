@@ -11,7 +11,7 @@ export const datphongServices = {
   getDetailReservation: (id: any) =>
     api.get<HttpResponse<Reservation>>(`/dat-phong/${id}`),
   deleteReservation: (query = "") =>
-    api.delete<HttpResponse<Reservation[]>>(`/dat-phong?id=${query}`),
+    api.delete<HttpResponse<Reservation[]>>(`/dat-phong/${query}`),
   addReservation: (payload: Reservation) =>
     api.post<HttpResponse<ReservationSchemaType[]>>(`/dat-phong`, payload),
   getReservationById: (id: any) =>

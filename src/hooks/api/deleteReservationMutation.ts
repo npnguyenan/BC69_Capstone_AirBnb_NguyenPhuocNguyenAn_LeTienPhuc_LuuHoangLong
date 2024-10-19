@@ -19,7 +19,7 @@ export const useDeleteReservationMutation = () => {
     onSuccess: async () => {
       toast.success("Xóa đặt phòng thành công");
 
-      navigate(PATH.DetailRoom);
+      // navigate(PATH.DetailRoom);
     },
     onError: (error: any) => {
       toast.error(error.response.data.content);

@@ -461,9 +461,11 @@ export const DetailRoomTemplate = () => {
       </Row>
       <div className="flex justify-center mt-20">
         <div className="w-6/12 bg-red-">
-          <h1 className="text-20 font-400 my-5 mx-10">Bình luận</h1>
+          <h1 className="text-[20px] font-bold my-[5px] mx-[10px]">
+            Bình luận
+          </h1>
           <div
-            className="px-20 py-20 bg-gray-200"
+            className="px-[20px] py-[20px] bg-gray-200"
             style={{
               borderRadius: "15px",
             }}

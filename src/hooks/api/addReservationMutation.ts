@@ -9,7 +9,6 @@ import { Reservation } from "../../@types";
 // JS docs để note document
 
 export const useAddReservationMutation = () => {
-  const navigate = useNavigate();
   const datPhongMutation = useMutation({
     mutationKey: ["Add"],
     mutationFn: async (payload: Reservation) => {
@@ -19,7 +18,7 @@ export const useAddReservationMutation = () => {
       console.log("log");
       toast.success("Đặt phòng thành công");
 
-      navigate("/");
+      window.location.reload();
     },
     onError: (error: any) => {
       toast.error(error.response.data.content);

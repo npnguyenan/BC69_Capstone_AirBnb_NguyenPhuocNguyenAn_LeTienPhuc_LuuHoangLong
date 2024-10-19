@@ -19,7 +19,7 @@ import { useUpdateReservationMutation } from "../../hooks/api/updateReservationM
 import { useEffect, useState } from "react";
 import moment from "moment";
 import Meta from "antd/es/card/Meta";
-import { useAddReservationMutation } from "../../hooks/api/addReservationMutation copy";
+import { useAddReservationMutation } from "../../hooks/api/addReservationMutation";
 import {
   quanLyDatPhongActions,
   useQuanLyDatPhongSelector,
@@ -302,14 +302,9 @@ export const DetailRoomTemplate = () => {
 
                   {!isEditReservation ? (
                     <Button
+                      htmlType="submit"
                       loading={addReservationMutation.isPending}
                       className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded w-full"
-                      onClick={() => {
-                        const path = generatePath(PATH.DetailRoom, {
-                          id: room?.id,
-                        });
-                        navigate(path);
-                      }}
                     >
                       Đặt phòng
                     </Button>

@@ -1,7 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Button, Input, Select } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import { InputUserSchema, InputUserSchemaType } from "../../schemas";
+
 import { useAddUserMutation, useUpdateUserMutation } from "../../hooks/api";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -41,7 +43,6 @@ export const FormUserTemplate = (props: Props) => {
     mode: "onChange",
     resolver: zodResolver(InputUserSchema),
   });
-
   useEffect(() => {
     if (value) {
       setValue("name", value.name);
@@ -61,7 +62,8 @@ export const FormUserTemplate = (props: Props) => {
       addUserMutation.mutate(data);
     }
     // Nếu là cập nhật user
-    else if (isEditUser) {
+    if (isEditUser) {
+      // Validate với schema cập nhật
       updateUserMutation.mutate(data);
     }
   };

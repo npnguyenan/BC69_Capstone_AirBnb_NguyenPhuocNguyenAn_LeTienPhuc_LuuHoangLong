@@ -5,18 +5,14 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import {
-  datphongServices,
-  nguoiDungServices,
-  phongServices,
-} from "../../services";
+import { datphongServices, phongServices } from "../../services";
 import { Row, Col, Typography, Input, Button, DatePicker, Card } from "antd";
 import { CommentByRoomTemplate } from "./CommentByRoomTemplate";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ReservationSchema, ReservationSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateReservationMutation } from "../../hooks/api/updateReservationMutation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import moment from "moment";
 import Meta from "antd/es/card/Meta";
 import { useAddReservationMutation } from "../../hooks/api/addReservationMutation";
@@ -41,13 +37,12 @@ interface ReservationResponse {
   };
 }
 
-export const DetailRoomTemplate = () => {
+export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const addReservationMutation = useAddReservationMutation();
   const updateReservationMutation = useUpdateReservationMutation();
-  const [reserData, setreserData] = useState<Reservation>();
   const { isEditReservation } = useQuanLyDatPhongSelector();
   const deleteReservationMutation = useDeleteReservationMutation();
   if (location.pathname == PATH.DetailRoom) {
@@ -91,9 +86,7 @@ export const DetailRoomTemplate = () => {
         }
       }
     }
-    console.log("myObject", myObject);
 
-    console.log("userId", userInfo);
   }
 
   const { data: roomListData } = useQuery({
@@ -114,16 +107,15 @@ export const DetailRoomTemplate = () => {
   const room = roomListData?.data?.content;
 
   if (!room) return <div>Loading...</div>;
-  console.log("room?.id: ", room?.id);
 
-  if (reserData) {
-    setValue("id", reserData.id);
-    setValue("maPhong", reserData.maPhong);
-    setValue("ngayDen", moment(reserData.ngayDen).format("DD/MM/YYYY"));
-    setValue("ngayDi", moment(reserData.ngayDi).format("DD/MM/YYYY"));
-    setValue("soLuongKhach", reserData.soLuongKhach);
-    setValue("maNguoiDung", reserData.maNguoiDung);
-  }
+  const handleEdit = (items: Reservation) => {
+    setValue("id", items.id);
+    setValue("maPhong", items.maPhong);
+    setValue("ngayDen", moment(items.ngayDen).format("DD/MM/YYYY"));
+    setValue("ngayDi", moment(items.ngayDi).format("DD/MM/YYYY"));
+    setValue("soLuongKhach", items.soLuongKhach);
+    setValue("maNguoiDung", items.maNguoiDung);
+  };
   // onSubmit chỉ đc gọi khi validation ko có errors
   const onSubmit: SubmitHandler<ReservationSchemaType> = async (values) => {
     let bookingDetail = {
@@ -315,6 +307,9 @@ export const DetailRoomTemplate = () => {
                         loading={updateReservationMutation.isPending}
                         className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded w-20"
                         onClick={() => {
+                          dispatch(
+                            quanLyDatPhongActions.setIsEditReservation(false)
+                          );
                           const path = generatePath(PATH.DetailRoom, {
                             id: room?.id,
                           });
@@ -327,6 +322,9 @@ export const DetailRoomTemplate = () => {
                       <Button
                         className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded"
                         onClick={() => {
+                          dispatch(
+                            quanLyDatPhongActions.setIsEditReservation(false)
+                          );
                           const path = generatePath(PATH.DetailRoom, {
                             id: room?.id,
                           });
@@ -382,7 +380,7 @@ export const DetailRoomTemplate = () => {
                                   <Button
                                     className="btn btn-info ms-3 pl-2 pr-1 w-20 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
                                     onClick={() => {
-                                      setreserData(roomOrder);
+                                      handleEdit(roomOrder); // Truyền trực tiếp item vào hàm onEdit
                                       dispatch(
                                         quanLyDatPhongActions.setIsEditReservation(
                                           true

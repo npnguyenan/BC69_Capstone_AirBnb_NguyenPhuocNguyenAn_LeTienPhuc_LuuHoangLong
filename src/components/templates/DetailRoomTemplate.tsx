@@ -12,7 +12,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ReservationSchema, ReservationSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateReservationMutation } from "../../hooks/api/updateReservationMutation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import moment from "moment";
 import Meta from "antd/es/card/Meta";
 import { useAddReservationMutation } from "../../hooks/api/addReservationMutation";
@@ -37,7 +37,7 @@ interface ReservationResponse {
   };
 }
 
-export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
+export const DetailRoomTemplate = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -75,9 +75,7 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
     const reserListData2 = reserListData?.data?.content as
       | Record<string, any>
       | undefined;
-    console.log("reserListData: ", reserListData);
     if (reserListData2) {
-      console.log("reserListData2: ", reserListData2);
       // Kiểm tra xem reserListData2 có tồn tại hay không
       for (const key in reserListData2) {
         for (const innerKey in reserListData2[key]) {
@@ -125,20 +123,19 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
     setValue("soLuongKhach", items.soLuongKhach);
     setValue("maNguoiDung", items.maNguoiDung);
   };
-  // onSubmit chỉ đc gọi khi validation ko có errors
-  const onSubmit: SubmitHandler<ReservationSchemaType> = async (values) => {
-    let bookingDetail = {
-      ...values,
-      id: 0,
-      maNguoiDung: Number(userInfo),
-      maPhong: Number(room?.id),
-    };
 
+  // onSubmit chỉ đc gọi khi validation ko có errors
+  const onSubmit = (values: ReservationSchemaType) => {
     if (!isEditReservation) {
+      let bookingDetail = {
+        ...values,
+        id: 0,
+        maNguoiDung: Number(userInfo),
+        maPhong: Number(room?.id),
+      };
       addReservationMutation.mutate(bookingDetail);
-      console.log("Giá trị form sau khi submit:", bookingDetail); // Log giá trị của form
     } else if (isEditReservation) {
-      updateReservationMutation.mutate(bookingDetail);
+      updateReservationMutation.mutate(values);
     }
   };
 
@@ -315,15 +312,7 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
                         htmlType="submit"
                         loading={updateReservationMutation.isPending}
                         className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded w-20"
-                        onClick={() => {
-                          dispatch(
-                            quanLyDatPhongActions.setIsEditReservation(false)
-                          );
-                          const path = generatePath(PATH.DetailRoom, {
-                            id: room?.id,
-                          });
-                          navigate(path);
-                        }}
+                        onClick={() => {}}
                       >
                         Cập nhật
                       </Button>

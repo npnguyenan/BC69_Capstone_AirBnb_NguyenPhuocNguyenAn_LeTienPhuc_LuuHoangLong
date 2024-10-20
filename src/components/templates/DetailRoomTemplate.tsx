@@ -12,7 +12,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ReservationSchema, ReservationSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateReservationMutation } from "../../hooks/api/updateReservationMutation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import moment from "moment";
 import Meta from "antd/es/card/Meta";
 import { useAddReservationMutation } from "../../hooks/api/addReservationMutation";
@@ -25,6 +25,7 @@ import { useAppDispatch } from "../../stores";
 import { Reservation } from "../../@types";
 import { useDeleteReservationMutation } from "../../hooks/api/deleteReservationMutation";
 import { useQuanLyNguoiDungSelector } from "../../stores/quanLyNguoiDung";
+import { sleep } from "../../utils";
 
 const { Title, Paragraph } = Typography;
 interface Item {
@@ -64,12 +65,11 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
       queryKey: ["GetDatPhongByUser", userInfo],
       queryFn: () => datphongServices.getDetailReservationByUser(userInfo),
     });
+
+    const reserList = reserListData?.data?.content;
+
+    console.log("reserList: ", reserList);
     // Cập nhật lại sau khi thao tác với reserListData
-    useEffect(() => {
-      if (reserListData) {
-        refetchReserList();
-      }
-    }, [reserListData, refetchReserList]);
 
     // Kiểm tra và chuyển đổi kiểu cho reserListData2
     const reserListData2 = reserListData?.data?.content as
@@ -118,6 +118,7 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
   if (!room) return <div>Loading...</div>;
 
   const handleEdit = (items: Reservation) => {
+    console.log("items: ", items);
     setValue("id", items.id);
     setValue("maPhong", items.maPhong);
     setValue("ngayDen", moment(items.ngayDen).format("DD/MM/YYYY"));
@@ -129,7 +130,7 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
   const onSubmit: SubmitHandler<ReservationSchemaType> = async (values) => {
     let bookingDetail = {
       ...values,
-      id: 0,
+      id: values.id,
       maNguoiDung: Number(userInfo),
       maPhong: Number(room?.id),
     };
@@ -199,7 +200,7 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
                     name="id"
                     control={control}
                     render={({ field }) => (
-                      <Input type="hidden" {...field} value={0} /> // Đảm bảo newId luôn có giá trị
+                      <Input type="hidden" {...field} /> // Đảm bảo newId luôn có giá trị
                     )}
                   />
                   <Controller
@@ -315,13 +316,14 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
                         htmlType="submit"
                         loading={updateReservationMutation.isPending}
                         className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded w-20"
-                        onClick={() => {
-                          dispatch(
-                            quanLyDatPhongActions.setIsEditReservation(false)
-                          );
+                        onClick={async () => {
                           const path = generatePath(PATH.DetailRoom, {
                             id: room?.id,
                           });
+                          await sleep(2000);
+                          dispatch(
+                            quanLyDatPhongActions.setIsEditReservation(false)
+                          );
                           navigate(path);
                         }}
                       >
@@ -402,6 +404,7 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
                                           id: room?.id,
                                         }
                                       );
+
                                       navigate(path);
                                     }}
                                   >

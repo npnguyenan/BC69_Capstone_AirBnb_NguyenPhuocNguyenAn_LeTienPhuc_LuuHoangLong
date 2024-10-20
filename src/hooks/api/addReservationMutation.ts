@@ -3,13 +3,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { datphongServices } from "../../services";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { Reservation } from "../../@types";
 
 // JS docs để note document
 
 export const useAddReservationMutation = () => {
-  const datPhongMutation = useMutation({
+  const addDatPhongMutation = useMutation({
     mutationKey: ["Add"],
     mutationFn: async (payload: Reservation) => {
       return datphongServices.addReservation(payload);
@@ -24,5 +23,5 @@ export const useAddReservationMutation = () => {
       toast.error(error.response.data.content);
     },
   });
-  return datPhongMutation;
+  return addDatPhongMutation;
 };

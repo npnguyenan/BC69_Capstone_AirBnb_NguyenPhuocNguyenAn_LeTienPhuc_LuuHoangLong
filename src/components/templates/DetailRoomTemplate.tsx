@@ -12,7 +12,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ReservationSchema, ReservationSchemaType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateReservationMutation } from "../../hooks/api/updateReservationMutation";
-import { useEffect } from "react";
 import moment from "moment";
 import Meta from "antd/es/card/Meta";
 import { useAddReservationMutation } from "../../hooks/api/addReservationMutation";
@@ -58,17 +57,11 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
   const userInfo = user?.user?.id;
 
   if (userInfo) {
-    let {
-      data: reserListData,
-      refetch: refetchReserList,
-    }: { data?: ReservationResponse; refetch: () => void } = useQuery({
+    let { data: reserListData }: { data?: ReservationResponse } = useQuery({
       queryKey: ["GetDatPhongByUser", userInfo],
       queryFn: () => datphongServices.getDetailReservationByUser(userInfo),
     });
 
-    const reserList = reserListData?.data?.content;
-
-    console.log("reserList: ", reserList);
     // Cập nhật lại sau khi thao tác với reserListData
 
     // Kiểm tra và chuyển đổi kiểu cho reserListData2

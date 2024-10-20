@@ -37,7 +37,7 @@ interface ReservationResponse {
   };
 }
 
-export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
+export const DetailRoomTemplate = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -53,10 +53,12 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
   let myObject = []; // Định nghĩa myObject là một mảng các đối tượng Item
 
   let { user } = useQuanLyNguoiDungSelector();
+  let countRoomOrder;
 
   const userInfo = user?.user?.id;
 
   if (userInfo) {
+    countRoomOrder = 0;
     let { data: reserListData }: { data?: ReservationResponse } = useQuery({
       queryKey: ["GetDatPhongByUser", userInfo],
       queryFn: () => datphongServices.getDetailReservationByUser(userInfo),
@@ -84,6 +86,7 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
           }
         }
         if (itemFound) {
+          countRoomOrder = countRoomOrder + 1;
           myObject.push(reserListData2[key]); // Thêm đối tượng vào mảng
           itemFound = false;
         }
@@ -121,17 +124,23 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
   };
   // onSubmit chỉ đc gọi khi validation ko có errors
   const onSubmit: SubmitHandler<ReservationSchemaType> = async (values) => {
-    let bookingDetail = {
-      ...values,
-      id: values.id,
-      maNguoiDung: Number(userInfo),
-      maPhong: Number(room?.id),
-    };
-
+    let bookingDetail;
     if (!isEditReservation) {
+      bookingDetail = {
+        ...values,
+        id: 0,
+        maNguoiDung: Number(userInfo),
+        maPhong: Number(room?.id),
+      };
       addReservationMutation.mutate(bookingDetail);
       console.log("Giá trị form sau khi submit:", bookingDetail); // Log giá trị của form
     } else if (isEditReservation) {
+      bookingDetail = {
+        ...values,
+        id: values.id,
+        maNguoiDung: Number(userInfo),
+        maPhong: Number(room?.id),
+      };
       updateReservationMutation.mutate(bookingDetail);
     }
   };
@@ -349,7 +358,7 @@ export const DetailRoomTemplate = ({ items }: { items: Reservation[] }) => {
                   <>
                     {myObject && (
                       <>
-                        <h2>Danh sách đã đăng ký</h2>
+                        <h2>Danh sách đã đăng ký: {countRoomOrder || 0} đã được đăng ký</h2>
                         <Row gutter={16}>
                           {myObject.map((roomOrder) => (
                             <Row className="p-1" key={roomOrder.id}>

@@ -358,7 +358,10 @@ export const DetailRoomTemplate = () => {
                   <>
                     {myObject && (
                       <>
-                        <h2>Danh sách đã đăng ký: {countRoomOrder || 0} đã được đăng ký</h2>
+                        <h2>
+                          Danh sách đã đăng ký: {countRoomOrder || 0} phòng đã
+                          được đăng ký
+                        </h2>
                         <Row gutter={16}>
                           {myObject.map((roomOrder) => (
                             <Row className="p-1" key={roomOrder.id}>

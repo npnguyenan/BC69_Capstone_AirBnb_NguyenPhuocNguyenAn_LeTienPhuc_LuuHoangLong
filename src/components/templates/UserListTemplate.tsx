@@ -28,11 +28,20 @@ export const UserListTemplate = () => {
     // true:  gọi API, false: ko gọi
     enabled: true,
   });
+
   useEffect(() => {
     if (reloadAPI == true) {
       refetchUserList();
     }
   }, [reloadAPI, refetchUserList]);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Để tạo hiệu ứng cuộn mượt
+    });
+  };
+
   return (
     <div className="mx-auto container grid xl:w-11/12 lg:w-10/12">
       <div className="mx-auto">
@@ -94,6 +103,7 @@ export const UserListTemplate = () => {
                     onClick={() => {
                       dispatch(userActions.setUserId(user.id));
                       dispatch(userActions.setIsEditUser(true));
+                      scrollToTop();
                       navigate(PATH.editUser);
                     }}
                   >

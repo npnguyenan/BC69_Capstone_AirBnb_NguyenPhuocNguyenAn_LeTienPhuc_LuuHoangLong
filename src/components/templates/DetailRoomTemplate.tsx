@@ -25,6 +25,7 @@ import { Reservation } from "../../@types";
 import { useDeleteReservationMutation } from "../../hooks/api/deleteReservationMutation";
 import { useQuanLyNguoiDungSelector } from "../../stores/quanLyNguoiDung";
 import { sleep } from "../../utils";
+import { useEffect } from "react";
 
 const { Title, Paragraph } = Typography;
 interface Item {
@@ -42,7 +43,7 @@ export const DetailRoomTemplate = () => {
   const navigate = useNavigate();
   const addReservationMutation = useAddReservationMutation();
   const updateReservationMutation = useUpdateReservationMutation();
-  const { isEditReservation } = useQuanLyDatPhongSelector();
+  const { isEditReservation, isAddReservation } = useQuanLyDatPhongSelector();
   const deleteReservationMutation = useDeleteReservationMutation();
   if (location.pathname == PATH.DetailRoom) {
     dispatch(quanLyDatPhongActions.setIsEditReservation(false));
@@ -58,11 +59,16 @@ export const DetailRoomTemplate = () => {
 
   if (userInfo) {
     countRoomOrder = 0;
-    let { data: reserListData }: { data?: ReservationResponse } = useQuery({
+    let { data: reserListData, refetch: refetchOrderList } = useQuery({
       queryKey: ["GetDatPhongByUser", userInfo],
       queryFn: () => datphongServices.getDetailReservationByUser(userInfo),
     });
 
+    useEffect(() => {
+      if (isAddReservation == true) {
+        refetchOrderList();
+      }
+    }, [isAddReservation, refetchOrderList]);
     // Kiểm tra và chuyển đổi kiểu cho reserListData2
     const reserListData2 = reserListData?.data?.content as
       | Record<string, any>
@@ -110,7 +116,6 @@ export const DetailRoomTemplate = () => {
   if (!room) return <div>Loading...</div>;
 
   const handleEdit = (items: Reservation) => {
-    console.log("items: ", items);
     setValue("id", items.id);
     setValue("maPhong", items.maPhong);
     setValue("ngayDen", moment(items.ngayDen).format("DD/MM/YYYY"));
@@ -125,19 +130,21 @@ export const DetailRoomTemplate = () => {
     if (!isEditReservation) {
       bookingDetail = {
         ...values,
-        id: 0,
+        id: values.id,
         maNguoiDung: Number(userInfo),
         maPhong: Number(room?.id),
+        ngayDen: moment(values.ngayDen, "DD/MM/YYYY").toISOString(),
+        ngayDi: moment(values.ngayDi, "DD/MM/YYYY").toISOString(),
       };
-      console.log("ngayDi: ", values.ngayDi);
       addReservationMutation.mutate(bookingDetail);
-      console.log("Giá trị form sau khi submit:", bookingDetail); // Log giá trị của form
     } else if (isEditReservation) {
       bookingDetail = {
         ...values,
         id: values.id,
         maNguoiDung: Number(userInfo),
         maPhong: Number(room?.id),
+        ngayDen: moment(values.ngayDen, "DD/MM/YYYY").toISOString(),
+        ngayDi: moment(values.ngayDi, "DD/MM/YYYY").toISOString(),
       };
       dispatch(quanLyDatPhongActions.setIsEditReservation(false));
       updateReservationMutation.mutate(bookingDetail);

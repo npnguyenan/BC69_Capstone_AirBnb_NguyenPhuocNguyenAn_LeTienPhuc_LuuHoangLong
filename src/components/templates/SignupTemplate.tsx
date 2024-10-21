@@ -1,14 +1,6 @@
 import Title from "antd/es/typography/Title";
 import React, { useState } from "react";
-import {
-  Modal,
-  Input,
-  Button,
-  Select,
-  Divider,
-  DatePicker,
-  Switch,
-} from "antd";
+import { Modal, Input, Button, Select, Divider, DatePicker } from "antd";
 import {
   FacebookOutlined,
   GoogleOutlined,
@@ -51,6 +43,7 @@ export const SignupTemplate: React.FC<SignupTemplateProps> = ({
     let RegisterDetail = {
       ...values,
       id: 0,
+      role: "USER",
     };
     registerMutation.mutate(RegisterDetail);
   };
@@ -173,22 +166,6 @@ export const SignupTemplate: React.FC<SignupTemplateProps> = ({
           <p className="text-black text-16 mt-1">
             Giới tính <span className="text-red-500">*</span>
           </p>
-          <Controller
-            name="gender"
-            control={control}
-            defaultValue={false} // Mặc định là Female (false)
-            render={({ field }) => (
-              <Switch
-                checkedChildren="Male" // Giá trị "true" đại diện cho Male
-                unCheckedChildren="Female" // Giá trị "false" đại diện cho Female
-                checked={field.value} // Nếu giá trị là true thì chọn Male
-                onChange={(checked) => field.onChange(checked)} // Cập nhật giá trị khi switch
-              />
-            )}
-          />
-          {errors.gender && (
-            <p className="text-red-500">{errors.gender.message}</p>
-          )}
           <p className="text-black text-16 mt-1">
             Quyền <span className="text-red-500">*</span>
           </p>

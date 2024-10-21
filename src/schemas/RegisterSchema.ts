@@ -21,7 +21,7 @@ export const RegisterSchema = z.object({
       "Nhập đúng định dạng"
     ),
   gender: z.boolean().default(false), // true là Male, false là Female (default là Female)
-  role: z.string({ message: "Vui lòng chọn role" }).optional().default("USER"),
+  role: z.string().optional().default("USER"),
 });
 
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;

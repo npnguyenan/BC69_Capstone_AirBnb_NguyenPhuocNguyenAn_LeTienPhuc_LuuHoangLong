@@ -15,6 +15,7 @@ export const useDeleteReservationMutation = () => {
     },
     onSuccess: async () => {
       toast.success("Xóa đặt phòng thành công");
+      window.location.reload();
     },
     onError: (error: any) => {
       toast.error(error.response.data.content);

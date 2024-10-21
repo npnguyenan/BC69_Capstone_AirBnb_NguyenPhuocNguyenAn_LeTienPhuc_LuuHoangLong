@@ -36,7 +36,6 @@ interface ReservationResponse {
     content?: Record<string, Item[]>; // Hoặc ReserListData
   };
 }
-
 export const DetailRoomTemplate = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
@@ -64,24 +63,19 @@ export const DetailRoomTemplate = () => {
       queryFn: () => datphongServices.getDetailReservationByUser(userInfo),
     });
 
-    // Cập nhật lại sau khi thao tác với reserListData
-
     // Kiểm tra và chuyển đổi kiểu cho reserListData2
     const reserListData2 = reserListData?.data?.content as
       | Record<string, any>
       | undefined;
-    console.log("reserListData: ", reserListData);
     if (reserListData2) {
-      console.log("reserListData2: ", reserListData2);
       // Kiểm tra xem reserListData2 có tồn tại hay không
       for (const key in reserListData2) {
         for (const innerKey in reserListData2[key]) {
           if (innerKey === "maPhong") {
             let temp = reserListData2[key][innerKey];
             if (Number(temp) === Number(id)) {
-              console.log("Found item with id: ", temp);
               itemFound = true;
-              break; // Nếu tìm thấy item, dừng vòng lặp
+              break;
             }
           }
         }
@@ -103,7 +97,9 @@ export const DetailRoomTemplate = () => {
     handleSubmit,
     setValue,
     control,
+    reset,
     formState: { errors },
+    clearErrors,
   } = useForm<ReservationSchemaType>({
     mode: "onChange",
     resolver: zodResolver(ReservationSchema),
@@ -122,6 +118,7 @@ export const DetailRoomTemplate = () => {
     setValue("soLuongKhach", items.soLuongKhach);
     setValue("maNguoiDung", items.maNguoiDung);
   };
+
   // onSubmit chỉ đc gọi khi validation ko có errors
   const onSubmit: SubmitHandler<ReservationSchemaType> = async (values) => {
     let bookingDetail;
@@ -141,6 +138,7 @@ export const DetailRoomTemplate = () => {
         maNguoiDung: Number(userInfo),
         maPhong: Number(room?.id),
       };
+      dispatch(quanLyDatPhongActions.setIsEditReservation(false));
       updateReservationMutation.mutate(bookingDetail);
     }
   };
@@ -198,13 +196,6 @@ export const DetailRoomTemplate = () => {
                       Giá: {room.giaTien.toLocaleString("vi-VN")} VND / đêm
                     </p>
                   </div>
-                  <Controller
-                    name="id"
-                    control={control}
-                    render={({ field }) => (
-                      <Input type="hidden" {...field} /> // Đảm bảo newId luôn có giá trị
-                    )}
-                  />
                   <Controller
                     name="maPhong"
                     control={control}
@@ -296,14 +287,6 @@ export const DetailRoomTemplate = () => {
                     )}
                   </div>
 
-                  <Controller
-                    name="maNguoiDung"
-                    control={control}
-                    render={({ field }) => (
-                      <input type="hidden" {...field} value={0} /> // Đảm bảo userId luôn có giá trị
-                    )}
-                  />
-
                   {!isEditReservation ? (
                     <Button
                       htmlType="submit"
@@ -323,9 +306,6 @@ export const DetailRoomTemplate = () => {
                             id: room?.id,
                           });
                           await sleep(2000);
-                          dispatch(
-                            quanLyDatPhongActions.setIsEditReservation(false)
-                          );
                           navigate(path);
                         }}
                       >
@@ -333,15 +313,13 @@ export const DetailRoomTemplate = () => {
                       </Button>
 
                       <Button
+                        htmlType="submit"
                         className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded"
                         onClick={() => {
+                          reset();
                           dispatch(
                             quanLyDatPhongActions.setIsEditReservation(false)
                           );
-                          const path = generatePath(PATH.DetailRoom, {
-                            id: room?.id,
-                          });
-                          navigate(path);
                         }}
                       >
                         Hủy
@@ -363,33 +341,27 @@ export const DetailRoomTemplate = () => {
                           được đăng ký
                         </h2>
                         <Row gutter={16}>
-                          {myObject.map((roomOrder) => (
-                            <Row className="p-1" key={roomOrder.id}>
+                          {myObject.map((roomOrder, index) => (
+                            <Row className="p-1" key={index}>
                               <Col span={8}>
                                 <Card style={{ width: 240 }}>
+                                  {`Phòng ${index + 1}`}
                                   <Meta
-                                    title={`Phòng ${roomOrder.id}`}
                                     description={`Từ: ${moment(
                                       roomOrder.ngayDen
-                                    ).format("DD/MM/YYYY")} \n Đến: ${moment(
+                                    ).format("DD/MM/YYYY")} `}
+                                  />
+                                  <Meta
+                                    description={`Đến: ${moment(
                                       roomOrder.ngayDi
                                     ).format("DD/MM/YYYY")}`}
                                   />
-
                                   <Button
                                     className="btn btn-danger bg-blue-500 mt-2 w-20 text-white rounded-lg hover:bg-blue-600 transition-all"
                                     onClick={() => {
                                       deleteReservationMutation.mutate(
                                         roomOrder
                                       );
-
-                                      const path = generatePath(
-                                        PATH.DetailRoom,
-                                        {
-                                          id: room?.id,
-                                        }
-                                      );
-                                      navigate(path);
                                     }}
                                   >
                                     Delete
@@ -397,6 +369,7 @@ export const DetailRoomTemplate = () => {
                                   <Button
                                     className="btn btn-info ms-3 pl-2 pr-1 w-20 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
                                     onClick={() => {
+                                      clearErrors();
                                       handleEdit(roomOrder); // Truyền trực tiếp item vào hàm onEdit
                                       dispatch(
                                         quanLyDatPhongActions.setIsEditReservation(

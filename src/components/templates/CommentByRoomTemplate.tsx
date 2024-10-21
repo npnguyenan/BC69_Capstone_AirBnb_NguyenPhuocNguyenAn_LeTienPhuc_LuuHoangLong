@@ -16,7 +16,7 @@ export const CommentByRoomTemplate = () => {
   const { user } = useQuanLyNguoiDungSelector();
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  console.log("id: ", id);
+
   let { data: cmtList, refetch: refetchCmt } = useQuery({
     queryKey: ["BinhLuanTheoPhong"],
     queryFn: async () => {
@@ -42,7 +42,6 @@ export const CommentByRoomTemplate = () => {
   }, [reloadCmt, refetchCmt]);
 
   const commentList = cmtList?.data.content;
-  console.log("commentList: ", commentList);
 
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);

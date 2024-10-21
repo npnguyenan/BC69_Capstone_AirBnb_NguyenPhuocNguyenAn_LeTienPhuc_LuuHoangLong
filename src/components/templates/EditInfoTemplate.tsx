@@ -172,7 +172,6 @@ export const EditInfoTemplate = (props: Props) => {
                     style={{ width: 150 }}
                     onChange={(value) => {
                       field.onChange(value); // Đảm bảo cập nhật giá trị vào react-hook-form
-                      console.log("value: ", value);
                     }}
                   >
                     <Option value={true}>Nam</Option>
@@ -198,11 +197,7 @@ export const EditInfoTemplate = (props: Props) => {
       <div className="text-center">
         {editInfo ? (
           <>
-            <Button
-              htmlType="submit"
-            >
-              Cập nhật hồ sơ
-            </Button>
+            <Button htmlType="submit">Cập nhật hồ sơ</Button>
             <Button
               className="bg-red-500 mx-[10px] text-white"
               onClick={() => {

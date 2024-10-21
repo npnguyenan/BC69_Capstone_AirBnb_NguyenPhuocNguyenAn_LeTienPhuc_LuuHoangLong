@@ -110,7 +110,6 @@ export const DetailRoomTemplate = () => {
   if (!room) return <div>Loading...</div>;
 
   const handleEdit = (items: Reservation) => {
-    console.log("items: ", items);
     setValue("id", items.id);
     setValue("maPhong", items.maPhong);
     setValue("ngayDen", moment(items.ngayDen).format("DD/MM/YYYY"));
@@ -129,9 +128,7 @@ export const DetailRoomTemplate = () => {
         maNguoiDung: Number(userInfo),
         maPhong: Number(room?.id),
       };
-      console.log("ngayDi: ", values.ngayDi);
       addReservationMutation.mutate(bookingDetail);
-      console.log("Giá trị form sau khi submit:", bookingDetail); // Log giá trị của form
     } else if (isEditReservation) {
       bookingDetail = {
         ...values,

@@ -202,7 +202,6 @@ export const FormUserTemplate = (props: Props) => {
                         style={{ width: 150 }}
                         onChange={(value) => {
                           field.onChange(value); // Đảm bảo cập nhật giá trị vào react-hook-form
-                          console.log("value: ", value);
                         }}
                         defaultValue={true}
                       >
@@ -228,7 +227,6 @@ export const FormUserTemplate = (props: Props) => {
                         status={errors.role ? "error" : undefined} // Hiển thị lỗi nếu có
                         onChange={(value) => {
                           field.onChange(value); // Đảm bảo cập nhật giá trị vào react-hook-form
-                          console.log("value: ", value);
                         }}
                         defaultValue={"USER"}
                       >

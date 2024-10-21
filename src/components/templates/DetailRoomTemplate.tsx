@@ -28,15 +28,6 @@ import { sleep } from "../../utils";
 import { useEffect } from "react";
 
 const { Title, Paragraph } = Typography;
-interface Item {
-  id: any;
-  key: any; // Kiểu mở rộng để bao gồm các thuộc tính khác
-}
-interface ReservationResponse {
-  data?: {
-    content?: Record<string, Item[]>; // Hoặc ReserListData
-  };
-}
 export const DetailRoomTemplate = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
@@ -227,19 +218,11 @@ export const DetailRoomTemplate = () => {
                       name="ngayDen"
                       control={control}
                       render={({ field }) => (
-                        <DatePicker
+                        <Input
+                          className="mb-[20px]"
                           {...field}
-                          format="DD/MM/YYYY"
-                          value={
-                            field.value
-                              ? moment(field.value, "DD/MM/YYYY")
-                              : null
-                          }
-                          onChange={(date) =>
-                            field.onChange(
-                              date ? date.format("DD/MM/YYYY") : null
-                            )
-                          }
+                          status={errors.ngayDen && "error"} // Hiển thị lỗi nếu có
+                          placeholder="dd/mm/yyyy"
                         />
                       )}
                     />
@@ -257,19 +240,11 @@ export const DetailRoomTemplate = () => {
                       name="ngayDi"
                       control={control}
                       render={({ field }) => (
-                        <DatePicker
+                        <Input
+                          className="mb-[20px]"
                           {...field}
-                          format="DD/MM/YYYY"
-                          value={
-                            field.value
-                              ? moment(field.value, "DD/MM/YYYY")
-                              : null
-                          }
-                          onChange={(date) =>
-                            field.onChange(
-                              date ? date.format("DD/MM/YYYY") : null
-                            )
-                          }
+                          status={errors.ngayDi && "error"} // Hiển thị lỗi nếu có
+                          placeholder="dd/mm/yyyy"
                         />
                       )}
                     />

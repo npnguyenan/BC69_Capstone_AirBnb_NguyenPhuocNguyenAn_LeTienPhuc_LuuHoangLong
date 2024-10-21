@@ -93,6 +93,7 @@ export const UserListTemplate = () => {
                     className="me-3 bg-red-400 2xl:me-0"
                     onClick={() => {
                       deleteUserMutation.mutate(user);
+                      scrollToTop();
                     }}
                   >
                     <i className="fa-solid fa-trash text-white"></i>

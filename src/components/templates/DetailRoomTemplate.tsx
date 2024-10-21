@@ -125,7 +125,7 @@ export const DetailRoomTemplate = () => {
     if (!isEditReservation) {
       bookingDetail = {
         ...values,
-        id: 0,
+        id: values.id,
         maNguoiDung: Number(userInfo),
         maPhong: Number(room?.id),
       };

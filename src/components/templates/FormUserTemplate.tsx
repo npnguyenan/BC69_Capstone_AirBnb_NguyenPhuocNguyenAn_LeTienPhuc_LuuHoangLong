@@ -114,6 +114,7 @@ export const FormUserTemplate = (props: Props) => {
                 control={control}
                 render={({ field }) => (
                   <Input
+                    placeholder="Nhập email"
                     className="mb-[20px]"
                     status={errors.email && "error"}
                     {...field}
@@ -133,6 +134,7 @@ export const FormUserTemplate = (props: Props) => {
                     control={control}
                     render={({ field }) => (
                       <Input
+                        placeholder="Nhập mật khẩu"
                         className="mb-[20px]"
                         status={errors.password && "error"}
                         {...field}
@@ -173,6 +175,7 @@ export const FormUserTemplate = (props: Props) => {
                   control={control}
                   render={({ field }) => (
                     <Input
+                      placeholder="Nhập số điện thoại"
                       className="mb-[20px]"
                       status={errors.phone && "error"}
                       {...field}

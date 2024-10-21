@@ -4,9 +4,13 @@ import { useDeleteUserMutation } from "../../hooks/api";
 import { useQuery } from "@tanstack/react-query";
 import { nguoiDungServices } from "../../services";
 import { useAppDispatch } from "../../stores";
-import { userActions } from "../../stores/quanLyNguoiDung";
+import {
+  useQuanLyNguoiDungSelector,
+  userActions,
+} from "../../stores/quanLyNguoiDung";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { PATH } from "../../constants";
+import { useEffect } from "react";
 
 export const UserListTemplate = () => {
   // const { userId } = useQuanLyNguoiDungSelector();
@@ -14,8 +18,8 @@ export const UserListTemplate = () => {
   const deleteUserMutation = useDeleteUserMutation();
   const navigate = useNavigate();
   const location = useLocation();
-
-  let { data: userListData } = useQuery({
+  const { reloadAPI } = useQuanLyNguoiDungSelector();
+  let { data: userListData, refetch: refetchUserList } = useQuery({
     queryKey: ["DanhSachNguoiDung"],
     queryFn: async () => {
       return nguoiDungServices.getDanhSach();
@@ -23,9 +27,12 @@ export const UserListTemplate = () => {
     staleTime: 5 * 60 * 1000,
     // true:  gọi API, false: ko gọi
     enabled: true,
-    refetchInterval: 10000,
   });
-
+  useEffect(() => {
+    if (reloadAPI == true) {
+      refetchUserList();
+    }
+  }, [reloadAPI, refetchUserList]);
   return (
     <div className="mx-auto container grid xl:w-11/12 lg:w-10/12">
       <div className="mx-auto">

@@ -55,11 +55,21 @@ export const FormUserTemplate = (props: Props) => {
     }
   }, [value, setValue]);
 
+  const resetInputField = () => {
+    setValue("name", "");
+    setValue("email", "");
+    setValue("phone", "");
+    setValue("birthday", "");
+    setValue("gender", true);
+    setValue("role", "USER");
+    setValue("id", 0);
+  };
   // Hàm xử lý khi submit form thành công
   const onSubmit = (data: InputUserSchemaType) => {
     // Nếu đang xử lý thêm user
     if (!isEditUser) {
       addUserMutation.mutate(data);
+      resetInputField();
     }
     // Nếu là cập nhật user
     if (isEditUser) {
@@ -189,6 +199,7 @@ export const FormUserTemplate = (props: Props) => {
                           field.onChange(value); // Đảm bảo cập nhật giá trị vào react-hook-form
                           console.log("value: ", value);
                         }}
+                        defaultValue={true}
                       >
                         <Option value={true}>Nam</Option>
                         <Option value={false}>Nữ</Option>
@@ -214,6 +225,7 @@ export const FormUserTemplate = (props: Props) => {
                           field.onChange(value); // Đảm bảo cập nhật giá trị vào react-hook-form
                           console.log("value: ", value);
                         }}
+                        defaultValue={"USER"}
                       >
                         <Option value="ADMIN">ADMIN</Option>
                         <Option value="USER">USER</Option>

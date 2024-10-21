@@ -12,6 +12,7 @@ type InitialState = {
   updateAvatar: boolean;
   avatarPreview: string | undefined;
   editInfo: boolean;
+  reloadAPI: boolean;
   // Lưu thông tin đăng nhập của user
   user: LoginAPIResponse | null;
 };
@@ -25,8 +26,8 @@ const initialState: InitialState = {
   updateAvatar: false,
   avatarPreview: undefined,
   editInfo: false,
+  reloadAPI: false,
 };
-
 
 export const { reducer: userReducer, actions: userActions } = createSlice({
   name: "user",
@@ -60,6 +61,9 @@ export const { reducer: userReducer, actions: userActions } = createSlice({
     },
     setEditInfo: (state, { payload }) => {
       state.editInfo = payload;
+    },
+    setReloadAPI: (state, { payload }) => {
+      state.reloadAPI = payload;
     },
   },
 });

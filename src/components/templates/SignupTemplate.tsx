@@ -1,6 +1,14 @@
 import Title from "antd/es/typography/Title";
 import React, { useState } from "react";
-import { Modal, Input, Button, Select, Divider, DatePicker } from "antd";
+import {
+  Modal,
+  Input,
+  Button,
+  Select,
+  Divider,
+  DatePicker,
+  Switch,
+} from "antd";
 import {
   FacebookOutlined,
   GoogleOutlined,
@@ -166,25 +174,22 @@ export const SignupTemplate: React.FC<SignupTemplateProps> = ({
           <p className="text-black text-16 mt-1">
             Giới tính <span className="text-red-500">*</span>
           </p>
-          <p className="text-black text-16 mt-1">
-            Quyền <span className="text-red-500">*</span>
-          </p>
           <Controller
-            name="role"
+            name="gender"
             control={control}
+            defaultValue={false} // Mặc định là Female (false)
             render={({ field }) => (
-              <Select
-                className=" w-[6em]"
-                {...field}
-                options={[
-                  { value: "user", label: "User" },
-                  { value: "admin", label: "Admin" },
-                ]}
-                onChange={(value) => field.onChange(value)}
+              <Switch
+                checkedChildren="Male" // Giá trị "true" đại diện cho Male
+                unCheckedChildren="Female" // Giá trị "false" đại diện cho Female
+                checked={field.value} // Nếu giá trị là true thì chọn Male
+                onChange={(checked) => field.onChange(checked)} // Cập nhật giá trị khi switch
               />
             )}
           />
-          {errors.role && <p className="text-red-500">{errors.role.message}</p>}
+          {errors.gender && (
+            <p className="text-red-500">{errors.gender.message}</p>
+          )}
           <h1 className="text-xs mb-4">
             We’ll call or text you to confirm your number. Standard message and
             data rates apply. Privacy Policy

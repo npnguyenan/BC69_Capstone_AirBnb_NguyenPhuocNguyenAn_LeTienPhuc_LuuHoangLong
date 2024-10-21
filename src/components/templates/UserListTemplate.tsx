@@ -13,7 +13,6 @@ import { PATH } from "../../constants";
 import { useEffect } from "react";
 
 export const UserListTemplate = () => {
-  // const { userId } = useQuanLyNguoiDungSelector();
   const dispatch = useAppDispatch();
   const deleteUserMutation = useDeleteUserMutation();
   const navigate = useNavigate();

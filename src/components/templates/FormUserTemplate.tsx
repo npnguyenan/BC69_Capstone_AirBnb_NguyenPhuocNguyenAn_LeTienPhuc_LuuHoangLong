@@ -62,6 +62,7 @@ export const FormUserTemplate = (props: Props) => {
     setValue("birthday", "");
     setValue("gender", true);
     setValue("role", "USER");
+    setValue("password", "");
     setValue("id", 0);
   };
   // Hàm xử lý khi submit form thành công
@@ -95,6 +96,7 @@ export const FormUserTemplate = (props: Props) => {
                 control={control}
                 render={({ field }) => (
                   <Input
+                    placeholder="Nhập họ tên"
                     className="mb-[20px]"
                     status={errors.name && "error"}
                     {...field}

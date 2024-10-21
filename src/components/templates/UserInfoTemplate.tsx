@@ -36,6 +36,7 @@ export const UserInfoTemplate = () => {
     // true:  gọi API, false: ko gọi
     enabled: !!user?.user?.avatar,
   });
+
   const userInfo = userData?.data.content;
 
   useEffect(() => {

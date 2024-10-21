@@ -34,6 +34,7 @@ export const CommentTemplate = () => {
     },
   });
 
+  // Chức năng rating bình luận
   $(function () {
     const star: string = ".star";
     const selected: string = ".selected";

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import airbnblogo from "/images/airbnblogo.png";
 import { useAppDispatch } from "../../stores";
@@ -9,6 +9,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../constants";
 import { LoginTemplate, SignupTemplate } from "../templates";
+import { useQuery } from "@tanstack/react-query";
+import { nguoiDungServices } from "../../services";
 
 export const Navbar = () => {
   const { user } = useQuanLyNguoiDungSelector();
@@ -24,7 +26,26 @@ export const Navbar = () => {
   const handleCancelLog = () => setLog(false);
 
   const toggleDropdown = () => setDropdownVisible(!dropdownVisible);
+  let { data: userData, refetch: refetchUser } = useQuery({
+    queryKey: ["InfoUser", user?.user?.id],
+    queryFn: async () => {
+      if (user) {
+        return nguoiDungServices.getUserById(`${user?.user?.id}`);
+      }
+      return null;
+    },
+    staleTime: 5 * 60 * 1000,
+    // true:  gọi API, false: ko gọi
+    enabled: !!user?.user?.avatar,
+  });
 
+  const userInfo = userData?.data.content;
+
+  useEffect(() => {
+    if (userInfo?.avatar) {
+      refetchUser(); // Gọi lại API khi userId thay đổi
+    }
+  }, [userInfo?.avatar, refetchUser]);
   return (
     <div className="flex flex-wrap items-center justify-between p-3 border-b border-gray-300">
       <img
@@ -64,7 +85,7 @@ export const Navbar = () => {
             <img
               src={
                 user?.user?.avatar
-                  ? user.user.avatar
+                  ? userInfo?.avatar
                   : "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
               }
               alt="user"

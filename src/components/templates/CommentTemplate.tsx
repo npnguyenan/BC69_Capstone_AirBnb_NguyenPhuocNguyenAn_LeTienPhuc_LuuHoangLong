@@ -23,7 +23,6 @@ export const CommentTemplate = () => {
     saoBinhLuan: rating,
     ngayBinhLuan: now.toISOString(),
   };
-  console.log("commentData: ", commentData);
   let { data: userData } = useQuery({
     queryKey: ["InfoUser", user?.user?.id],
     queryFn: async () => {
@@ -52,7 +51,6 @@ export const CommentTemplate = () => {
   });
 
   const userInfo = userData?.data.content;
-  console.log("userInfo: ", userInfo);
   const postCommentMutation = usePostCommentMutation();
   const handleSubmit = (event: any) => {
     event.preventDefault();

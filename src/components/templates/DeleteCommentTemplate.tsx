@@ -12,7 +12,6 @@ export const DeleteCommentTemplate = (props: Props) => {
       className="font-400 hover:text-red-500 cursor-pointer inline ms-20"
       onClick={() => {
         deleteCommentMutation.mutate(idCmt);
-        console.log("idCmt: ", idCmt);
       }}
     >
       Xóa bình luận

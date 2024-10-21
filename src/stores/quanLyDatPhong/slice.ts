@@ -8,6 +8,8 @@ type InitialState = {
   users: User[] | [];
   userId: number | null;
   isEditReservation: boolean;
+
+  isAddReservation: boolean;
 };
 
 const initialState: InitialState = {
@@ -15,6 +17,7 @@ const initialState: InitialState = {
   users: [],
   userId: null,
   isEditReservation: false,
+  isAddReservation: false,
 };
 
 export const {
@@ -31,6 +34,7 @@ export const {
     },
     setReservationList: (state, { payload }) => {
       state.users = payload;
+      state.isAddReservation = payload;
     },
     deleteReservation: (state, { payload }) => {
       state.users = state.users.filter((item) => item.id != payload.id);

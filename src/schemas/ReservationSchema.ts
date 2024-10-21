@@ -7,12 +7,10 @@ export const ReservationSchema = z.object({
   maPhong: z.any(),
   ngayDen: z
     .string()
-    .refine((value) => moment(value, "DD/MM/YYYY", true).isValid())
-    .transform((val) => new Date(val).toISOString()),
+    .refine((value) => moment(value, "DD/MM/YYYY", true).isValid()),
   ngayDi: z
     .string()
-    .refine((value) => moment(value, "DD/MM/YYYY", true).isValid())
-    .transform((val) => new Date(val).toISOString()),
+    .refine((value) => moment(value, "DD/MM/YYYY", true).isValid()),
   soLuongKhach: z.coerce.number().int().nonnegative(),
   maNguoiDung: z.any(),
 });

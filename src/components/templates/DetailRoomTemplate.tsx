@@ -129,6 +129,7 @@ export const DetailRoomTemplate = () => {
         maNguoiDung: Number(userInfo),
         maPhong: Number(room?.id),
       };
+      console.log("ngayDi: ", values.ngayDi);
       addReservationMutation.mutate(bookingDetail);
       console.log("Giá trị form sau khi submit:", bookingDetail); // Log giá trị của form
     } else if (isEditReservation) {
@@ -196,6 +197,13 @@ export const DetailRoomTemplate = () => {
                       Giá: {room.giaTien.toLocaleString("vi-VN")} VND / đêm
                     </p>
                   </div>
+                  <Controller
+                    name="id"
+                    control={control}
+                    render={({ field }) => (
+                      <Input type="hidden" {...field} value={0} /> // Đảm bảo newId luôn có giá trị
+                    )}
+                  />
                   <Controller
                     name="maPhong"
                     control={control}
@@ -286,6 +294,14 @@ export const DetailRoomTemplate = () => {
                       </p>
                     )}
                   </div>
+
+                  <Controller
+                    name="maNguoiDung"
+                    control={control}
+                    render={({ field }) => (
+                      <input type="hidden" {...field} value={0} /> // Đảm bảo userId luôn có giá trị
+                    )}
+                  />
 
                   {!isEditReservation ? (
                     <Button

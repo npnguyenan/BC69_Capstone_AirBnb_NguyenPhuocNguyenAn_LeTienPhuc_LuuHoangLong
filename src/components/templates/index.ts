@@ -11,3 +11,6 @@ export * from "./UserInfoTemplate";
 export * from "./CommentTemplate";
 export * from "./DeleteCommentTemplate";
 export * from "./EditInfoTemplate";
+export * from "./RoomListTemplate"
+export * from "./FormEditRoomTemplate"
+export * from "./FormRoomTemplate"

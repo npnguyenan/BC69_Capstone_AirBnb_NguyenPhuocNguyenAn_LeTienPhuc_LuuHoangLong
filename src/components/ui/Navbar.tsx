@@ -131,6 +131,15 @@ export const Navbar = () => {
                     Quản lý người dùng
                   </h1>
                 )}
+
+                {user?.user?.role === "ADMIN" && (
+                  <h1
+                    onClick={() => navigate(PATH.addRoom)}
+                    className="font-thin text-sm cursor-pointer max-w-full truncate"
+                  >
+                    Quản lý phòng
+                  </h1>
+                )}
                 <hr className="mt-2" />
                 <h1
                   onClick={() => {

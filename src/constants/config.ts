@@ -7,4 +7,7 @@ export const PATH = {
   info: "/user",
   login: "/auth/login",
   register: "/auth/signup",
+  roomAdmin: "/admin/room",
+  addRoom: "/admin/room/add",
+  editRoom: "/admin/room/edit",
 };

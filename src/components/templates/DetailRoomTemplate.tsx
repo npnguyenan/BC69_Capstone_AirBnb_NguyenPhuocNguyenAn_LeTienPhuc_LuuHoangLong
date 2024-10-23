@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router-dom";
 import { datphongServices, phongServices } from "../../services";
-import { Row, Col, Typography, Input, Button, DatePicker, Card } from "antd";
+import { Row, Col, Typography, Input, Button, Card } from "antd";
 import { CommentByRoomTemplate } from "./CommentByRoomTemplate";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ReservationSchema, ReservationSchemaType } from "../../schemas";

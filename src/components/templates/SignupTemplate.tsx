@@ -1,14 +1,6 @@
 import Title from "antd/es/typography/Title";
 import React, { useState } from "react";
-import {
-  Modal,
-  Input,
-  Button,
-  Select,
-  Divider,
-  DatePicker,
-  Switch,
-} from "antd";
+import { Modal, Input, Button, Divider, DatePicker, Switch } from "antd";
 import {
   FacebookOutlined,
   GoogleOutlined,
